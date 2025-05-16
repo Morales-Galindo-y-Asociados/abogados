@@ -3,81 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Abogado en Puebla, México - Servicios legales profesionales con consulta en línea y pagos seguros.">
-    <meta name="keywords" content="abogado, Puebla, México, servicios legales, consulta jurídica">
-    <meta name="author" content="Your Brother's Name">
-    <title>Abogado en Puebla - Servicios Legales Profesionales</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Morales-Galindo y Asociados - Abogados en Puebla, México. Asesoría y representación legal profesional.">
+    <meta name="keywords" content="abogados, Puebla, México, servicios legales, consulta jurídica, derecho">
+    <meta name="author" content="Morales-Galindo y Asociados">
+    <title>Morales-Galindo y Asociados - Abogados en Puebla</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.22.20/babel.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <header>
-        <nav>
+<body class="bg-gray-100 font-sans text-gray-800">
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-4 sticky top-0 z-50 shadow-lg">
+        <nav class="container mx-auto flex justify-between items-center">
             <div class="logo">
-                <img src="images/logo.png" alt="Logo del Abogado" width="100">
+                <img src="images/logo.png" alt="Morales-Galindo y Asociados" class="w-24">
             </div>
-            <ul>
-                <li><a href="#home">Inicio</a></li>
-                <li><a href="#about">Acerca de</a></li>
-                <li><a href="#services">Servicios</a></li>
-                <li><a href="#contact">Contacto</a></li>
-                <li><a href="#map">Ubicación</a></li>
-                <li><a href="#payment">Pagos</a></li>
+            <ul class="flex gap-6">
+                <li><a href="#home" class="hover:text-yellow-400 font-semibold">Inicio</a></li>
+                <li><a href="#about" class="hover:text-yellow-400 font-semibold">Acerca de</a></li>
+                <li><a href="#services" class="hover:text-yellow-400 font-semibold">Servicios</a></li>
+                <li><a href="#contact" class="hover:text-yellow-400 font-semibold">Contacto</a></li>
+                <li><a href="#map" class="hover:text-yellow-400 font-semibold">Ubicaciones</a></li>
+                <li><a href="#payment" class="hover:text-yellow-400 font-semibold">Pagos</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="home">
-        <h1>Bienvenidos a [Nombre del Abogado]</h1>
-        <p>Servicios legales profesionales en Puebla, México. Contáctanos hoy para resolver tus problemas legales.</p>
-        <a href="#contact" class="cta-button">Consulta Ahora</a>
-    </section>
-
-    <section id="about">
-        <h2>Acerca del Abogado</h2>
-        <div class="about-container">
-            <img src="images/lawyer-photo.jpg" alt="Foto del Abogado" class="profile-photo">
-            <p>[Nombre del Abogado] es un abogado con experiencia en Puebla, especializado en [áreas legales, e.g., derecho familiar, penal, laboral]. Con un enfoque en el cliente, ofrecemos soluciones personalizadas.</p>
-        </div>
-        <div class="about-container">
-            <img src="images/office-photo.jpg" alt="Foto de la Oficina" class="office-photo">
-            <p>Nuestra oficina en Puebla está diseñada para ofrecer un ambiente profesional y acogedor.</p>
+    <section id="home" class="relative h-screen flex items-center justify-center text-center bg-cover bg-center" style="background-image: url('images/hero-bg.jpg')">
+        <div id="hero-animation" class="absolute inset-0"></div>
+        <div class="relative z-10 text-white">
+            <h1 class="text-5xl font-bold mb-4">Morales-Galindo y Asociados</h1>
+            <p class="text-xl mb-6">Servicios legales de excelencia en Puebla, México</p>
+            <a href="#contact" class="bg-yellow-400 text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition">Consulta Ahora</a>
         </div>
     </section>
 
-    <section id="services">
-        <h2>Servicios Legales</h2>
-        <ul>
-            <li>Derecho Familiar</li>
-            <li>Derecho Penal</li>
-            <li>Derecho Laboral</li>
-            <li>Consultoría Jurídica</li>
-        </ul>
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Nuestros Abogados</h2>
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="w-full md:w-1/3 bg-gray-100 p-6 rounded-lg shadow-lg">
+                    <img src="images/lawyer1.jpg" alt="Abogado Morales" class="w-48 h-48 mx-auto rounded-full mb-4">
+                    <h3 class="text-2xl font-semibold">Abogado Morales</h3>
+                    <p>Especialista en derecho penal y laboral con más de 15 años de experiencia.</p>
+                </div>
+                <div class="w-full md:w-1/3 bg-gray-100 p-6 rounded-lg shadow-lg">
+                    <img src="images/lawyer2.jpg" alt="Abogado Galindo" class="w-48 h-48 mx-auto rounded-full mb-4">
+                    <h3 class="text-2xl font-semibold">Abogado Galindo</h3>
+                    <p>Experto en derecho familiar y consultoría jurídica, comprometido con sus clientes.</p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="contact">
-        <h2>Contáctanos</h2>
-        <p>Describe tu caso y adjunta documentos para una consulta personalizada.</p>
-        <iframe src="YOUR_GOOGLE_FORM_EMBED_URL" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+    <section id="services" class="py-16 bg-gray-100">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Servicios Legales</h2>
+            <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                <li class="bg-white p-6 rounded-lg shadow-md">Derecho Familiar</li>
+                <li class="bg-white p-6 rounded-lg shadow-md">Derecho Penal</li>
+                <li class="bg-white p-6 rounded-lg shadow-md">Derecho Laboral</li>
+                <li class="bg-white p-6 rounded-lg shadow-md">Consultoría Jurídica</li>
+            </ul>
+        </div>
     </section>
 
-    <section id="map">
-        <h2>Nuestra Ubicación</h2>
-        <div id="map-container"></div>
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Contáctanos</h2>
+            <p class="mb-6">Describe tu caso y adjunta documentos para una consulta personalizada.</p>
+            <iframe src="YOUR_GOOGLE_FORM_EMBED_URL" class="w-full h-[800px] border-0"></iframe>
+        </div>
     </section>
 
-    <section id="payment">
-        <h2>Pagos Seguros</h2>
-        <p>Realiza el pago de tu consulta con seguridad a través de BBVA.</p>
-        <a href="YOUR_BBVA_PAYMENT_LINK" class="cta-button">Pagar Consulta</a>
+    <section id="map" class="py-16 bg-gray-100">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Nuestras Oficinas</h2>
+            <div id="map-container" class="h-[400px] w-full"></div>
+        </div>
     </section>
 
-    <footer>
-        <p>© 2025 [Nombre del Abogado]. Todos los derechos reservados.</p>
-        <p><a href="https://www.facebook.com/[YourBrother’sFacebookPage]" target="_blank">Síguenos en Facebook</a></p>
-        <p>Tel: [Teléfono] | Email: [Email] | Dirección: [Dirección en Puebla]</p>
+    <section id="payment" class="py-16 bg-white">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8">Pagos Seguros</h2>
+            <p class="mb-6">Realiza el pago de tu consulta con seguridad a través de BBVA.</p>
+            <a href="YOUR_BBVA_PAYMENT_LINK" class="bg-yellow-400 text-blue-900 px-6 py-3 rounded-full font-semibold hover:bg-yellow-500 transition">Pagar Consulta</a>
+        </div>
+    </section>
+
+    <footer class="bg-blue-900 text-white py-6 text-center">
+        <p>© 2025 Morales-Galindo y Asociados. Todos los derechos reservados.</p>
+        <p><a href="https://www.facebook.com/MoralesGalindoAsociados" target="_blank" class="text-yellow-400 hover:text-yellow-500">Síguenos en Facebook</a></p>
+        <p>Tel: [Teléfono] | Email: [Email] | Oficinas en Puebla</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script type="text/babel" src="script.js"></script>
 </body>
 </html>
