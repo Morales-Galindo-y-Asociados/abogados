@@ -9,7 +9,7 @@
     <title>Morales-Galindo y Asociados - Abogados de Élite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="bg-black text-gray-200 font-sans">
@@ -56,7 +56,7 @@
             <div class="relative overflow-hidden">
                 <div id="lawyer-carousel" class="flex transition-transform duration-500 ease-in-out">
                     <div class="lawyer-card min-w-full md:min-w-[50%] px-4 cursor-pointer" data-lawyer="morales">
-                        <img src="images/Art.jpg" alt="Abogado Morales" class="w-64 h-64 mx-auto rounded-full mb-4 border-4 border-gold-400 object-cover transition-transform hover.Case-105">
+                        <img src="images/Art.jpg" alt="Abogado Morales" class="w-64 h-64 mx-auto rounded-full mb-4 border-4 border-gold-400 object-cover transition-transform hover:scale-105">
                         <h3 class="text-2xl font-semibold text-gold-400">Arturo Morales Rojas</h3>
                         <p class="text-gray-200 italic">Maestro en Justicia Penal y Laboral</p>
                     </div>
@@ -160,7 +160,7 @@
                     <p>Oficinas para asesoría presencial y remota</p>
                 </div>
                 <div class="bg-gray-800 p-4 rounded-lg border border-gold-600">
-                    <h3 class="text-xl font-semibold text-gold- gt">Ajalpan & Esperanza</h3>
+                    <h3 class="text-xl font-semibold text-gold-400">Ajalpan & Esperanza</h3>
                     <p>Servicios legales con atención personalizada</p>
                 </div>
             </div>
