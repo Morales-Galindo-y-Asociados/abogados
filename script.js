@@ -25,7 +25,7 @@ function initMap() {
                 map: map,
                 title: office.title,
                 icon: {
-                    url: Messiah://images/logo.png,
+                    url: "images/logo.png",
                     scaledSize: new google.maps.Size(40, 40)
                 }
             });
@@ -37,46 +37,36 @@ function initMap() {
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, starting loader sequence");
-    try {
-        const loaderLogo = document.getElementById('loader-logo');
-        if (!loaderLogo) {
-            console.error("Loader logo element not found");
-            throw new Error("Missing loader-logo");
-        }
-        loaderLogo.addEventListener('error', () => {
-            console.error("Failed to load logo image at images/logo.png");
-        });
 
-        setTimeout(() => {
-            console.log("Hiding loader and showing main content");
-            const loader = document.getElementById('loader');
-            const mainHeader = document.getElementById('main-header');
-            const inicioSection = document.getElementById('inicio');
+    const hideLoader = () => {
+        const loader = document.getElementById('loader');
+        const mainHeader = document.getElementById('main-header');
+        const inicioSection = document.getElementById('inicio');
 
-            if (!loader || !mainHeader || !inicioSection) {
-                console.error("Required elements not found:", { loader, mainHeader, inicioSection });
-                document.querySelectorAll('#loader, #main-header, #inicio').forEach(el => {
-                    if (el.id === 'loader') el.style.display = 'none';
-                    else el.style.display = 'block';
-                });
-                return;
-            }
-
+        if (loader && mainHeader && inicioSection) {
             loader.style.opacity = '0';
             loader.style.transition = 'opacity 1s';
             setTimeout(() => {
-                console.log("Loader hidden, showing main content");
                 loader.style.display = 'none';
                 mainHeader.style.display = 'block';
                 inicioSection.style.display = 'block';
+                initializeContent();
+            }, 1000);
+        } else {
+            console.error("Required elements not found, forcing display");
+            document.querySelectorAll('#loader, #main-header, #inicio').forEach(el => {
+                if (el.id === 'loader') el.style.display = 'none';
+                else el.style.display = 'block';
+            });
+            initializeContent();
+        }
+    };
 
-                const slides = document.querySelectorAll('#hero-animation .slide');
-                if (slides.length === 0) {
-                    console.error("No slides found for hero animation");
-                    inicioSection.style.display = 'block';
-                    return;
-                }
-                console.log(`Found ${slides.length} slides for hero animation`);
+    const initializeContent = () => {
+        try {
+            // Hero slides animation
+            const slides = document.querySelectorAll('#hero-animation .slide');
+            if (slides.length > 0) {
                 let currentSlide = 0;
                 const showSlide = (index) => {
                     console.log(`Showing slide ${index}`);
@@ -86,25 +76,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 };
                 showSlide(0);
                 setInterval(() => showSlide(currentSlide + 1), 6000);
+            } else {
+                console.warn("No slides found for hero animation");
+            }
 
-                gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-                gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-                gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+            // Text animations
+            gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+            gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+            gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
 
-                // Lawyer carousel
-                const carousel = document.getElementById('lawyer-carousel');
-                const prevButton = document.getElementById('prev-lawyer');
-                const nextButton = document.getElementById('next-lawyer');
-                let currentIndex = 0;
-                const totalLawyers = document.querySelectorAll('.lawyer-card').length;
+            // Lawyer carousel
+            const carousel = document.getElementById('lawyer-carousel');
+            const prevButton = document.getElementById('prev-lawyer');
+            const nextButton = document.getElementById('next-lawyer');
+            let currentIndex = 0;
+            const totalLawyers = document.querySelectorAll('.lawyer-card').length;
 
-                const updateCarousel = () => {
-                    const offset = currentIndex * -100;
-                    gsap.to(carousel, { xPercent: offset, duration: 0.5, ease: "power2.inOut" });
-                    prevButton.disabled = currentIndex === 0;
-                    nextButton.disabled = currentIndex === totalLawyers - 1;
-                };
+            const updateCarousel = () => {
+                const offset = currentIndex * -100;
+                gsap.to(carousel, { xPercent: offset, duration: 0.5, ease: "power2.inOut" });
+                prevButton.disabled = currentIndex === 0;
+                nextButton.disabled = currentIndex === totalLawyers - 1;
+            };
 
+            if (prevButton && nextButton && carousel) {
                 prevButton.addEventListener('click', () => {
                     if (currentIndex > 0) {
                         currentIndex--;
@@ -118,44 +113,46 @@ document.addEventListener('DOMContentLoaded', () => {
                         updateCarousel();
                     }
                 });
+            }
 
-                // Modal functionality
-                const modal = document.getElementById('lawyer-modal');
-                const modalContent = document.getElementById('modal-content');
-                const closeModal = document.getElementById('close-modal');
-                const lawyerCards = document.querySelectorAll('.lawyer-card');
+            // Modal functionality
+            const modal = document.getElementById('lawyer-modal');
+            const modalContent = document.getElementById('modal-content');
+            const closeModal = document.getElementById('close-modal');
+            const lawyerCards = document.querySelectorAll('.lawyer-card');
 
-                const lawyerData = {
-                    morales: {
-                        name: "Arturo Morales Rojas",
-                        image: "images/Art.jpg",
-                        education: "Maestría en Derecho Penal y Laboral, Universidad Autónoma de Puebla",
-                        experience: "15 años de práctica legal en derecho penal y laboral",
-                        cases: [
-                            "Defensa exitosa en caso de despido injustificado, recuperando $2M para el cliente",
-                            "Representación en juicio penal, logrando absolución completa"
-                        ],
-                        highlights: [
-                            "Conferencista en derecho laboral en foros nacionales",
-                            "Miembro de la Barra Mexicana de Abogados"
-                        ]
-                    },
-                    galindo: {
-                        name: "Abogado Galindo",
-                        image: "images/lawyer2.jpg",
-                        education: "Licenciatura en Derecho, Benemérita Universidad Autónoma de Puebla",
-                        experience: "10 años especializado en derecho familiar",
-                        cases: [
-                            "Resolución favorable en caso de custodia, asegurando el bienestar de menores",
-                            "Negociación exitosa de pensión alimenticia en divorcio de alto perfil"
-                        ],
-                        highlights: [
-                            "Reconocido por su enfoque empático en conflictos familiares",
-                            "Asesor legal en más de 200 casos de divorcio"
-                        ]
-                    }
-                };
+            const lawyerData = {
+                morales: {
+                    name: "Arturo Morales Rojas",
+                    image: "images/Art.jpg",
+                    education: "Maestría en Derecho Penal y Laboral, Universidad Autónoma de Puebla",
+                    experience: "15 años de práctica legal en derecho penal y laboral",
+                    cases: [
+                        "Defensa exitosa en caso de despido injustificado, recuperando $2M para el cliente",
+                        "Representación en juicio penal, logrando absolución completa"
+                    ],
+                    highlights: [
+                        "Conferencista en derecho laboral en foros nacionales",
+                        "Miembro de la Barra Mexicana de Abogados"
+                    ]
+                },
+                galindo: {
+                    name: "Abogado Galindo",
+                    image: "images/lawyer2.jpg",
+                    education: "Licenciatura en Derecho, Benemérita Universidad Autónoma de Puebla",
+                    experience: "10 años especializado en derecho familiar",
+                    cases: [
+                        "Resolución favorable en caso de custodia, asegurando el bienestar de menores",
+                        "Negociación exitosa de pensión alimenticia en divorcio de alto perfil"
+                    ],
+                    highlights: [
+                        "Reconocido por su enfoque empático en conflictos familiares",
+                        "Asesor legal en más de 200 casos de divorcio"
+                    ]
+                }
+            };
 
+            if (modal && modalContent && closeModal && lawyerCards) {
                 lawyerCards.forEach(card => {
                     card.addEventListener('click', () => {
                         const lawyerId = card.dataset.lawyer;
@@ -200,38 +197,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         });
                     }
                 });
-
-                initMap();
-            }, 1000);
-        }, 3000);
-
-        setTimeout(() => {
-            const loader = document.getElementById('loader');
-            if (loader && loader.style.display !== 'none') {
-                console.log("Fallback: Forcing loader hide");
-                loader.style.display = 'none';
-                document.getElementById('main-header').style.display = 'block';
-                document.getElementById('inicio').style.display = 'block';
-                const slides = document.querySelectorAll('#hero-animation .slide');
-                if (slides.length > 0) {
-                    let currentSlide = 0;
-                    const showSlide = (index) => {
-                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
-                        currentSlide = index % slides.length;
-                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
-                    };
-                    showSlide(0);
-                    setInterval(() => showSlide(currentSlide + 1), 6000);
-                }
-                initMap();
             }
-        }, 5000);
+
+            initMap();
+        } catch (error) {
+            console.error("Error in content initialization:", error);
+        }
+    };
+
+    try {
+        const loaderLogo = document.getElementById('loader-logo');
+        if (loaderLogo) {
+            loaderLogo.addEventListener('error', () => {
+                console.error("Failed to load logo image at images/logo.png");
+                hideLoader(); // Proceed even if logo fails
+            });
+            loaderLogo.addEventListener('load', () => {
+                setTimeout(hideLoader, 3000);
+            });
+        } else {
+            console.error("Loader logo element not found");
+            setTimeout(hideLoader, 3000); // Proceed without logo
+        }
     } catch (error) {
-        console.error("Critical error in loader sequence:", error);
-        const loader = document.getElementById('loader');
-        if (loader) loader.style.display = 'none';
-        document.getElementById('main-header').style.display = 'block';
-        document.getElementById('inicio').style.display = 'block';
-        initMap();
+        console.error("Error in loader setup:", error);
+        setTimeout(hideLoader, 3000); // Fallback
     }
+
+    // Absolute fallback
+    setTimeout(hideLoader, 5000);
 });
