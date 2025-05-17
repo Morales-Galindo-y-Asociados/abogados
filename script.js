@@ -47,17 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error("Failed to load logo image at images/logo.png");
         });
 
-        // Hide loader and show content after 3 seconds
         setTimeout(() => {
-            console.log("Attempting to hide loader and show main content");
+            console.log("Hiding loader and showing main content");
             const loader = document.getElementById('loader');
             const mainHeader = document.getElementById('main-header');
-            const mainContent = document.getElementById('main-content');
-            
-            if (!loader || !mainHeader || !mainContent) {
-                console.error("Required elements not found:", { loader, mainHeader, mainContent });
-                // Fallback: Force show content
-                document.querySelectorAll('#loader, #main-header, #main-content').forEach(el => {
+            const inicioSection = document.getElementById('inicio');
+
+            if (!loader || !mainHeader || !inicioSection) {
+                console.error("Required elements not found:", { loader, mainHeader, inicioSection });
+                document.querySelectorAll('#loader, #main-header, #inicio').forEach(el => {
                     if (el.id === 'loader') el.style.display = 'none';
                     else el.style.display = 'block';
                 });
@@ -70,48 +68,50 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log("Loader hidden, showing main content");
                 loader.style.display = 'none';
                 mainHeader.style.display = 'block';
-                mainContent.style.display = 'block';
+                inicioSection.style.display = 'block';
 
-                // Hero slides animation
                 const slides = document.querySelectorAll('#hero-animation .slide');
                 if (slides.length === 0) {
                     console.error("No slides found for hero animation");
-                    // Fallback: Ensure Inicio is visible
-                    document.getElementById('main-content').style.display = 'block';
+                    inicioSection.style.display = 'block';
                     return;
                 }
                 console.log(`Found ${slides.length} slides for hero animation`);
                 let currentSlide = 0;
                 const showSlide = (index) => {
                     console.log(`Showing slide ${index}`);
-                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.05, duration: 1.5, ease: "power2.out" });
+                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
                     currentSlide = index % slides.length;
-                    gsap.to(slides[currentSlide], { opacity: 0.8, scale: 1, duration: 1.5, ease: "power2.out" });
+                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
                 };
                 showSlide(0);
-                setInterval(() => showSlide(currentSlide + 1), 5000);
+                setInterval(() => showSlide(currentSlide + 1), 6000);
+
+                gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+                gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+                gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+
                 initMap();
             }, 1000);
         }, 3000);
 
-        // Fallback: Force hide loader after 5 seconds
         setTimeout(() => {
             const loader = document.getElementById('loader');
             if (loader && loader.style.display !== 'none') {
                 console.log("Fallback: Forcing loader hide");
                 loader.style.display = 'none';
                 document.getElementById('main-header').style.display = 'block';
-                document.getElementById('main-content').style.display = 'block';
+                document.getElementById('inicio').style.display = 'block';
                 const slides = document.querySelectorAll('#hero-animation .slide');
                 if (slides.length > 0) {
                     let currentSlide = 0;
                     const showSlide = (index) => {
-                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.05, duration: 1.5, ease: "power2.out" });
+                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
                         currentSlide = index % slides.length;
-                        gsap.to(slides[currentSlide], { opacity: 0.8, scale: 1, duration: 1.5, ease: "power2.out" });
+                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
                     };
                     showSlide(0);
-                    setInterval(() => showSlide(currentSlide + 1), 5000);
+                    setInterval(() => showSlide(currentSlide + 1), 6000);
                 }
                 initMap();
             }
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const loader = document.getElementById('loader');
         if (loader) loader.style.display = 'none';
         document.getElementById('main-header').style.display = 'block';
-        document.getElementById('main-content').style.display = 'block';
+        document.getElementById('inicio').style.display = 'block';
         initMap();
     }
 });
