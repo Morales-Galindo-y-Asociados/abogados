@@ -35,15 +35,6 @@ footer {
     padding: 1rem;
 }
 
-.animate-spin-slow {
-    animation: spin 10s linear infinite;
-}
-
-@keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
 @media (max-width: 768px) {
     nav ul {
         flex-direction: column;
