@@ -19,11 +19,14 @@ nav ul li a {
 
 section {
     padding: 2rem;
+    position: relative;
 }
 
 #inicio {
     position: relative;
     overflow: hidden;
+    min-height: 100vh;
+    z-index: 1;
 }
 
 #hero-animation {
@@ -51,6 +54,10 @@ section {
     background: rgba(0, 0, 0, 0.7);
     padding: 2rem;
     border-radius: 1rem;
+}
+
+#about, #services, #divorce, #contact, #map, #payment {
+    z-index: 2;
 }
 
 #map-container {
