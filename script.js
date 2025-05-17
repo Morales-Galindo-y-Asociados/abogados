@@ -56,6 +56,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (!loader || !mainHeader || !mainContent) {
                 console.error("Required elements not found:", { loader, mainHeader, mainContent });
+                // Fallback: Force show content
+                document.querySelectorAll('#loader, #main-header, #main-content').forEach(el => {
+                    if (el.id === 'loader') el.style.display = 'none';
+                    else el.style.display = 'block';
+                });
                 return;
             }
 
@@ -68,9 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 mainContent.style.display = 'block';
 
                 // Hero slides animation
-                const slides = document.querySelectorAll('.slide');
+                const slides = document.querySelectorAll('#hero-animation .slide');
                 if (slides.length === 0) {
                     console.error("No slides found for hero animation");
+                    // Fallback: Ensure Inicio is visible
+                    document.getElementById('main-content').style.display = 'block';
                     return;
                 }
                 console.log(`Found ${slides.length} slides for hero animation`);
@@ -95,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 loader.style.display = 'none';
                 document.getElementById('main-header').style.display = 'block';
                 document.getElementById('main-content').style.display = 'block';
-                const slides = document.querySelectorAll('.slide');
+                const slides = document.querySelectorAll('#hero-animation .slide');
                 if (slides.length > 0) {
                     let currentSlide = 0;
                     const showSlide = (index) => {
