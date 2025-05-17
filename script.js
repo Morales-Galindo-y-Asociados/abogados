@@ -1,7 +1,4 @@
-console.log("Script loaded");
-
-// Define initMap globally for Google Maps callback
-window.initMap = function() {
+function initMap() {
     console.log("Initializing Google Map");
     try {
         const offices = [
@@ -36,258 +33,95 @@ window.initMap = function() {
     } catch (error) {
         console.error("Error initializing map:", error);
     }
-};
-
-function hideLoader() {
-    console.log("Attempting to hide loader");
-    try {
-        const loader = document.getElementById('loader');
-        const mainHeader = document.getElementById('main-header');
-        const inicioSection = document.getElementById('inicio');
-
-        if (loader) {
-            loader.style.transition = 'opacity 1s';
-            loader.style.opacity = '0';
-            setTimeout(() => {
-                loader.style.display = 'none';
-                if (mainHeader) mainHeader.style.display = 'block';
-                if (inicioSection) inicioSection.style.display = 'block';
-                console.log("Loader hidden, content displayed");
-                initializeContent();
-            }, 1000);
-        } else {
-            console.error("Loader element not found");
-            if (mainHeader) mainHeader.style.display = 'block';
-            if (inicioSection) inicioSection.style.display = 'block';
-            initializeContent();
-        }
-    } catch (error) {
-        console.error("Error in hideLoader:", error);
-        // Fallback: Force content display
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('main-header').style.display = 'block';
-        document.getElementById('inicio').style.display = 'block';
-        initializeContent();
-    }
 }
 
-function initializeContent() {
-    console.log("Initializing content");
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded, starting loader sequence");
     try {
-        // Hero slides animation
-        const slides = document.querySelectorAll('#hero-animation .slide');
-        if (slides.length > 0) {
-            let currentSlide = 0;
-            const showSlide = (index) => {
-                console.log(`Showing slide ${index}`);
-                slides.forEach(slide => slide.style.opacity = '0');
-                currentSlide = index % slides.length;
-                slides[currentSlide].style.opacity = '1';
-            };
-            showSlide(0);
-            setInterval(() => showSlide(currentSlide + 1), 6000);
-
-            if (typeof gsap !== 'undefined') {
-                try {
-                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
-                    gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-                    gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-                    gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
-                } catch (gsapError) {
-                    console.warn("GSAP animations failed:", gsapError);
-                }
-            } else {
-                console.warn("GSAP not loaded, using fallback animations");
-            }
-        } else {
-            console.warn("No slides found for hero animation");
+        const loaderLogo = document.getElementById('loader-logo');
+        if (!loaderLogo) {
+            console.error("Loader logo element not found");
+            throw new Error("Missing loader-logo");
         }
+        loaderLogo.addEventListener('error', () => {
+            console.error("Failed to load logo image at images/logo.png");
+        });
 
-        // Lawyer carousel with iOS-like transition
-        const carousel = document.getElementById('lawyer-carousel');
-        const prevButton = document.getElementById('prev-lawyer');
-        const nextButton = document.getElementById('next-lawyer');
-        const lawyerCards = document.querySelectorAll('.lawyer-card');
-        let currentIndex = 0;
-        const totalLawyers = lawyerCards.length;
+        setTimeout(() => {
+            console.log("Hiding loader and showing main content");
+            const loader = document.getElementById('loader');
+            const mainHeader = document.getElementById('main-header');
+            const inicioSection = document.getElementById('inicio');
 
-        const updateCarousel = () => {
-            console.log(`Updating carousel to index ${currentIndex}`);
-            const cardWidth = lawyerCards[0].offsetWidth;
-            const offset = -currentIndex * cardWidth;
-            if (typeof gsap !== 'undefined') {
-                try {
-                    gsap.to(carousel, {
-                        x: offset,
-                        duration: 0.6,
-                        ease: "power2.inOut",
-                        overwrite: "auto"
-                    });
-                } catch (gsapError) {
-                    console.warn("GSAP carousel animation failed:", gsapError);
-                    carousel.style.transform = `translateX(${offset}px)`;
-                }
-            } else {
-                carousel.style.transform = `translateX(${offset}px)`;
-            }
-            prevButton.disabled = currentIndex === 0;
-            nextButton.disabled = currentIndex === totalLawyers - 1;
-        };
-
-        if (prevButton && nextButton && carousel && lawyerCards.length > 0) {
-            prevButton.addEventListener('click', () => {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateCarousel();
-                }
-            });
-            nextButton.addEventListener('click', () => {
-                if (currentIndex < totalLawyers - 1) {
-                    currentIndex++;
-                    updateCarousel();
-                }
-            });
-            // Initial positioning
-            updateCarousel();
-            // Update on window resize
-            window.addEventListener('resize', updateCarousel);
-        } else {
-            console.warn("Carousel elements not found");
-        }
-
-        // Modal functionality
-        const modal = document.getElementById('lawyer-modal');
-        const modalContent = document.getElementById('modal-content');
-        const closeModal = document.getElementById('close-modal');
-
-        const lawyerData = {
-            morales: {
-                name: "Arturo Morales Rojas",
-                image: "images/Art.jpg",
-                education: "Maestría en Derecho Penal y Laboral, Universidad Autónoma de Puebla",
-                experience: "15 años de práctica legal en derecho penal y laboral",
-                cases: [
-                    "Defensa exitosa en caso de despido injustificado, recuperando $2M para el cliente",
-                    "Representación en juicio penal, logrando absolución completa"
-                ],
-                highlights: [
-                    "Conferencista en derecho laboral en foros nacionales",
-                    "Miembro de la Barra Mexicana de Abogados"
-                ]
-            },
-            galindo: {
-                name: "Abogado Galindo",
-                image: "images/lawyer2.jpg",
-                education: "Licenciatura en Derecho, Benemérita Universidad Autónoma de Puebla",
-                experience: "10 años especializado en derecho familiar",
-                cases: [
-                    "Resolución favorable en caso de custodia, asegurando el bienestar de menores",
-                    "Negociación exitosa de pensión alimenticia en divorcio de alto perfil"
-                ],
-                highlights: [
-                    "Reconocido por su enfoque empático en conflictos familiares",
-                    "Asesor legal en más de 200 casos de divorcio"
-                ]
-            }
-        };
-
-        if (modal && modalContent && closeModal && lawyerCards) {
-            lawyerCards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const lawyerId = card.dataset.lawyer;
-                    const data = lawyerData[lawyerId];
-                    modalContent.innerHTML = `
-                        <img src="${data.image}" alt="${data.name}" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-gold-400">
-                        <h3 class="text-2xl font-semibold text-gold-400 mb-4">${data.name}</h3>
-                        <h4 class="text-xl text-gold-300 mb-2">Educación</h4>
-                        <p class="mb-4">${data.education}</p>
-                        <h4 class="text-xl text-gold-300 mb-2">Experiencia</h4>
-                        <p class="mb-4">${data.experience}</p>
-                        <h4 class="text-xl text-gold-300 mb-2">Casos Destacados</h4>
-                        <ul class="list-disc list-inside mb-4">
-                            ${data.cases.map(case => `<li>${case}</li>`).join('')}
-                        </ul>
-                        <h4 class="text-xl text-gold-300 mb-2">Reconocimientos</h4>
-                        <ul class="list-disc list-inside">
-                            ${data.highlights.map(highlight => `<li>${highlight}</li>`).join('')}
-                        </ul>
-                    `;
-                    modal.classList.remove('hidden');
-                    if (typeof gsap !== 'undefined') {
-                        try {
-                            gsap.to(modal.querySelector('.bg-gray-800'), { scale: 1, duration: 0.3, ease: "back.out(1.7)" });
-                        } catch (gsapError) {
-                            console.warn("GSAP modal animation failed:", gsapError);
-                            modal.querySelector('.bg-gray-800').style.transform = 'scale(1)';
-                        }
-                    } else {
-                        modal.querySelector('.bg-gray-800').style.transform = 'scale(1)';
-                    }
+            if (!loader || !mainHeader || !inicioSection) {
+                console.error("Required elements not found:", { loader, mainHeader, inicioSection });
+                document.querySelectorAll('#loader, #main-header, #inicio').forEach(el => {
+                    if (el.id === 'loader') el.style.display = 'none';
+                    else el.style.display = 'block';
                 });
-            });
+                return;
+            }
 
-            closeModal.addEventListener('click', () => {
-                if (typeof gsap !== 'undefined') {
-                    try {
-                        gsap.to(modal.querySelector('.bg-gray-800'), {
-                            scale: 0,
-                            duration: 0.3,
-                            ease: "back.in(1.7)",
-                            onComplete: () => modal.classList.add('hidden')
-                        });
-                    } catch (gsapError) {
-                        console.warn("GSAP modal close animation failed:", gsapError);
-                        modal.querySelector('.bg-gray-800').style.transform = 'scale(0)';
-                        modal.classList.add('hidden');
-                    }
-                } else {
-                    modal.querySelector('.bg-gray-800').style.transform = 'scale(0)';
-                    modal.classList.add('hidden');
-                }
-            });
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 1s';
+            setTimeout(() => {
+                console.log("Loader hidden, showing main content");
+                loader.style.display = 'none';
+                mainHeader.style.display = 'block';
+                inicioSection.style.display = 'block';
 
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    if (typeof gsap !== 'undefined') {
-                        try {
-                            gsap.to(modal.querySelector('.bg-gray-800'), {
-                                scale: 0,
-                                duration: 0.3,
-                                ease: "back.in(1.7)",
-                                onComplete: () => modal.classList.add('hidden')
-                            });
-                        } catch (gsapError) {
-                            console.warn("GSAP modal close animation failed:", gsapError);
-                            modal.querySelector('.bg-gray-800').style.transform = 'scale(0)';
-                            modal.classList.add('hidden');
-                        }
-                    } else {
-                        modal.querySelector('.bg-gray-800').style.transform = 'scale(0)';
-                        modal.classList.add('hidden');
-                    }
+                const slides = document.querySelectorAll('#hero-animation .slide');
+                if (slides.length === 0) {
+                    console.error("No slides found for hero animation");
+                    inicioSection.style.display = 'block';
+                    return;
                 }
-            });
-        } else {
-            console.warn("Modal elements not found");
-        }
+                console.log(`Found ${slides.length} slides for hero animation`);
+                let currentSlide = 0;
+                const showSlide = (index) => {
+                    console.log(`Showing slide ${index}`);
+                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+                    currentSlide = index % slides.length;
+                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                };
+                showSlide(0);
+                setInterval(() => showSlide(currentSlide + 1), 6000);
+
+                gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+                gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+                gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+
+                initMap();
+            }, 1000);
+        }, 3000);
+
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if (loader && loader.style.display !== 'none') {
+                console.log("Fallback: Forcing loader hide");
+                loader.style.display = 'none';
+                document.getElementById('main-header').style.display = 'block';
+                document.getElementById('inicio').style.display = 'block';
+                const slides = document.querySelectorAll('#hero-animation .slide');
+                if (slides.length > 0) {
+                    let currentSlide = 0;
+                    const showSlide = (index) => {
+                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+                        currentSlide = index % slides.length;
+                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                    };
+                    showSlide(0);
+                    setInterval(() => showSlide(currentSlide + 1), 6000);
+                }
+                initMap();
+            }
+        }, 5000);
     } catch (error) {
-        console.error("Error in content initialization:", error);
-    }
-}
-
-// Run hideLoader immediately
-console.log("Running hideLoader immediately");
-hideLoader();
-
-// Fallback: Force loader hide after 2 seconds
-setTimeout(() => {
-    console.log("Forcing loader hide after 2 seconds");
-    const loader = document.getElementById('loader');
-    if (loader && loader.style.display !== 'none') {
-        loader.style.display = 'none';
+        console.error("Critical error in loader sequence:", error);
+        const loader = document.getElementById('loader');
+        if (loader) loader.style.display = 'none';
         document.getElementById('main-header').style.display = 'block';
         document.getElementById('inicio').style.display = 'block';
-        console.log("Loader forcibly hidden");
-        initializeContent();
+        initMap();
     }
-}, 2000);
+});
