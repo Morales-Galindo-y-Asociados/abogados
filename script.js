@@ -206,12 +206,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 caseForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(caseForm);
-                    const googleFormUrl = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
+                    const googleFormUrl = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSe04MMfZPz8X1UiDF7xI5w4zpdcE7C6ewITwro-oxhdp1pZ5w/formResponse';
                     const entries = {
-                        'entry.1234567890': formData.get('name'), // Replace with actual entry ID for Nombre
-                        'entry.0987654321': formData.get('birthplace'), // Replace with actual entry ID for Lugar de Nacimiento
-                        'entry.1122334455': formData.get('case-type'), // Replace with actual entry ID for Tipo de Trámite
-                        'entry.5566778899': formData.get('description'), // Replace with actual entry ID for Descripción
+                        'entry.922121146': formData.get('name'), // Replace with actual entry ID for Nombre
+                        'entry.1326066051': formData.get('birthplace'), // Replace with actual entry ID for Lugar de Nacimiento
+                        'entry.1400476096': formData.get('case-type'), // Replace with actual entry ID for Tipo de Trámite
+                        'entry.1358256259': formData.get('description'), // Replace with actual entry ID for Descripción
                         'emailAddress': formData.get('email') // If collecting email
                     };
 
