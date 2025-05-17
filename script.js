@@ -28,25 +28,30 @@ function initMap() {
     });
 }
 
+const Loader = () => {
+    return (
+        <div className="fixed inset-0 bg-black flex items-center justify-center z-50" id="loader">
+            <img src="images/logo.png" alt="Morales-Galindo y Asociados" className="w-64" id="loader-logo" />
+        </div>
+    );
+};
+
 const HeroAnimation = () => {
     const slides = [
         {
-            image: 'images/lawyer1.jpg',
-            text: 'Abogado Morales - Maestro del Derecho Penal',
-            office: 'Oficina Centro, Puebla',
-            logo: 'images/logo.png'
+            image: 'images/courthouse1.jpg',
+            text: 'Defendiendo la justicia en los juzgados de Puebla',
+            office: 'Oficina Centro, Puebla'
         },
         {
-            image: 'images/lawyer2.jpg',
+            image: 'images/courthouse2.jpg',
+            text: 'Arturo Morales Rojas - Maestro del Derecho Penal',
+            office: 'Oficina Angelópolis, Puebla'
+        },
+        {
+            image: 'images/courthouse3.jpg',
             text: 'Abogado Galindo - Experto en Derecho Familiar',
-            office: 'Oficina Angelópolis, Puebla',
-            logo: 'images/logo.png'
-        },
-        {
-            image: 'images/office1.jpg',
-            text: 'Nuestra Oficina en Cholula - Elegancia y Profesionalismo',
-            office: 'Oficina Cholula, Puebla',
-            logo: 'images/logo.png'
+            office: 'Oficina Cholula, Puebla'
         }
     ];
 
@@ -60,7 +65,6 @@ const HeroAnimation = () => {
                 >
                     <div className="absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center">
                         <div className="text-center text-gold-400">
-                            <img src={slide.logo} alt="Logo" className="w-40 mx-auto mb-4 animate-spin-slow" />
                             <h2 className="text-4xl font-extrabold mb-2 tracking-wide">{slide.text}</h2>
                             <p className="text-xl font-light">{slide.office}</p>
                         </div>
@@ -71,19 +75,47 @@ const HeroAnimation = () => {
     );
 };
 
-ReactDOM.render(<HeroAnimation />, document.getElementById('hero-animation'));
-
 document.addEventListener('DOMContentLoaded', () => {
-    const slides = document.querySelectorAll('[class*="slide-"]');
-    let currentSlide = 0;
+    // Render loader
+    ReactDOM.render(<Loader />, document.getElementById('loader'));
 
-    const showSlide = (index) => {
-        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1.5, ease: "power2.out" });
-        currentSlide = index % slides.length;
-        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" });
-    };
+    // Loader animation
+    gsap.fromTo(
+        '#loader-logo',
+        { scale: 0, rotation: -180, opacity: 0 },
+        { scale: 1, rotation: 0, opacity: 1, duration: 2, ease: 'power3.out' }
+    );
+    gsap.to('#loader-logo', {
+        filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.8))',
+        duration: 1.5,
+        repeat: -1,
+        yoyo: true,
+        ease: 'sine.inOut'
+    });
 
-    setInterval(() => showSlide(currentSlide + 1), 5000);
-
-    initMap();
+    // Hide loader and show content after 4 seconds
+    setTimeout(() => {
+        gsap.to('#loader', {
+            opacity: 0,
+            duration: 1,
+            onComplete: () => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('main-header').classList.remove('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                // Render hero animation after loader
+                ReactDOM.render(<HeroAnimation />, document.getElementById('hero-animation'));
+                // Hero slides animation
+                const slides = document.querySelectorAll('[class*="slide-"]');
+                let currentSlide = 0;
+                const showSlide = (index) => {
+                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1.5, ease: "power2.out" });
+                    currentSlide = index % slides.length;
+                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" });
+                };
+                showSlide(0);
+                setInterval(() => showSlide(currentSlide + 1), 5000);
+                initMap();
+            }
+        });
+    }, 4000);
 });
