@@ -104,6 +104,46 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
+                // Initialize animations for service cards
+                const serviceCards = document.querySelectorAll('.service-card');
+                serviceCards.forEach(card => {
+                    // Animate list items on load
+                    gsap.from(card.querySelectorAll('.service-item'), {
+                        opacity: 0,
+                        y: 20,
+                        duration: 0.5,
+                        stagger: 0.1,
+                        ease: "power2.out",
+                        delay: 0.5
+                    });
+
+                    // Hover effect for title
+                    card.addEventListener('mouseenter', () => {
+                        gsap.to(card.querySelector('.service-title'), {
+                            scale: 1.05,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                        gsap.to(card, {
+                            scale: 1.05,
+                            boxShadow: "0 0 15px rgba(255, 215, 0, 0.3)",
+                            duration: 0.3
+                        });
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        gsap.to(card.querySelector('.service-title'), {
+                            scale: 1,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                        gsap.to(card, {
+                            scale: 1,
+                            boxShadow: "0 0 0 rgba(255, 215, 0, 0)",
+                            duration: 0.3
+                        });
+                    });
+                });
+
                 initMap();
             }, 1000);
         }, 3000);
