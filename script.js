@@ -2,6 +2,10 @@ console.log("Script loaded");
 
 function initMap() {
     console.log("Initializing Google Map");
+    if (typeof google === 'undefined') {
+        console.warn("Google Maps not loaded, skipping map initialization");
+        return;
+    }
     try {
         const offices = [
             { lat: 19.0434, lng: -98.1986, title: "Puebla - Reforma" },
@@ -43,30 +47,36 @@ function hideLoader() {
     const mainHeader = document.getElementById('main-header');
     const inicioSection = document.getElementById('inicio');
 
-    if (loader && mainHeader && inicioSection) {
+    if (loader) {
         loader.style.opacity = '0';
         loader.style.transition = 'opacity 1s';
         setTimeout(() => {
             loader.style.display = 'none';
-            mainHeader.style.display = 'block';
-            inicioSection.style.display = 'block';
+            if (mainHeader) mainHeader.style.display = 'block';
+            if (inicioSection) inicioSection.style.display = 'block';
             console.log("Loader hidden, content displayed");
-            initializeContent();
+            try {
+                initializeContent();
+            } catch (error) {
+                console.error("Error in initializeContent:", error);
+            }
         }, 1000);
     } else {
-        console.error("Required elements not found, forcing display:", { loader, mainHeader, inicioSection });
-        document.querySelectorAll('#loader, #main-header, #inicio').forEach(el => {
-            if (el.id === 'loader') el.style.display = 'none';
-            else el.style.display = 'block';
-        });
-        initializeContent();
+        console.error("Loader element not found");
+        if (mainHeader) mainHeader.style.display = 'block';
+        if (inicioSection) inicioSection.style.display = 'block';
+        try {
+            initializeContent();
+        } catch (error) {
+            console.error("Error in initializeContent:", error);
+        }
     }
 }
 
 function initializeContent() {
     console.log("Initializing content");
     try {
-        // Hero slides animation (fallback if GSAP fails)
+        // Hero slides animation
         const slides = document.querySelectorAll('#hero-animation .slide');
         if (slides.length > 0) {
             let currentSlide = 0;
@@ -79,12 +89,16 @@ function initializeContent() {
             showSlide(0);
             setInterval(() => showSlide(currentSlide + 1), 6000);
 
-            // GSAP animations (only if GSAP is loaded)
+            // GSAP animations
             if (typeof gsap !== 'undefined') {
-                gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
-                gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-                gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-                gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+                try {
+                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                    gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+                    gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+                    gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+                } catch (gsapError) {
+                    console.warn("GSAP animations failed:", gsapError);
+                }
             } else {
                 console.warn("GSAP not loaded, using fallback animations");
             }
@@ -102,7 +116,12 @@ function initializeContent() {
         const updateCarousel = () => {
             const offset = currentIndex * -100;
             if (typeof gsap !== 'undefined') {
-                gsap.to(carousel, { xPercent: offset, duration: 0.5, ease: "power2.inOut" });
+                try {
+                    gsap.to(carousel, { xPercent: offset, duration: 0.5, ease: "power2.inOut" });
+                } catch (gsapError) {
+                    console.warn("GSAP carousel animation failed:", gsapError);
+                    carousel.style.transform = `translateX(${offset}%)`;
+                }
             } else {
                 carousel.style.transform = `translateX(${offset}%)`;
             }
@@ -160,7 +179,7 @@ function initializeContent() {
                 ],
                 highlights: [
                     "Reconocido por su enfoque empático en conflictos familiares",
-                    "Asesor AFR legal en más de 200 casos de divorcio"
+                    "Asesor legal en más de 200 casos de divorcio"
                 ]
             }
         };
@@ -188,7 +207,12 @@ function initializeContent() {
                     `;
                     modal.classList.remove('hidden');
                     if (typeof gsap !== 'undefined') {
-                        gsap.to(modal.querySelector('.bg-gray-800'), { scale: 1, duration: 0.3, ease: "back.out(1.7)" });
+                        try {
+                            gsap.to(modal.querySelector('.bg-gray-800'), { scale: 1, duration: 0.3, ease: "back.out(1.7)" });
+                        } catch (gsapError) {
+                            console.warn("GSAP modal animation failed:", gsapError);
+                            modal.querySelector('.bg-gray-800').style.transform = 'scale(1)';
+                        }
                     } else {
                         modal.querySelector('.bg-gray-800').style.transform = 'scale(1)';
                     }
@@ -197,12 +221,18 @@ function initializeContent() {
 
             closeModal.addEventListener('click', () => {
                 if (typeof gsap !== 'undefined') {
-                    gsap.to(modal.querySelector('.bg-gray-800'), { 
-                        scale: 0, 
-                        duration: 0.3, 
-                        ease: "back.in(1.7)",
-                        onComplete: () => modal.classList.add('hidden')
-                    });
+                    try {
+                        gsap.to(modal.querySelector('.bg-gray-800'), { 
+                            scale: 0, 
+                            duration: 0.3, 
+                            ease: "back.in(1.7)",
+                            onComplete: () => modal.classList.add('hidden')
+                        });
+                    } catch (gsapError) {
+                        console.warn("GSAP modal close animation failed:", gsapError);
+                        modal.querySelector('.bg-gray-800').style.transform = 'scale(0)';
+                        modal.classList.add('hidden');
+                    }
                 } else {
                     modal.querySelector('.bg-gray-800').style.transform = 'scale(0)';
                     modal.classList.add('hidden');
@@ -212,12 +242,18 @@ function initializeContent() {
             modal.addEventListener('click', (e) => {
                 if (e.target === modal) {
                     if (typeof gsap !== 'undefined') {
-                        gsap.to(modal.querySelector('.bg-gray-800'), { 
-                            scale: 0, 
-                            duration: 0.3, 
-                            ease: "back.in(1.7)",
-                            onComplete: () => modal.classList.add('hidden')
-                        });
+                        try {
+                            gsap.to(modal.querySelector('.bg-gray-800'), { 
+                                scale: 0, 
+                                duration: 0.3, 
+                                ease: "back.in(1.7)",
+                                onComplete: () => modal.classList.add('hidden')
+                            });
+                        } catch (gsapError) {
+                            console.warn("GSAP modal close animation failed:", gsapError);
+                            modal.querySelector('.bg-gray-800').style.transform = 'scale(0)';
+                            modal.classList.add('hidden');
+                        }
                     } else {
                         modal.querySelector('.bg-gray-800').style.transform = 'scale(0)';
                         modal.classList.add('hidden');
@@ -228,19 +264,29 @@ function initializeContent() {
             console.warn("Modal elements not found");
         }
 
-        initMap();
+        try {
+            initMap();
+        } catch (mapError) {
+            console.error("Map initialization failed:", mapError);
+        }
     } catch (error) {
         console.error("Error in content initialization:", error);
     }
 }
 
-// Force loader to hide after 3 seconds, no dependencies
+// Trigger hideLoader on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded, hiding loader");
+    hideLoader();
+});
+
+// Fallback: Force loader to hide after 3 seconds
 setTimeout(() => {
     console.log("Forcing loader hide");
     hideLoader();
 }, 3000);
 
-// Fallback if DOMContentLoaded doesn't fire
+// Fallback: Ensure loader hides on window load
 window.onload = () => {
     console.log("Window loaded, ensuring loader is hidden");
     hideLoader();
