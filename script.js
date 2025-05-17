@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 let currentSlide = 0;
                 const showSlide = (index) => {
                     console.log(`Showing slide ${index}`);
-                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1.5, ease: "power2.out" });
+                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.05, duration: 1.5, ease: "power2.out" });
                     currentSlide = index % slides.length;
-                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" });
+                    gsap.to(slides[currentSlide], { opacity: 0.8, scale: 1, duration: 1.5, ease: "power2.out" });
                 };
                 showSlide(0);
                 setInterval(() => showSlide(currentSlide + 1), 5000);
@@ -99,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (slides.length > 0) {
                     let currentSlide = 0;
                     const showSlide = (index) => {
-                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1.5, ease: "power2.out" });
+                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.05, duration: 1.5, ease: "power2.out" });
                         currentSlide = index % slides.length;
-                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" });
+                        gsap.to(slides[currentSlide], { opacity: 0.8, scale: 1, duration: 1.5, ease: "power2.out" });
                     };
                     showSlide(0);
                     setInterval(() => showSlide(currentSlide + 1), 5000);
