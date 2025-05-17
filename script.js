@@ -2,12 +2,14 @@ function initMap() {
     console.log("Initializing Google Map");
     try {
         const offices = [
-            { lat: 19.0434, lng: -98.1986, title: "Oficina Centro" },
-            { lat: 19.0500, lng: -98.2100, title: "Oficina Angelópolis" },
-            { lat: 19.0300, lng: -98.1900, title: "Oficina Cholula" }
+            { lat: 19.0434, lng: -98.1986, title: "Puebla - Reforma" },
+            { lat: 18.6769, lng: -97.3447, title: "Tecamachalco" },
+            { lat: 20.1833, lng: -98.0167, title: "Chignahuapan" },
+            { lat: 18.2797, lng: -97.2239, title: "Ajalpan" },
+            { lat: 19.1128, lng: -97.2950, title: "Esperanza" }
         ];
         const map = new google.maps.Map(document.getElementById("map-container"), {
-            zoom: 12,
+            zoom: 8,
             center: { lat: 19.0434, lng: -98.1986 },
             styles: [
                 { elementType: "geometry", stylers: [{ color: "#212121" }] },
