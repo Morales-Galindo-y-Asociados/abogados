@@ -1,4 +1,5 @@
 function initMap() {
+    console.log("Initializing Google Map");
     const offices = [
         { lat: 19.0434, lng: -98.1986, title: "Oficina Centro" },
         { lat: 19.0500, lng: -98.2100, title: "Oficina Angelópolis" },
@@ -28,15 +29,8 @@ function initMap() {
     });
 }
 
-const Loader = () => {
-    return (
-        <div className="fixed inset-0 bg-black flex items-center justify-center z-50" id="loader">
-            <img src="images/logo.png" alt="Morales-Galindo y Asociados" className="w-64" id="loader-logo" />
-        </div>
-    );
-};
-
 const HeroAnimation = () => {
+    console.log("Rendering HeroAnimation component");
     const slides = [
         {
             image: 'images/courthouse1.jpg',
@@ -76,46 +70,68 @@ const HeroAnimation = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Render loader
-    ReactDOM.render(<Loader />, document.getElementById('loader'));
+    console.log("DOM fully loaded, starting loader animation");
+    try {
+        // Loader animation
+        gsap.fromTo(
+            '#loader-logo',
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1, duration: 2, ease: 'power3.out' }
+        );
+        gsap.to('#loader-logo', {
+            filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.8))',
+            duration: 1.5,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
 
-    // Loader animation
-    gsap.fromTo(
-        '#loader-logo',
-        { scale: 0, rotation: -180, opacity: 0 },
-        { scale: 1, rotation: 0, opacity: 1, duration: 2, ease: 'power3.out' }
-    );
-    gsap.to('#loader-logo', {
-        filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.8))',
-        duration: 1.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut'
-    });
+        // Hide loader and show content after 3 seconds
+        setTimeout(() => {
+            console.log("Hiding loader, showing main content");
+            gsap.to('#loader', {
+                opacity: 0,
+                duration: 1,
+                onComplete: () => {
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('main-header').style.display = 'block';
+                    document.getElementById('main-content').style.display = 'block';
+                    console.log("Rendering hero animation");
+                    ReactDOM.render(<HeroAnimation />, document.getElementById('hero-animation'));
+                    // Hero slides animation
+                    const slides = document.querySelectorAll('[class*="slide-"]');
+                    let currentSlide = 0;
+                    const showSlide = (index) => {
+                        console.log(`Showing slide ${index}`);
+                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1.5, ease: "power2.out" });
+                        currentSlide = index % slides.length;
+                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" });
+                    };
+                    showSlide(0);
+                    setInterval(() => showSlide(currentSlide + 1), 5000);
+                    initMap();
+                }
+            });
+        }, 3000);
 
-    // Hide loader and show content after 4 seconds
-    setTimeout(() => {
-        gsap.to('#loader', {
-            opacity: 0,
-            duration: 1,
-            onComplete: () => {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('main-header').classList.remove('hidden');
-                document.getElementById('main-content').classList.remove('hidden');
-                // Render hero animation after loader
+        // Fallback: Force hide loader after 5 seconds
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if (loader.style.display !== 'none') {
+                console.log("Fallback: Forcing loader hide");
+                loader.style.display = 'none';
+                document.getElementById('main-header').style.display = 'block';
+                document.getElementById('main-content').style.display = 'block';
                 ReactDOM.render(<HeroAnimation />, document.getElementById('hero-animation'));
-                // Hero slides animation
-                const slides = document.querySelectorAll('[class*="slide-"]');
-                let currentSlide = 0;
-                const showSlide = (index) => {
-                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1.5, ease: "power2.out" });
-                    currentSlide = index % slides.length;
-                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" });
-                };
-                showSlide(0);
-                setInterval(() => showSlide(currentSlide + 1), 5000);
                 initMap();
             }
-        });
-    }, 4000);
+        }, 5000);
+    } catch (error) {
+        console.error("Error in loader or hero animation:", error);
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('main-header').style.display = 'block';
+        document.getElementById('main-content').style.display = 'block';
+        ReactDOM.render(<HeroAnimation />, document.getElementById('hero-animation'));
+        initMap();
+    }
 });
