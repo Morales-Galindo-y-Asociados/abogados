@@ -70,48 +70,43 @@ const HeroAnimation = () => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded, starting loader animation");
+    console.log("DOM fully loaded, starting loader sequence");
     try {
-        // Loader animation
-        gsap.fromTo(
-            '#loader-logo',
-            { scale: 0, opacity: 0 },
-            { scale: 1, opacity: 1, duration: 2, ease: 'power3.out' }
-        );
-        gsap.to('#loader-logo', {
-            filter: 'drop-shadow(0 0 20px rgba(255, 215, 0, 0.8))',
-            duration: 1.5,
-            repeat: -1,
-            yoyo: true,
-            ease: 'sine.inOut'
+        // Add pulse animation via CSS, no GSAP for loader
+        const loaderLogo = document.getElementById('loader-logo');
+        loaderLogo.addEventListener('error', () => {
+            console.error("Failed to load logo image at images/logo.png");
         });
 
         // Hide loader and show content after 3 seconds
         setTimeout(() => {
             console.log("Hiding loader, showing main content");
-            gsap.to('#loader', {
-                opacity: 0,
-                duration: 1,
-                onComplete: () => {
-                    document.getElementById('loader').style.display = 'none';
-                    document.getElementById('main-header').style.display = 'block';
-                    document.getElementById('main-content').style.display = 'block';
-                    console.log("Rendering hero animation");
-                    ReactDOM.render(<HeroAnimation />, document.getElementById('hero-animation'));
-                    // Hero slides animation
-                    const slides = document.querySelectorAll('[class*="slide-"]');
-                    let currentSlide = 0;
-                    const showSlide = (index) => {
-                        console.log(`Showing slide ${index}`);
-                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1.5, ease: "power2.out" });
-                        currentSlide = index % slides.length;
-                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" });
-                    };
-                    showSlide(0);
-                    setInterval(() => showSlide(currentSlide + 1), 5000);
-                    initMap();
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            loader.style.transition = 'opacity 1s';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                document.getElementById('main-header').style.display = 'block';
+                document.getElementById('main-content').style.display = 'block';
+                console.log("Rendering hero animation");
+                ReactDOM.render(<HeroAnimation />, document.getElementById('hero-animation'));
+                // Hero slides animation
+                const slides = document.querySelectorAll('[class*="slide-"]');
+                if (slides.length === 0) {
+                    console.error("No slides found for hero animation");
+                    return;
                 }
-            });
+                let currentSlide = 0;
+                const showSlide = (index) => {
+                    console.log(`Showing slide ${index}`);
+                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1.5, ease: "power2.out" });
+                    currentSlide = index % slides.length;
+                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" });
+                };
+                showSlide(0);
+                setInterval(() => showSlide(currentSlide + 1), 5000);
+                initMap();
+            }, 1000);
         }, 3000);
 
         // Fallback: Force hide loader after 5 seconds
