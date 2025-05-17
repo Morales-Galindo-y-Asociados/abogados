@@ -16,22 +16,22 @@
     <div id="loader" class="fixed inset-0 bg-black flex items-center justify-center z-50">
         <img src="images/logo.png" alt="Morales-Galindo y Asociados" class="w-64 animate-pulse" id="loader-logo">
     </div>
-    <header class="bg-black text-gold-400 py-4 sticky top-0 z-40 shadow-lg border-b border-gold-600" style="display: none;" id="main-header">
+    <header class="bg-black text-gold-400 py-4 sticky top-0 z-40 shadow-lg border-b border-gold-600" id="main-header" style="display: none;">
         <nav class="container mx-auto flex justify-between items-center">
             <div class="logo">
                 <img src="images/logo.png" alt="Morales-Galindo y Asociados" class="w-32 transition-transform hover:scale-110">
             </div>
             <ul class="flex gap-8">
-                <li><a href="#inicio" class="hover:text-gold-300 font-semibold">Inicio</a></li>
-                <li><a href="#about" class="hover:text-gold-300 font-semibold">Acerca de</a></li>
-                <li><a href="#services" class="hover:text-gold-300 font-semibold">Servicios</a></li>
-                <li><a href="#contact" class="hover:text-gold-300 font-semibold">Contacto</a></li>
-                <li><a href="#map" class="hover:text-gold-300 font-semibold">Ubicaciones</a></li>
+                <li><a data-section="inicio" class="hover:text-gold-300 font-semibold cursor-pointer">Inicio</a></li>
+                <li><a data-section="about" class="hover:text-gold-300 font-semibold cursor-pointer">Acerca de</a></li>
+                <li><a data-section="services" class="hover:text-gold-300 font-semibold cursor-pointer">Servicios</a></li>
+                <li><a data-section="contact" class="hover:text-gold-300 font-semibold cursor-pointer">Contacto</a></li>
+                <li><a data-section="map" class="hover:text-gold-300 font-semibold cursor-pointer">Ubicaciones</a></li>
             </ul>
         </nav>
     </header>
 
-    <section id="inicio" class="relative h-screen flex items-center justify-center text-center bg-black">
+    <section id="inicio" class="section relative h-screen flex items-center justify-center text-center bg-black" style="display: block;">
         <div id="hero-animation" class="absolute inset-0 z-0">
             <div class="slide slide-0 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/of1.jpg');"></div>
             <div class="slide slide-1 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/ofo1.jpg');"></div>
@@ -43,11 +43,11 @@
         <div class="relative z-10 text-gold-400 max-w-4xl mx-auto px-4">
             <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight animate-fadeIn">Morales-Galindo y Asociados</h1>
             <p class="text-xl md:text-2xl font-light mb-8 leading-relaxed animate-slideUp">En Morales-Galindo y Asociados, somos una firma comprometida con la justicia y la ética. Inspirados por Themis, la diosa griega de la ley y el orden, ofrecemos soluciones legales personalizadas en Puebla, Tecamachalco, Chignahuapan, Ajalpan y Esperanza. Nuestra misión: “A los problemas le damos solución, nuestra ética nos lo exige.”</p>
-            <a href="#contact" class="bg-gold-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-gold-300 transition transform hover:scale-105 animate-pulseButton">Contáctanos</a>
+            <a data-section="contact" class="bg-gold-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-gold-300 transition transform hover:scale-105 animate-pulseButton cursor-pointer">Contáctanos</a>
         </div>
     </section>
 
-    <section id="about" class="py-16 bg-gray-900">
+    <section id="about" class="section py-16 bg-gray-900" style="display: none;">
         <div class="container mx-auto text-center">
             <h2 class="text-4xl font-bold mb-8 text-gold-400">Acerca de Nosotros</h2>
             <p class="text-xl mb-8 max-w-3xl mx-auto">Morales-Galindo y Asociados es más que una firma legal; es un bastión de justicia en Puebla. Guiados por la imparcialidad de Themis y la pasión por el derecho, nuestros abogados luchan incansablemente por los derechos de nuestros clientes. Con oficinas en Puebla, Tecamachalco, Chignahuapan, Ajalpan y Esperanza, ofrecemos soluciones legales con humanidad y excelencia, porque la justicia no es solo un ideal, es nuestra vocación.</p>
@@ -72,7 +72,7 @@
         </div>
     </section>
 
-    <section id="services" class="py-16 bg-black">
+    <section id="services" class="section py-16 bg-black" style="display: none;">
         <div class="container mx-auto text-center">
             <h2 class="text-4xl font-bold mb-8 text-gold-400">Nuestros Servicios</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
@@ -123,7 +123,7 @@
         </div>
     </section>
 
-    <section id="contact" class="py-16 bg-black">
+    <section id="contact" class="section py-16 bg-black" style="display: none;">
         <div class="container mx-auto text-center">
             <h2 class="text-4xl font-bold mb-8 text-gold-400">Contáctanos</h2>
             <p class="mb-6 max-w-2xl mx-auto">Describe tu caso y adjunta documentos para una consulta personalizada. Ofrecemos asesoría presencial y vía remota en Puebla, Tecamachalco, Chignahuapan, Ajalpan, y Esperanza.</p>
@@ -146,14 +146,14 @@
         </div>
     </section>
 
-    <section id="map" class="py-16 bg-gray-900">
+    <section id="map" class="section py-16 bg-gray-900" style="display: none;">
         <div class="container mx-auto text-center">
             <h2 class="text-4xl font-bold mb-8 text-gold-400">Nuestras Oficinas</h2>
             <div id="map-container" class="h-[400px] w-full border-2 border-gold-600"></div>
         </div>
     </section>
 
-    <footer class="bg-black text-gold-400 py-6 text-center border-t border-gold-600">
+    <footer id="footer" class="bg-black text-gold-400 py-6 text-center border-t border-gold-600">
         <p>© 2025 Morales-Galindo y Asociados. Todos los derechos reservados.</p>
         <p><a href="https://www.facebook.com/MoralesGalindoAsociados" target="_blank" class="text-gold-300 hover:text-gold-200">Síguenos en Facebook</a></p>
         <p>Tel: +52 563 357 2693 | Email: [Email] | Oficinas en Puebla, Tecamachalco, Chignahuapan, Ajalpan, Esperanza</p>
