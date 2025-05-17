@@ -1,11 +1,8 @@
 console.log("Script loaded");
 
-function initMap() {
+// Define initMap globally for Google Maps callback
+window.initMap = function() {
     console.log("Initializing Google Map");
-    if (typeof google === 'undefined') {
-        console.warn("Google Maps not loaded, skipping map initialization");
-        return;
-    }
     try {
         const offices = [
             { lat: 19.0434, lng: -98.1986, title: "Puebla - Reforma" },
@@ -39,37 +36,38 @@ function initMap() {
     } catch (error) {
         console.error("Error initializing map:", error);
     }
-}
+};
 
 function hideLoader() {
     console.log("Attempting to hide loader");
-    const loader = document.getElementById('loader');
-    const mainHeader = document.getElementById('main-header');
-    const inicioSection = document.getElementById('inicio');
+    try {
+        const loader = document.getElementById('loader');
+        const mainHeader = document.getElementById('main-header');
+        const inicioSection = document.getElementById('inicio');
 
-    if (loader) {
-        loader.style.opacity = '0';
-        loader.style.transition = 'opacity 1s';
-        setTimeout(() => {
-            loader.style.display = 'none';
+        if (loader) {
+            loader.style.transition = 'opacity 1s';
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                if (mainHeader) mainHeader.style.display = 'block';
+                if (inicioSection) inicioSection.style.display = 'block';
+                console.log("Loader hidden, content displayed");
+                initializeContent();
+            }, 1000);
+        } else {
+            console.error("Loader element not found");
             if (mainHeader) mainHeader.style.display = 'block';
             if (inicioSection) inicioSection.style.display = 'block';
-            console.log("Loader hidden, content displayed");
-            try {
-                initializeContent();
-            } catch (error) {
-                console.error("Error in initializeContent:", error);
-            }
-        }, 1000);
-    } else {
-        console.error("Loader element not found");
-        if (mainHeader) mainHeader.style.display = 'block';
-        if (inicioSection) inicioSection.style.display = 'block';
-        try {
             initializeContent();
-        } catch (error) {
-            console.error("Error in initializeContent:", error);
         }
+    } catch (error) {
+        console.error("Error in hideLoader:", error);
+        // Fallback: Force content display
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('main-header').style.display = 'block';
+        document.getElementById('inicio').style.display = 'block';
+        initializeContent();
     }
 }
 
@@ -89,7 +87,6 @@ function initializeContent() {
             showSlide(0);
             setInterval(() => showSlide(currentSlide + 1), 6000);
 
-            // GSAP animations
             if (typeof gsap !== 'undefined') {
                 try {
                     gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
@@ -106,43 +103,54 @@ function initializeContent() {
             console.warn("No slides found for hero animation");
         }
 
-        // Lawyer carousel
+        // Lawyer carousel with iOS-like transition
         const carousel = document.getElementById('lawyer-carousel');
         const prevButton = document.getElementById('prev-lawyer');
         const nextButton = document.getElementById('next-lawyer');
+        const lawyerCards = document.querySelectorAll('.lawyer-card');
         let currentIndex = 0;
-        const totalLawyers = document.querySelectorAll('.lawyer-card').length;
+        const totalLawyers = lawyerCards.length;
 
         const updateCarousel = () => {
-            const offset = currentIndex * -100;
+            console.log(`Updating carousel to index ${currentIndex}`);
+            const cardWidth = lawyerCards[0].offsetWidth;
+            const offset = -currentIndex * cardWidth;
             if (typeof gsap !== 'undefined') {
                 try {
-                    gsap.to(carousel, { xPercent: offset, duration: 0.5, ease: "power2.inOut" });
+                    gsap.to(carousel, {
+                        x: offset,
+                        duration: 0.6,
+                        ease: "power2.inOut",
+                        overwrite: "auto"
+                    });
                 } catch (gsapError) {
                     console.warn("GSAP carousel animation failed:", gsapError);
-                    carousel.style.transform = `translateX(${offset}%)`;
+                    carousel.style.transform = `translateX(${offset}px)`;
                 }
             } else {
-                carousel.style.transform = `translateX(${offset}%)`;
+                carousel.style.transform = `translateX(${offset}px)`;
             }
             prevButton.disabled = currentIndex === 0;
             nextButton.disabled = currentIndex === totalLawyers - 1;
         };
 
-        if (prevButton && nextButton && carousel) {
+        if (prevButton && nextButton && carousel && lawyerCards.length > 0) {
             prevButton.addEventListener('click', () => {
                 if (currentIndex > 0) {
                     currentIndex--;
                     updateCarousel();
                 }
             });
-
             nextButton.addEventListener('click', () => {
                 if (currentIndex < totalLawyers - 1) {
                     currentIndex++;
                     updateCarousel();
                 }
             });
+            // Initial positioning
+            updateCarousel();
+            // Update on window resize
+            window.addEventListener('resize', updateCarousel);
         } else {
             console.warn("Carousel elements not found");
         }
@@ -151,7 +159,6 @@ function initializeContent() {
         const modal = document.getElementById('lawyer-modal');
         const modalContent = document.getElementById('modal-content');
         const closeModal = document.getElementById('close-modal');
-        const lawyerCards = document.querySelectorAll('.lawyer-card');
 
         const lawyerData = {
             morales: {
@@ -222,9 +229,9 @@ function initializeContent() {
             closeModal.addEventListener('click', () => {
                 if (typeof gsap !== 'undefined') {
                     try {
-                        gsap.to(modal.querySelector('.bg-gray-800'), { 
-                            scale: 0, 
-                            duration: 0.3, 
+                        gsap.to(modal.querySelector('.bg-gray-800'), {
+                            scale: 0,
+                            duration: 0.3,
                             ease: "back.in(1.7)",
                             onComplete: () => modal.classList.add('hidden')
                         });
@@ -243,9 +250,9 @@ function initializeContent() {
                 if (e.target === modal) {
                     if (typeof gsap !== 'undefined') {
                         try {
-                            gsap.to(modal.querySelector('.bg-gray-800'), { 
-                                scale: 0, 
-                                duration: 0.3, 
+                            gsap.to(modal.querySelector('.bg-gray-800'), {
+                                scale: 0,
+                                duration: 0.3,
                                 ease: "back.in(1.7)",
                                 onComplete: () => modal.classList.add('hidden')
                             });
@@ -263,31 +270,24 @@ function initializeContent() {
         } else {
             console.warn("Modal elements not found");
         }
-
-        try {
-            initMap();
-        } catch (mapError) {
-            console.error("Map initialization failed:", mapError);
-        }
     } catch (error) {
         console.error("Error in content initialization:", error);
     }
 }
 
-// Trigger hideLoader on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded, hiding loader");
-    hideLoader();
-});
+// Run hideLoader immediately
+console.log("Running hideLoader immediately");
+hideLoader();
 
-// Fallback: Force loader to hide after 3 seconds
+// Fallback: Force loader hide after 2 seconds
 setTimeout(() => {
-    console.log("Forcing loader hide");
-    hideLoader();
-}, 3000);
-
-// Fallback: Ensure loader hides on window load
-window.onload = () => {
-    console.log("Window loaded, ensuring loader is hidden");
-    hideLoader();
-};
+    console.log("Forcing loader hide after 2 seconds");
+    const loader = document.getElementById('loader');
+    if (loader && loader.style.display !== 'none') {
+        loader.style.display = 'none';
+        document.getElementById('main-header').style.display = 'block';
+        document.getElementById('inicio').style.display = 'block';
+        console.log("Loader forcibly hidden");
+        initializeContent();
+    }
+}, 2000);
