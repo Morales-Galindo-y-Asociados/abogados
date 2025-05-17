@@ -35,6 +35,70 @@ function initMap() {
     }
 }
 
+function showSection(sectionId) {
+    console.log(`Showing section: ${sectionId}`);
+    const sections = document.querySelectorAll('.section');
+    const targetSection = document.getElementById(sectionId);
+
+    if (!targetSection) {
+        console.error(`Section ${sectionId} not found`);
+        return;
+    }
+
+    // Fade out all sections
+    sections.forEach(section => {
+        if (section.classList.contains('active')) {
+            gsap.to(section, {
+                opacity: 0,
+                duration: 0.5,
+                ease: "power2.out",
+                onComplete: () => {
+                    section.classList.remove('active');
+                    section.style.display = 'none';
+                }
+            });
+        }
+    });
+
+    // Fade in target section
+    gsap.set(targetSection, { opacity: 0, display: 'block' });
+    targetSection.classList.add('active');
+    gsap.to(targetSection, { opacity: 1, duration: 0.5, ease: "power2.in" });
+
+    // Run section-specific animations
+    if (sectionId === 'inicio') {
+        gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+        gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+        gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+    } else if (sectionId === 'about') {
+        gsap.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
+        gsap.from("#about p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
+        gsap.from(".lawyer-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
+    } else if (sectionId === 'services') {
+        gsap.from("#services h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
+        gsap.from(".service-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.5 });
+        document.querySelectorAll('.service-card').forEach(card => {
+            gsap.from(card.querySelectorAll('.service-item'), {
+                opacity: 0,
+                y: 20,
+                duration: 0.5,
+                stagger: 0.1,
+                ease: "power2.out",
+                delay: 0.7
+            });
+        });
+    } else if (sectionId === 'contact') {
+        gsap.from("#contact h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
+        gsap.from("#contact p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
+        gsap.from("#contact .grid > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
+        gsap.from("#contact iframe", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.9 });
+    } else if (sectionId === 'map') {
+        gsap.from("#map h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
+        gsap.from("#map-container", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.5 });
+        initMap();
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, starting loader sequence");
     try {
@@ -69,24 +133,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 loader.style.display = 'none';
                 mainHeader.style.display = 'block';
                 inicioSection.style.display = 'block';
+                inicioSection.classList.add('active');
 
+                // Initialize hero slideshow
                 const slides = document.querySelectorAll('#hero-animation .slide');
                 if (slides.length === 0) {
                     console.error("No slides found for hero animation");
-                    inicioSection.style.display = 'block';
-                    return;
+                } else {
+                    console.log(`Found ${slides.length} slides for hero animation`);
+                    let currentSlide = 0;
+                    const showSlide = (index) => {
+                        console.log(`Showing slide ${index}`);
+                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+                        currentSlide = index % slides.length;
+                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                    };
+                    showSlide(0);
+                    setInterval(() => showSlide(currentSlide + 1), 6000);
                 }
-                console.log(`Found ${slides.length} slides for hero animation`);
-                let currentSlide = 0;
-                const showSlide = (index) => {
-                    console.log(`Showing slide ${index}`);
-                    gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
-                    currentSlide = index % slides.length;
-                    gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
-                };
-                showSlide(0);
-                setInterval(() => showSlide(currentSlide + 1), 6000);
 
+                // Initialize animations for Inicio
                 gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
                 gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
                 gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
@@ -104,20 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                // Initialize animations for service cards
+                // Initialize hover effects for service cards
                 const serviceCards = document.querySelectorAll('.service-card');
                 serviceCards.forEach(card => {
-                    // Animate list items on load
-                    gsap.from(card.querySelectorAll('.service-item'), {
-                        opacity: 0,
-                        y: 20,
-                        duration: 0.5,
-                        stagger: 0.1,
-                        ease: "power2.out",
-                        delay: 0.5
-                    });
-
-                    // Hover effect for title
                     card.addEventListener('mouseenter', () => {
                         gsap.to(card.querySelector('.service-title'), {
                             scale: 1.05,
@@ -144,7 +199,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                initMap();
+                // Navigation event listeners
+                document.querySelectorAll('nav a[data-section], #inicio a[data-section]').forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const sectionId = link.getAttribute('data-section');
+                        showSection(sectionId);
+                    });
+                });
+
             }, 1000);
         }, 3000);
 
@@ -155,18 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 loader.style.display = 'none';
                 document.getElementById('main-header').style.display = 'block';
                 document.getElementById('inicio').style.display = 'block';
-                const slides = document.querySelectorAll('#hero-animation .slide');
-                if (slides.length > 0) {
-                    let currentSlide = 0;
-                    const showSlide = (index) => {
-                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
-                        currentSlide = index % slides.length;
-                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
-                    };
-                    showSlide(0);
-                    setInterval(() => showSlide(currentSlide + 1), 6000);
-                }
-                initMap();
+                document.getElementById('inicio').classList.add('active');
+                showSection('inicio');
             }
         }, 5000);
     } catch (error) {
@@ -175,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loader) loader.style.display = 'none';
         document.getElementById('main-header').style.display = 'block';
         document.getElementById('inicio').style.display = 'block';
-        initMap();
+        document.getElementById('inicio').classList.add('active');
+        showSection('inicio');
     }
 });
