@@ -21,9 +21,18 @@ section {
     padding: 2rem;
 }
 
-#home {
+#inicio {
     position: relative;
     overflow: hidden;
+}
+
+#hero-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
 }
 
 #hero-animation .slide {
@@ -37,8 +46,11 @@ section {
     z-index: 1;
 }
 
-#home .relative {
+#inicio .relative {
     z-index: 10;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 2rem;
+    border-radius: 1rem;
 }
 
 #map-container {
@@ -70,10 +82,10 @@ footer {
         flex-direction: column;
         gap: 0.5rem;
     }
-    #home h1 {
+    #inicio h1 {
         font-size: 2.5rem;
     }
-    #home p {
-        font-size: 1rem;
+    #inicio p {
+        font-size: 1.25rem;
     }
 }
