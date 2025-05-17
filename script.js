@@ -45,7 +45,6 @@ function showSection(sectionId) {
         return;
     }
 
-    // Fade out all sections
     sections.forEach(section => {
         if (section.classList.contains('active')) {
             gsap.to(section, {
@@ -60,20 +59,19 @@ function showSection(sectionId) {
         }
     });
 
-    // Fade in target section
     gsap.set(targetSection, { opacity: 0, display: 'block' });
     targetSection.classList.add('active');
     gsap.to(targetSection, { opacity: 1, duration: 0.5, ease: "power2.in" });
 
-    // Run section-specific animations
     if (sectionId === 'inicio') {
         gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
         gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-        gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+        gsap.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
     } else if (sectionId === 'about') {
         gsap.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
         gsap.from("#about p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
         gsap.from(".lawyer-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
+        gsap.from("#about .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.9 });
     } else if (sectionId === 'services') {
         gsap.from("#services h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
         gsap.from(".service-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.5 });
@@ -87,11 +85,12 @@ function showSection(sectionId) {
                 delay: 0.7
             });
         });
+        gsap.from("#services .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.9 });
     } else if (sectionId === 'contact') {
         gsap.from("#contact h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
         gsap.from("#contact p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
-        gsap.from("#contact .grid > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
-        gsap.from("#contact iframe", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.9 });
+        gsap.from("#case-form > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
+        gsap.from("#contact .grid > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.9 });
     } else if (sectionId === 'map') {
         gsap.from("#map h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
         gsap.from("#map-container", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.5 });
@@ -135,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 inicioSection.style.display = 'block';
                 inicioSection.classList.add('active');
 
-                // Initialize hero slideshow
                 const slides = document.querySelectorAll('#hero-animation .slide');
                 if (slides.length === 0) {
                     console.error("No slides found for hero animation");
@@ -152,12 +150,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     setInterval(() => showSlide(currentSlide + 1), 6000);
                 }
 
-                // Initialize animations for Inicio
                 gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
                 gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-                gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+                gsap.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
 
-                // Initialize hover effects for lawyer cards
                 const lawyerCards = document.querySelectorAll('.lawyer-card');
                 lawyerCards.forEach(card => {
                     card.addEventListener('mouseenter', () => {
@@ -170,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                // Initialize hover effects for service cards
                 const serviceCards = document.querySelectorAll('.service-card');
                 serviceCards.forEach(card => {
                     card.addEventListener('mouseenter', () => {
@@ -199,13 +194,58 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                // Navigation event listeners
-                document.querySelectorAll('nav a[data-section], #inicio a[data-section]').forEach(link => {
+                document.querySelectorAll('nav a[data-section], .case-button').forEach(link => {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
                         const sectionId = link.getAttribute('data-section');
                         showSection(sectionId);
                     });
+                });
+
+                const caseForm = document.getElementById('case-form');
+                caseForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(caseForm);
+                    const googleFormUrl = 'https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse';
+                    const entries = {
+                        'entry.1234567890': formData.get('name'), // Replace with actual entry ID for Nombre
+                        'entry.0987654321': formData.get('birthplace'), // Replace with actual entry ID for Lugar de Nacimiento
+                        'entry.1122334455': formData.get('case-type'), // Replace with actual entry ID for Tipo de Trámite
+                        'entry.5566778899': formData.get('description'), // Replace with actual entry ID for Descripción
+                        'emailAddress': formData.get('email') // If collecting email
+                    };
+
+                    try {
+                        // Submit text data to Google Forms
+                        const textResponse = await fetch(googleFormUrl, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            },
+                            body: new URLSearchParams(entries).toString()
+                        });
+                        console.log('Text data submitted to Google Forms');
+
+                        // Handle file uploads separately
+                        const files = formData.getAll('files');
+                        if (files.length > 0 && files[0].size > 0) {
+                            const uploadFormData = new FormData();
+                            files.forEach(file => {
+                                if (file.size > 0) {
+                                    uploadFormData.append('file', file);
+                                }
+                            });
+                            // Note: File uploads can't be sent directly to Google Forms from client-side JS due to CORS and API limitations.
+                            // Files are handled by Google Apps Script (see Step 2).
+                        }
+
+                        alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
+                        caseForm.reset();
+                    } catch (error) {
+                        console.error('Error submitting form:', error);
+                        alert('Hubo un error al enviar tu caso. Por favor, intenta de nuevo.');
+                    }
                 });
 
             }, 1000);
