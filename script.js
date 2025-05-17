@@ -91,6 +91,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
                 gsap.from("#inicio a", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
 
+                // Initialize hover effects for lawyer cards
+                const lawyerCards = document.querySelectorAll('.lawyer-card');
+                lawyerCards.forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        gsap.to(card.querySelector('img'), { scale: 1.1, duration: 0.3 });
+                        gsap.to(card.querySelector('.shadow'), { opacity: 1, duration: 0.3 });
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        gsap.to(card.querySelector('img'), { scale: 1, duration: 0.3 });
+                        gsap.to(card.querySelector('.shadow'), { opacity: 0, duration: 0.3 });
+                    });
+                });
+
                 initMap();
             }, 1000);
         }, 3000);
