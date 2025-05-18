@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
 caseForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(caseForm);
-    const googleFormUrl = 'https://docs.google.com/forms/d/e/1H_Zl5glm5qEtLHW4iGQCE7KsbXKxhuv96R4gNMpM5oI/formResponse';
+    const googleFormUrl = 'https://docs.google.com/forms/d/1H_Zl5glm5qEtLHW4iGQCE7KsbXKxhuv96R4gNMpM5oI/formResponse';
     const webAppUrl = 'https://script.google.com/macros/s/AKfycbzAAAN0xC6Ha12R3RjSuWksqagLZoKhmNyNjd_jfTHOkKhck_Pkgenhva0DhQzxYz_g5A/exec'; // Replace with Web App URL after Step 4
     const entries = {
         'entry.922121146': formData.get('name'), // Nombre
