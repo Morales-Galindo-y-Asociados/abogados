@@ -202,70 +202,65 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                const caseForm = document.getElementById('case-form');
-caseForm.addEventListener('submit', async (e) => {
+               const caseForm = document.getElementById('case-form');
+  caseForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(caseForm);
-    const googleFormUrl = 'https://docs.google.com/forms/d/1H_Zl5glm5qEtLHW4iGQCE7KsbXKxhuv96R4gNMpM5oI/formResponse';
-    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzAAAN0xC6Ha12R3RjSuWksqagLZoKhmNyNjd_jfTHOkKhck_Pkgenhva0DhQzxYz_g5A/exec'; // Replace with Web App URL after Step 4
-    const entries = {
-        'entry.922121146': formData.get('name'), // Nombre
-        'entry.1326066051': formData.get('birthplace'), // Lugar de Nacimiento
-        'entry.1400476096': formData.get('case-type'), // Tipo de Trámite
-        'entry.1358256259': formData.get('description') // Descripción
-    };
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzAAAN0xC6Ha12R3RjSuWksqagLZoKhmNyNjd_jfTHOkKhck_Pkgenhva0DhQzxYz_g5A/exec'; // Your Web App URL
 
     try {
-        // Submit text data to Google Forms
-        await fetch(googleFormUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: new URLSearchParams(entries).toString()
-        });
-        console.log('Text data submitted to Google Forms');
+      // Prepare text data
+      const textData = {
+        name: formData.get('name'),
+        birthplace: formData.get('birthplace'),
+        caseType: formData.get('case-type'),
+        description: formData.get('description'),
+        files: []
+      };
 
-        // Submit files to Web App
-        const files = formData.getAll('files');
-        if (files.length > 0 && files[0].size > 0) {
-            const filePromises = files.map(file => {
-                if (file.size > 0) {
-                    return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve({
-                            name: file.name,
-                            mimeType: file.type,
-                            data: reader.result.split(',')[1] // Base64 data
-                        });
-                        reader.onerror = reject;
-                        reader.readAsDataURL(file);
-                    });
-                }
-                return null;
-            }).filter(file => file !== null);
-            const fileData = await Promise.all(filePromises);
-            const webAppResponse = await fetch(webAppUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: formData.get('name'),
-                    files: fileData
-                })
+      // Prepare file data
+      const files = formData.getAll('files');
+      if (files.length > 0 && files[0].size > 0) {
+        const filePromises = files
+          .filter(file => file.size > 0)
+          .map(file => {
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve({
+                name: file.name,
+                mimeType: file.type,
+                data: reader.result.split(',')[1] // Base64 data
+              });
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
             });
-            const webAppResult = await webAppResponse.json();
-            console.log('Files submitted to Web App:', webAppResult);
-        }
+          });
+        textData.files = await Promise.all(filePromises);
+      }
 
+      // Submit to Web App
+      const response = await fetch(webAppUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(textData)
+      });
+
+      const result = await response.json();
+      if (result.status === 'success') {
         alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
         caseForm.reset();
+      } else {
+        throw new Error(result.message || 'Error submitting form');
+      }
     } catch (error) {
-        console.error('Error submitting form:', error);
-        alert('Hubo un error al enviar tu caso. Por favor, intenta de nuevo.');
+      console.error('Error submitting form:', error);
+      alert('Hubo un error al enviar tu caso. Por favor, intenta de nuevo.');
     }
+  });
+
+  // ... (keep existing code after the caseForm event listener)
 });
             }, 1000);
         }, 3000);
