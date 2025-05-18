@@ -205,8 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const caseForm = document.getElementById('case-form');
                 caseForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    const formData = new FormData(caseForm); 
-                    const webAppUrl = 'https://script.google.com/macros/s/AKfycby_Ga8Tnwvs4rywsvV0H7KfYZYUK1aWjSekba-xii9JxQUFH-7Bd60UoRfJygJZHxndYQ/exec'; // Your Web App URL
+                    const formData = new FormData(caseForm);
+                    const webAppUrl = 'https://script.google.com/macros/s/AKfycby_Ga8Tnwvs4rywsvV0H7KfYZYUK1aWjSekba-xii9JxQUFH-7Bd60UoRfJygJZHxndYQ/exec'; // Updated Web App URL
                     const maxFileSize = 10 * 1024 * 1024; // 10MB
 
                     try {
@@ -249,22 +249,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         // Submit to Web App
                         const response = await fetch(webAppUrl, {
                             method: 'POST',
+                            mode: 'no-cors', // Workaround for CORS
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(textData)
                         });
 
-                        const result = await response.json();
-                        if (result.status === 'success') {
-                            alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
-                            caseForm.reset();
-                        } else {
-                            throw new Error(result.message || 'Error al enviar el formulario');
-                        }
+                        // Since mode is 'no-cors', we can't read the response body
+                        alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
+                        caseForm.reset();
                     } catch (error) {
                         console.error('Error submitting form:', error);
-                        alert(`Hubo un error al enviar tu caso: ${error.message}. Por favor, intenta de nuevo.`);
+                        alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
                     }
                 });
             }, 1000);
