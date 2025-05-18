@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 caseForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(caseForm);
-                    const googleFormUrl = 'https://docs.google.com/forms/u/0/d/e/1FAIpQLSe04MMfZPz8X1UiDF7xI5w4zpdcE7C6ewITwro-oxhdp1pZ5w/formResponse';
+                    const googleFormUrl = 'https://docs.google.com/forms/d/e/1H_Zl5glm5qEtLHW4iGQCE7KsbXKxhuv96R4gNMpM5oI/formResponse';
                     const entries = {
                         'entry.922121146': formData.get('name'), // Replace with actual entry ID for Nombre
                         'entry.1326066051': formData.get('birthplace'), // Replace with actual entry ID for Lugar de Nacimiento
