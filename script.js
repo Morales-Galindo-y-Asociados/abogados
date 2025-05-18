@@ -202,66 +202,71 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-               const caseForm = document.getElementById('case-form');
-  caseForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(caseForm);
-    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzAAAN0xC6Ha12R3RjSuWksqagLZoKhmNyNjd_jfTHOkKhck_Pkgenhva0DhQzxYz_g5A/exec'; // Your Web App URL
+                const caseForm = document.getElementById('case-form');
+                caseForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(caseForm);
+                    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzAAAN0xC6Ha12R3RjSuWksqagLZoKhmNyNjd_jfTHOkKhck_Pkgenhva0DhQzxYz_g5A/exec'; // Your Web App URL
+                    const maxFileSize = 10 * 1024 * 1024; // 10MB
 
-    try {
-      // Prepare text data
-      const textData = {
-        name: formData.get('name'),
-        birthplace: formData.get('birthplace'),
-        caseType: formData.get('case-type'),
-        description: formData.get('description'),
-        files: []
-      };
+                    try {
+                        // Validate file sizes
+                        const files = formData.getAll('files');
+                        for (const file of files) {
+                            if (file.size > maxFileSize) {
+                                throw new Error(`El archivo ${file.name} excede el tamaño máximo de 10MB.`);
+                            }
+                        }
 
-      // Prepare file data
-      const files = formData.getAll('files');
-      if (files.length > 0 && files[0].size > 0) {
-        const filePromises = files
-          .filter(file => file.size > 0)
-          .map(file => {
-            return new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = () => resolve({
-                name: file.name,
-                mimeType: file.type,
-                data: reader.result.split(',')[1] // Base64 data
-              });
-              reader.onerror = reject;
-              reader.readAsDataURL(file);
-            });
-          });
-        textData.files = await Promise.all(filePromises);
-      }
+                        // Prepare text data
+                        const textData = {
+                            name: formData.get('name'),
+                            birthplace: formData.get('birthplace'),
+                            caseType: formData.get('case-type'),
+                            description: formData.get('description'),
+                            files: []
+                        };
 
-      // Submit to Web App
-      const response = await fetch(webAppUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(textData)
-      });
+                        // Prepare file data
+                        if (files.length > 0 && files[0].size > 0) {
+                            const filePromises = files
+                                .filter(file => file.size > 0)
+                                .map(file => {
+                                    return new Promise((resolve, reject) => {
+                                        const reader = new FileReader();
+                                        reader.onload = () => resolve({
+                                            name: file.name,
+                                            mimeType: file.type,
+                                            data: reader.result.split(',')[1] // Base64 data
+                                        });
+                                        reader.onerror = reject;
+                                        reader.readAsDataURL(file);
+                                    });
+                                });
+                            textData.files = await Promise.all(filePromises);
+                        }
 
-      const result = await response.json();
-      if (result.status === 'success') {
-        alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
-        caseForm.reset();
-      } else {
-        throw new Error(result.message || 'Error submitting form');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      alert('Hubo un error al enviar tu caso. Por favor, intenta de nuevo.');
-    }
-  });
+                        // Submit to Web App
+                        const response = await fetch(webAppUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(textData)
+                        });
 
-  // ... (keep existing code after the caseForm event listener)
-});
+                        const result = await response.json();
+                        if (result.status === 'success') {
+                            alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
+                            caseForm.reset();
+                        } else {
+                            throw new Error(result.message || 'Error al enviar el formulario');
+                        }
+                    } catch (error) {
+                        console.error('Error submitting form:', error);
+                        alert(`Hubo un error al enviar tu caso: ${error.message}. Por favor, intenta de nuevo.`);
+                    }
+                });
             }, 1000);
         }, 3000);
 
