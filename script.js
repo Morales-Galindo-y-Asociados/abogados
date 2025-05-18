@@ -205,8 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const caseForm = document.getElementById('case-form');
                 caseForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    const formData = new FormData(caseForm);
-                    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzAAAN0xC6Ha12R3RjSuWksqagLZoKhmNyNjd_jfTHOkKhck_Pkgenhva0DhQzxYz_g5A/exec'; // Your Web App URL
+                    const formData = new FormData(caseForm); 
+                    const webAppUrl = 'https://script.google.com/macros/s/AKfycby_Ga8Tnwvs4rywsvV0H7KfYZYUK1aWjSekba-xii9JxQUFH-7Bd60UoRfJygJZHxndYQ/exec'; // Your Web App URL
                     const maxFileSize = 10 * 1024 * 1024; // 10MB
 
                     try {
