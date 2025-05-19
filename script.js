@@ -48,11 +48,12 @@ function initMap() {
             const phoneContent = office.phones.map(phone => `<p class="text-gray-800 font-medium">${phone}</p>`).join('');
             const infoWindow = new google.maps.InfoWindow({
                 content: `
-                    <div class="info-window" style="font-family: 'Arial', sans-serif; padding: 15px; background: #FFFFFF; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); max-width: 250px;">
-                        <h3 style="color: #FFD700; font-size: 18px; font-weight: bold; margin-bottom: 10px;">${office.title}</h3>
-                        <p style="color: #1F2937; font-size: 14px; line-height: 1.5; margin-bottom: 10px;">${office.address}</p>
-                        ${phoneContent}
-                    </div>
+    <div class="info-window" style="font-family: 'Montserrat', sans-serif; padding: 15px; background: #FFFFFF; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); max-width: 250px;">
+        <h3 style="color: #FFD700; font-size: 18px; font-weight: 700; margin-bottom: 10px;">${office.title}</h3>
+        <p style="color: #1F2937; font-size: 14px; line-height: 1.5; margin-bottom: 10px;">${office.address}</p>
+        ${phoneContent}
+    </div>
+`
                 `
             });
             marker.addListener("click", () => {
