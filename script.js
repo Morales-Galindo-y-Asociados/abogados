@@ -195,14 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 document.querySelectorAll('nav a[data-section], .case-button').forEach(link => {
-                    link.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        const sectionId = link.getAttribute('data-section');
-                        showSection(sectionId);
-                    });
-                });
-
-                const caseForm = document.getElementById('case-form');
+                    link.addEventById('case-form');
                 caseForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(caseForm);
@@ -211,8 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     try {
                         // Validate file sizes
-                        const files = formData.getAll('files');
-                        for (const file of files) {
+                        for (const file of selectedFiles) {
                             if (file.size > maxFileSize) {
                                 throw new Error(`El archivo ${file.name} excede el tamaño máximo de 10MB.`);
                             }
@@ -228,21 +220,19 @@ document.addEventListener('DOMContentLoaded', () => {
                         };
 
                         // Prepare file data
-                        if (files.length > 0 && files[0].size > 0) {
-                            const filePromises = files
-                                .filter(file => file.size > 0)
-                                .map(file => {
-                                    return new Promise((resolve, reject) => {
-                                        const reader = new FileReader();
-                                        reader.onload = () => resolve({
-                                            name: file.name,
-                                            mimeType: file.type,
-                                            data: reader.result.split(',')[1] // Base64 data
-                                        });
-                                        reader.onerror = reject;
-                                        reader.readAsDataURL(file);
+                        if (selectedFiles.length > 0) {
+                            const filePromises = selectedFiles.map(file => {
+                                return new Promise((resolve, reject) => {
+                                    const reader = new FileReader();
+                                    reader.onload = () => resolve({
+                                        name: file.name,
+                                        mimeType: file.type,
+                                        data: reader.result.split(',')[1] // Base64 data
                                     });
+                                    reader.onerror = reject;
+                                    reader.readAsDataURL(file);
                                 });
+                            });
                             textData.files = await Promise.all(filePromises);
                         }
 
@@ -251,17 +241,18 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log('Form data:', textData);
                         const response = await fetch(webAppUrl, {
                             method: 'POST',
-                            mode: 'no-cors', // Revert to no-cors to bypass CORS
+                            mode: 'no-cors',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(textData)
                         });
 
-                        // Since mode is 'no-cors', we can't read the response
                         console.log('Form submitted, assuming success (check server logs)');
                         alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
                         caseForm.reset();
+                        selectedFiles = []; // Clear the file list
+                        updateFileList(); // Reset the file list display
                     } catch (error) {
                         console.error('Error submitting form:', error);
                         alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
