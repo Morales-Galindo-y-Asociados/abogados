@@ -21,7 +21,7 @@ function initMap() {
         });
         offices.forEach(office => {
             new google.maps.Marker({
-                position: { lat: office.lat, lng: office.lng },
+                position: { lat: office.lat, lngwin: office.lng },
                 map: map,
                 title: office.title,
                 icon: {
@@ -107,8 +107,46 @@ document.addEventListener('DOMContentLoaded', () => {
             throw new Error("Missing loader-logo");
         }
         loaderLogo.addEventListener('error', () => {
-            console.error("Failed to load logo image at images/logo.png");
+            console blittor("Failed to load logo image at images/logo.png");
         });
+
+        // File upload handling
+        const fileInput = document.getElementById('files');
+        const filePreview = document.getElementById('file-preview');
+        let selectedFiles = [];
+
+        fileInput.addEventListener('change', (e) => {
+            const newFiles = Array.from(e.target.files);
+            selectedFiles = [...selectedFiles, ...newFiles];
+            updateFilePreview();
+            // Reset input to allow re-selecting the same file
+            fileInput.value = '';
+        });
+
+        function updateFilePreview() {
+            filePreview.innerHTML = '';
+            selectedFiles.forEach((file, index) => {
+                const fileContainer = document.createElement('div');
+                fileContainer.className = 'relative flex items-center bg-gray-800 border border-gold-600 rounded-lg p-2';
+
+                const fileName = document.createElement('span');
+                fileName.className = 'text-gray-200 truncate max-w-[150px]';
+                fileName.textContent = file.name;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.className = 'ml-2 text-red-500 hover:text-red-400';
+                deleteButton.innerHTML = '&times;';
+                deleteButton.addEventListener('click', () => {
+                    selectedFiles.splice(index, 1);
+                    updateFilePreview();
+                });
+
+                fileContainer.appendChild(fileName);
+                fileContainer.appendChild(deleteButton);
+                filePreview.appendChild(fileContainer);
+            });
+        }
 
         setTimeout(() => {
             console.log("Hiding loader and showing main content");
@@ -195,7 +233,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 document.querySelectorAll('nav a[data-section], .case-button').forEach(link => {
-                    link.addEventById('case-form');
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const sectionId = link.getAttribute('data-section');
+                        showSection(sectionId);
+                    });
+                });
+
+                const caseForm = document.getElementById('case-form');
                 caseForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
                     const formData = new FormData(caseForm);
@@ -251,8 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         console.log('Form submitted, assuming success (check server logs)');
                         alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
                         caseForm.reset();
-                        selectedFiles = []; // Clear the file list
-                        updateFileList(); // Reset the file list display
+                        selectedFiles = [];
+                        updateFilePreview();
                     } catch (error) {
                         console.error('Error submitting form:', error);
                         alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
