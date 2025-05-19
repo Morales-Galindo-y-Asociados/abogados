@@ -2,15 +2,13 @@ function initMap() {
     console.log("Initializing Google Map");
     try {
         const offices = [
-            { lat: 19.0434, lng: -98.1986, title: "Puebla - Reforma" },
-            { lat: 18.6769, lng: -97.3447, title: "Tecamachalco" },
-            { lat: 20.1833, lng: -98.0167, title: "Chignahuapan" },
-            { lat: 18.2797, lng: -97.2239, title: "Ajalpan" },
-            { lat: 19.1128, lng: -97.2950, title: "Esperanza" }
+            { lat: 19.0566, lng: -98.2347, title: "Puebla - Reforma", address: "Blvrd Esteban de Antuñano 2702, Piso 5, Reforma, 72160 Puebla, Pue. México" },
+            { lat: 19.1128, lng: -97.2950, title: "Puebla - Esperanza", address: "Avenida Independencia 11, Piso 2, Esperanza, C.P 75560, Puebla, México" },
+            { lat: 19.4341, lng: -99.1747, title: "Ciudad de México", address: "Calz. Gral. Mariano Escobedo n°510 Penthouse, Col. Anzures, C.P. 11590, Alcaldia Miguel Hidalgo, Ciudad de Mexico" }
         ];
         const map = new google.maps.Map(document.getElementById("map-container"), {
-            zoom: 8,
-            center: { lat: 19.0434, lng: -98.1986 },
+            zoom: 6,
+            center: { lat: 19.2439, lng: -98.7049 }, // Center between Puebla and CDMX
             styles: [
                 { elementType: "geometry", stylers: [{ color: "#212121" }] },
                 { elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
@@ -20,7 +18,7 @@ function initMap() {
             ]
         });
         offices.forEach(office => {
-            new google.maps.Marker({
+            const marker = new google.maps.Marker({
                 position: { lat: office.lat, lng: office.lng },
                 map: map,
                 title: office.title,
@@ -28,6 +26,12 @@ function initMap() {
                     url: "images/logo.png",
                     scaledSize: new google.maps.Size(40, 40)
                 }
+            });
+            const infoWindow = new google.maps.InfoWindow({
+                content: `<h3 class="text-gold-400 font-semibold">${office.title}</h3><p class="text-gray-200">${office.address}</p>`
+            });
+            marker.addListener("click", () => {
+                infoWindow.open(map, marker);
             });
         });
     } catch (error) {
@@ -93,7 +97,8 @@ function showSection(sectionId) {
         gsap.from("#contact .grid > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.9 });
     } else if (sectionId === 'map') {
         gsap.from("#map h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
-        gsap.from("#map-container", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.5 });
+        gsap.from(".location-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.5 });
+        gsap.from("#map-container", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.9 });
         initMap();
     }
 }
