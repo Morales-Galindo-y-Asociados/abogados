@@ -108,6 +108,7 @@ function showSection(sectionId) {
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, starting loader sequence");
+
     const loader = document.getElementById('loader');
     const mainHeader = document.getElementById('main-header');
     const inicioSection = document.getElementById('inicio');
@@ -125,10 +126,22 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Force loader hide after 2 seconds
+    // Fallback if GSAP is unavailable
+    const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
+        to: (el, opts) => {
+            console.warn("GSAP not loaded, using CSS fallback");
+            el.style.transition = 'opacity 0.5s';
+            el.style.opacity = opts.opacity;
+            setTimeout(() => opts.onComplete(), 500);
+        },
+        from: () => console.warn("GSAP not loaded, skipping animation"),
+        set: (el, opts) => Object.assign(el.style, opts)
+    };
+
+    // Hide loader after 2 seconds
     setTimeout(() => {
         console.log("Hiding loader and showing main content");
-        gsap.to(loader, {
+        safeGSAP.to(loader, {
             opacity: 0,
             duration: 0.5,
             ease: "power2.out",
@@ -145,9 +158,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     let currentSlide = 0;
                     const showSlide = (index) => {
                         console.log(`Showing slide ${index}`);
-                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+                        safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
                         currentSlide = index % slides.length;
-                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                        safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
                     };
                     showSlide(0);
                     setInterval(() => showSlide(currentSlide + 1), 6000);
@@ -156,16 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 // Animate "Inicio" section
-                gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-                gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-                gsap.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+                safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+                safeGSAP.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+                safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
             }
         });
     }, 2000);
 
-    // Fallback: Force hide loader after 4 seconds
+    // Hard fallback: Force hide loader after 4 seconds
     setTimeout(() => {
-        if (loader.style.display !== 'none') {
+        if (loader && loader.style.display !== 'none') {
             console.log("Fallback: Forcing loader hide");
             loader.style.display = 'none';
             mainHeader.style.display = 'block';
@@ -175,6 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 4000);
 });
+     
 
 // Lawyer and Service Card Animations
 const lawyerCards = document.querySelectorAll('.lawyer-card');
