@@ -74,12 +74,15 @@ nav ul li a {
     width: 100%;
 }
 
-footer {
-    padding: 1rem;
-    position: sticky;
-    bottom: 0;
-    z-index: 30;
+#footer {
+    position: static; /* Ensures normal document flow */
     width: 100%;
+    background-color: #000000; /* Matches bg-black */
+    color: #FFD700; /* Matches text-gold-400 */
+    padding: 1.5rem 0; /* Matches py-6 */
+    text-align: center;
+    border-top: 1px solid #B8860B; /* Matches border-t border-gold-600 */
+    margin-top: 2rem; /* Adds space above footer */
 }
 
 .case-button {
