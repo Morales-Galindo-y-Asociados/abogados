@@ -7,6 +7,9 @@ body {
     flex-direction: column;
     background-color: #000;
 }
+main {
+    flex: 1;
+}
 
 header {
     padding: 1rem;
