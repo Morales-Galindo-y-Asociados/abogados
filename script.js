@@ -10,11 +10,14 @@ function initMap() {
             zoom: 6,
             center: { lat: 19.2439, lng: -98.7049 }, // Center between Puebla and CDMX
             styles: [
-                { elementType: "geometry", stylers: [{ color: "#212121" }] },
-                { elementType: "labels.text.stroke", stylers: [{ color: "#212121" }] },
+                { elementType: "geometry", stylers: [{ color: "#000000" }] },
                 { elementType: "labels.text.fill", stylers: [{ color: "#FFD700" }] },
-                { featureType: "road", elementType: "geometry", stylers: [{ color: "#424242" }] },
-                { featureType: "water", elementType: "geometry", stylers: [{ color: "#000000" }] }
+                { elementType: "labels.text.stroke", stylers: [{ color: "#1F2937" }] },
+                { featureType: "road", elementType: "geometry", stylers: [{ color: "#4B5563" }] },
+                { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#6B7280" }] },
+                { featureType: "water", elementType: "geometry", stylers: [{ color: "#1E3A8A"}] },
+                { featureType: "poi", elementType: "geometry", stylers: [{ color: "#374151" }] },
+                { featureType: "landscape", elementType: "geometry", stylers: [{ color: "#1F2937" }] }
             ]
         });
         offices.forEach(office => {
