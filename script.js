@@ -1,3 +1,4 @@
+```javascript
 function initMap() {
     console.log("Initializing Google Map");
     try {
@@ -28,10 +29,30 @@ function initMap() {
                 }
             });
             const infoWindow = new google.maps.InfoWindow({
-                content: `<h3 class="text-gold-400 font-semibold">${office.title}</h3><p class="text-gray-200">${office.address}</p>`
+                content: `
+                    <div style="background: #1F2937; color: #E5E7EB; padding: 15px; border-radius: 8px; max-width: 250px; font-family: sans-serif;">
+                        <h3 style="color: #FFD700; font-size: 18px; font-weight: bold; margin: 0 0 10px;">${office.title}</h3>
+                        <p style="color: #E5E7EB; font-size: 14px; margin: 0 0 10px;">${office.address}</p>
+                        <p style="color: #E5E7EB; font-size: 14px; margin: 0 0 10px;">
+                            <i class="fas fa-phone" style="color: #FFD700; margin-right: 5px;"></i>
+                            <a href="http://wa.me/5633572693" target="_blank" style="color: #FFD700; text-decoration: none;">+52 563 357 2693</a>
+                        </p>
+                        <a href="#" data-section="contact" class="case-button" style="display: inline-block; background: #FFD700; color: #000; padding: 8px 16px; border-radius: 9999px; font-size: 14px; font-weight: 600; text-decoration: none;">Contact Us</a>
+                    </div>
+                `
             });
             marker.addListener("click", () => {
                 infoWindow.open(map, marker);
+            });
+            // Add click listener for contact link inside info window
+            google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
+                const contactLink = infoWindow.getContent().querySelector('[data-section="contact"]');
+                if (contactLink) {
+                    contactLink.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        showSection('contact');
+                    });
+                }
             });
         });
     } catch (error) {
@@ -171,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                const serviceCards = document.querySelectorAll('.service-card');
+                const serviceCards = document.querySelectorAll('.serviceSecond card');
                 serviceCards.forEach(card => {
                     card.addEventListener('mouseenter', () => {
                         gsap.to(card.querySelector('.service-title'), {
@@ -296,3 +317,4 @@ document.addEventListener('DOMContentLoaded', () => {
         showSection('inicio');
     }
 });
+```
