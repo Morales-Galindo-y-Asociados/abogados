@@ -190,3 +190,50 @@ footer {
         min-height: calc(100vh - 160px); /* Adjust for mobile header/footer height */
     }
 }
+
+/* File List Styles */
+#file-list .file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1F2937;
+    border: 1px solid #B8860B;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+#file-list .file-item:hover {
+    background-color: #2D3748;
+    border-color: #FFD700;
+}
+
+#file-list .file-item span {
+    color: #E5E7EB;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#file-list .file-item button {
+    background-color: #DC2626;
+    color: #FFFFFF;
+    border: none;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#file-list .file-item button:hover {
+    background-color: #B91C1C;
+    transform: scale(1.05);
+}
+
+#file-list p {
+    color: #9CA3AF;
+    font-size: 0.9rem;
+    margin: 0;
+}
