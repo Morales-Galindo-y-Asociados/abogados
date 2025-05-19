@@ -1,4 +1,3 @@
-```javascript
 function initMap() {
     console.log("Initializing Google Map");
     try {
@@ -317,4 +316,3 @@ document.addEventListener('DOMContentLoaded', () => {
         showSection('inicio');
     }
 });
-```
