@@ -175,6 +175,99 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 4000);
 });
+
+// Lawyer and Service Card Animations
+const lawyerCards = document.querySelectorAll('.lawyer-card');
+lawyerCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        gsap.to(card.querySelector('img'), { scale: 1.1, duration: 0.3 });
+        gsap.to(card.querySelector('.shadow'), { opacity: 1, duration: 0.3 });
+    });
+    card.addEventListener('mouseleave', () => {
+        gsap.to(card.querySelector('img'), { scale: 1, duration: 0.3 });
+        gsap.to(card.querySelector('.shadow'), { opacity: 0, duration: 0.3 });
+    });
+});
+
+const serviceCards = document.querySelectorAll('.service-card');
+serviceCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        gsap.to(card.querySelector('.service-title'), { scale: 1.05, duration: 0.3, ease: "power2.out" });
+        gsap.to(card, { scale: 1.05, boxShadow: "0 0 15px rgba(255, 215, 0, 0.3)", duration: 0.3 });
+    });
+    card.addEventListener('mouseleave', () => {
+        gsap.to(card.querySelector('.service-title'), { scale: 1, duration: 0.3, ease: "power2.out" });
+        gsap.to(card, { scale: 1, boxShadow: "0 0 0 rgba(255, 215, 0, 0)", duration: 0.3 });
+    });
+});
+
+// Navigation and Case Button Clicks
+document.querySelectorAll('nav a[data-section], .case-button').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const sectionId = link.getAttribute('data-section');
+        showSection(sectionId);
+    });
+});
+
+// Form Submission
+const caseForm = document.getElementById('case-form');
+caseForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(caseForm);
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzt820yrgQzv6YeKOGrLuoQW1xK_erc3ijJLyXu_C4ncbTB9bI-bFITh59hADKpg_p_/exec';
+    const maxFileSize = 10 * 1024 * 1024; // 10MB
+
+    try {
+        const files = formData.getAll('files');
+        for (const file of files) {
+            if (file.size > maxFileSize) {
+                throw new Error(`El archivo ${file.name} excede el tamaño máximo de 10MB.`);
+            }
+        }
+
+        const textData = {
+            name: formData.get('name'),
+            birthplace: formData.get('birthplace'),
+            caseType: formData.get('case-type'),
+            description: formData.get('description'),
+            files: []
+        };
+
+        if (files.length > 0 && files[0].size > 0) {
+            const filePromises = files
+                .filter(file => file.size > 0)
+                .map(file => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({
+                            name: file.name,
+                            mimeType: file.type,
+                            data: reader.result.split(',')[1]
+                        });
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+                });
+            textData.files = await Promise.all(filePromises);
+        }
+
+        console.log('Submitting form to:', webAppUrl);
+        const response = await fetch(webAppUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(textData)
+        });
+
+        console.log('Form submitted');
+        alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
+        caseForm.reset();
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
+    }
+});
         setTimeout(() => {
             console.log("Hiding loader and showing main content");
             const loader = document.getElementById('loader');
