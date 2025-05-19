@@ -208,3 +208,7 @@ footer {
     color: #E5E7EB;
     font-size: 14px;
     }
+
+.gm-style-iw:hover {
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    }
