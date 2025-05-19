@@ -2,9 +2,27 @@ function initMap() {
     console.log("Initializing Google Map");
     try {
         const offices = [
-            { lat: 19.0566, lng: -98.2347, title: "Puebla - Reforma", address: "Blvrd Esteban de Antuñano 2702, Piso 5, Reforma, 72160 Puebla, Pue. México" },
-            { lat: 19.1128, lng: -97.2950, title: "Puebla - Esperanza", address: "Avenida Independencia 11, Piso 2, Esperanza, C.P 75560, Puebla, México" },
-            { lat: 19.4341, lng: -99.1747, title: "Ciudad de México", address: "Calz. Gral. Mariano Escobedo n°510 Penthouse, Col. Anzures, C.P. 11590, Alcaldia Miguel Hidalgo, Ciudad de Mexico" }
+            { 
+                lat: 19.0566, 
+                lng: -98.2347, 
+                title: "Puebla - Reforma", 
+                address: "Blvrd Esteban de Antuñano 2702, Piso 5, Reforma, 72160 Puebla, Pue. México",
+                phones: ["(+52) 2226401809", "(+52) 5633572693"]
+            },
+            { 
+                lat: 19.1128, 
+                lng: -97.2950, 
+                title: "Puebla - Esperanza", 
+                address: "Avenida Independencia 11, Piso 2, Esperanza, C.P 75560, Puebla, México",
+                phones: ["(+52) 2226401809", "(+52) 5633572693"]
+            },
+            { 
+                lat: 19.4341, 
+                lng: -99.1747, 
+                title: "Ciudad de México", 
+                address: "Calz. Gral. Mariano Escobedo n°510 Penthouse, Col. Anzures, C.P. 11590, Alcaldia Miguel Hidalgo, Ciudad de Mexico",
+                phones: ["(+52) 2226401809", "(+52) 5633572693"]
+            }
         ];
         const map = new google.maps.Map(document.getElementById("map-container"), {
             zoom: 6,
@@ -27,8 +45,15 @@ function initMap() {
                     scaledSize: new google.maps.Size(40, 40)
                 }
             });
+            const phoneContent = office.phones.map(phone => `<p class="text-gray-800 font-medium">${phone}</p>`).join('');
             const infoWindow = new google.maps.InfoWindow({
-                content: `<h3 class="text-gold-400 font-semibold">${office.title}</h3><p class="text-gray-200">${office.address}</p>`
+                content: `
+                    <div class="info-window" style="font-family: 'Arial', sans-serif; padding: 15px; background: #FFFFFF; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); max-width: 250px;">
+                        <h3 style="color: #FFD700; font-size: 18px; font-weight: bold; margin-bottom: 10px;">${office.title}</h3>
+                        <p style="color: #1F2937; font-size: 14px; line-height: 1.5; margin-bottom: 10px;">${office.address}</p>
+                        ${phoneContent}
+                    </div>
+                `
             });
             marker.addListener("click", () => {
                 infoWindow.open(map, marker);
