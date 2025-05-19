@@ -7,8 +7,8 @@ function initMap() {
             { lat: 19.4341, lng: -99.1747, title: "Ciudad de México", address: "Calz. Gral. Mariano Escobedo n°510 Penthouse, Col. Anzures, C.P. 11590, Alcaldia Miguel Hidalgo, Ciudad de Mexico" }
         ];
         const map = new google.maps.Map(document.getElementById("map-container"), {
-            zoom: 6,
-            center: { lat: 19.2439, lng: -98.7049 }, // Center between Puebla and CDMX
+            zoom: 8,
+            center: { lat: 19.0566, lng: -98.2347 } // Center between Puebla and CDMX
             styles: [
                 { elementType: "geometry", stylers: [{ color: "#000000" }] },
                 { elementType: "labels.text.fill", stylers: [{ color: "#FFD700" }] },
@@ -27,7 +27,7 @@ function initMap() {
                 title: office.title,
                 icon: {
                     url: "images/logo.png",
-                    scaledSize: new google.maps.Size(40, 40)
+                    scaledSize: new google.maps.Size(60, 60)
                 }
             });
             const infoWindow = new google.maps.InfoWindow({
