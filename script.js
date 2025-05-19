@@ -108,16 +108,73 @@ function showSection(sectionId) {
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, starting loader sequence");
-    try {
-        const loaderLogo = document.getElementById('loader-logo');
-        if (!loaderLogo) {
-            console.error("Loader logo element not found");
-            throw new Error("Missing loader-logo");
-        }
-        loaderLogo.addEventListener('error', () => {
-            console.error("Failed to load logo image at images/logo.png");
-        });
+    const loader = document.getElementById('loader');
+    const mainHeader = document.getElementById('main-header');
+    const inicioSection = document.getElementById('inicio');
 
+    // Check if critical elements exist
+    if (!loader || !mainHeader || !inicioSection) {
+        console.error("Missing critical elements:", { loader, mainHeader, inicioSection });
+        if (loader) loader.style.display = 'none';
+        if (mainHeader) mainHeader.style.display = 'block';
+        if (inicioSection) {
+            inicioSection.style.display = 'block';
+            inicioSection.classList.add('active');
+        }
+        showSection('inicio');
+        return;
+    }
+
+    // Force loader hide after 2 seconds
+    setTimeout(() => {
+        console.log("Hiding loader and showing main content");
+        gsap.to(loader, {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            onComplete: () => {
+                loader.style.display = 'none';
+                mainHeader.style.display = 'block';
+                inicioSection.style.display = 'block';
+                inicioSection.classList.add('active');
+
+                // Start hero slideshow
+                const slides = document.querySelectorAll('#hero-animation .slide');
+                if (slides.length > 0) {
+                    console.log(`Found ${slides.length} slides for hero animation`);
+                    let currentSlide = 0;
+                    const showSlide = (index) => {
+                        console.log(`Showing slide ${index}`);
+                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+                        currentSlide = index % slides.length;
+                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                    };
+                    showSlide(0);
+                    setInterval(() => showSlide(currentSlide + 1), 6000);
+                } else {
+                    console.warn("No slides found for hero animation");
+                }
+
+                // Animate "Inicio" section
+                gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+                gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+                gsap.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+            }
+        });
+    }, 2000);
+
+    // Fallback: Force hide loader after 4 seconds
+    setTimeout(() => {
+        if (loader.style.display !== 'none') {
+            console.log("Fallback: Forcing loader hide");
+            loader.style.display = 'none';
+            mainHeader.style.display = 'block';
+            inicioSection.style.display = 'block';
+            inicioSection.classList.add('active');
+            showSection('inicio');
+        }
+    }, 4000);
+});
         setTimeout(() => {
             console.log("Hiding loader and showing main content");
             const loader = document.getElementById('loader');
