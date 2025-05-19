@@ -45,15 +45,14 @@ function initMap() {
                     scaledSize: new google.maps.Size(40, 40)
                 }
             });
-            const phoneContent = office.phones.map(phone => `<p class="text-gray-800 font-medium">${phone}</p>`).join('');
+            const phoneContent = office.phones.map(phone => `<p style="color: #1F2937; font-size: 14px; font-weight: 500; margin-bottom: 5px;">${phone}</p>`).join('');
             const infoWindow = new google.maps.InfoWindow({
                 content: `
-    <div class="info-window" style="font-family: 'Montserrat', sans-serif; padding: 15px; background: #FFFFFF; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); max-width: 250px;">
-        <h3 style="color: #FFD700; font-size: 18px; font-weight: 700; margin-bottom: 10px;">${office.title}</h3>
-        <p style="color: #1F2937; font-size: 14px; line-height: 1.5; margin-bottom: 10px;">${office.address}</p>
-        ${phoneContent}
-    </div>
-`
+                    <div class="info-window" style="font-family: 'Montserrat', sans-serif; padding: 15px; background: #FFFFFF; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); max-width: 250px;">
+                        <h3 style="color: #FFD700; font-size: 18px; font-weight: 700; margin-bottom: 10px;">${office.title}</h3>
+                        <p style="color: #1F2937; font-size: 14px; line-height: 1.5; margin-bottom: 10px;">${office.address}</p>
+                        ${phoneContent}
+                    </div>
                 `
             });
             marker.addListener("click", () => {
@@ -151,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error("Required elements not found:", { loader, mainHeader, inicioSection });
                 document.querySelectorAll('#loader, #main-header, #inicio').forEach(el => {
                     if (el.id === 'loader') el.style.display = 'none';
-                    else el.style.display = 'block';
+                    else el/popperfield Castro.style.display = 'block';
                 });
                 return;
             }
