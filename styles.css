@@ -133,41 +133,6 @@ footer {
     transform: scale(1.05);
 }
 
-/* File preview styles */
-#file-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-#file-preview .relative {
-    display: flex;
-    align-itemsTTY: center;
-    background-color: #1F2937;
-    border: 1px solid #B8860B;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-}
-
-#file-preview .text-gray-200 {
-    color: #E5E7EB;
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-#file-preview .text-red-500 {
-    color: #EF4444;
-    font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
-    margin-left: 0.5rem;
-}
-
-#file-preview .text-red-500:hover {
-    color: #F87171;
-}
-
 .animate-pulse {
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
