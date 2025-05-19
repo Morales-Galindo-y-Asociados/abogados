@@ -21,7 +21,7 @@ function initMap() {
         });
         offices.forEach(office => {
             new google.maps.Marker({
-                position: { lat: office.lat, lngwin: office.lng },
+                position: { lat: office.lat, lng: office.lng },
                 map: map,
                 title: office.title,
                 icon: {
@@ -37,77 +37,86 @@ function initMap() {
 
 function showSection(sectionId) {
     console.log(`Showing section: ${sectionId}`);
-    const sections = document.querySelectorAll('.section');
-    const targetSection = document.getElementById(sectionId);
+    try {
+        const sections = document.querySelectorAll('.section');
+        const targetSection = document.getElementById(sectionId);
 
-    if (!targetSection) {
-        console.error(`Section ${sectionId} not found`);
-        return;
-    }
-
-    sections.forEach(section => {
-        if (section.classList.contains('active')) {
-            gsap.to(section, {
-                opacity: 0,
-                duration: 0.5,
-                ease: "power2.out",
-                onComplete: () => {
-                    section.classList.remove('active');
-                    section.style.display = 'none';
-                }
-            });
+        if (!targetSection) {
+            console.error(`Section ${sectionId} not found`);
+            return;
         }
-    });
 
-    gsap.set(targetSection, { opacity: 0, display: 'block' });
-    targetSection.classList.add('active');
-    gsap.to(targetSection, { opacity: 1, duration: 0.5, ease: "power2.in" });
-
-    if (sectionId === 'inicio') {
-        gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-        gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-        gsap.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
-    } else if (sectionId === 'about') {
-        gsap.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
-        gsap.from("#about p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
-        gsap.from(".lawyer-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
-        gsap.from("#about .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.9 });
-    } else if (sectionId === 'services') {
-        gsap.from("#services h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
-        gsap.from(".service-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.5 });
-        document.querySelectorAll('.service-card').forEach(card => {
-            gsap.from(card.querySelectorAll('.service-item'), {
-                opacity: 0,
-                y: 20,
-                duration: 0.5,
-                stagger: 0.1,
-                ease: "power2.out",
-                delay: 0.7
-            });
+        sections.forEach(section => {
+            if (section.classList.contains('active')) {
+                gsap.to(section, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        section.classList.remove('active');
+                        section.style.display = 'none';
+                    }
+                });
+            }
         });
-        gsap.from("#services .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.9 });
-    } else if (sectionId === 'contact') {
-        gsap.from("#contact h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
-        gsap.from("#contact p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
-        gsap.from("#case-form > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
-        gsap.from("#contact .grid > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.9 });
-    } else if (sectionId === 'map') {
-        gsap.from("#map h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
-        gsap.from("#map-container", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.5 });
-        initMap();
+
+        gsap.set(targetSection, { opacity: 0, display: 'block' });
+        targetSection.classList.add('active');
+        gsap.to(targetSection, { opacity: 1, duration: 0.5, ease: "power2.in" });
+
+        if (sectionId === 'inicio') {
+            gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+            gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+            gsap.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+        } else if (sectionId === 'about') {
+            gsap.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
+            gsap.from("#about p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
+            gsap.from(".lawyer-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
+            gsap.from("#about .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.9 });
+        } else if (sectionId === 'services') {
+            gsap.from("#services h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
+            gsap.from(".service-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.5 });
+            document.querySelectorAll('.service-card').forEach(card => {
+                gsap.from(card.querySelectorAll('.service-item'), {
+                    opacity: 0,
+                    y: 20,
+                    duration: 0.5,
+                    stagger: 0.1,
+                    ease: "power2.out",
+                    delay: 0.7
+                });
+            });
+            gsap.from("#services .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.9 });
+        } else if (sectionId === 'contact') {
+            gsap.from("#contact h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
+            gsap.from("#contact p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
+            gsap.from("#case-form > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
+            gsap.from("#contact .grid > div", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.9 });
+        } else if (sectionId === 'map') {
+            gsap.from("#map h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
+            gsap.from("#map-container", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.5 });
+            initMap();
+        }
+    } catch (error) {
+        console.error("Error in showSection:", error);
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded, starting loader sequence");
+    console.log("DOM fully loaded, starting initialization");
     try {
+        const loader = document.getElementById('loader');
+        const mainHeader = document.getElementById('main-header');
+        const inicioSection = document.getElementById('inicio');
         const loaderLogo = document.getElementById('loader-logo');
-        if (!loaderLogo) {
-            console.error("Loader logo element not found");
-            throw new Error("Missing loader-logo");
+
+        if (!loader || !mainHeader || !inicioSection || !loaderLogo) {
+            console.error("Critical elements missing:", { loader, mainHeader, inicioSection, loaderLogo });
+            throw new Error("Missing required DOM elements");
         }
+
         loaderLogo.addEventListener('error', () => {
-            console blittor("Failed to load logo image at images/logo.png");
+            console.error("Failed to load logo image at images/logo.png. Ensure the file exists in the images folder.");
         });
 
         // File upload handling
@@ -116,82 +125,118 @@ document.addEventListener('DOMContentLoaded', () => {
         let selectedFiles = [];
 
         fileInput.addEventListener('change', (e) => {
-            const newFiles = Array.from(e.target.files);
-            selectedFiles = [...selectedFiles, ...newFiles];
-            updateFilePreview();
-            // Reset input to allow re-selecting the same file
-            fileInput.value = '';
+            try {
+                const newFiles = Array.from(e.target.files);
+                selectedFiles = [...selectedFiles, ...newFiles];
+                updateFilePreview();
+                fileInput.value = ''; // Reset input
+            } catch (error) {
+                console.error("Error handling file input:", error);
+            }
         });
 
         function updateFilePreview() {
-            filePreview.innerHTML = '';
-            selectedFiles.forEach((file, index) => {
-                const fileContainer = document.createElement('div');
-                fileContainer.className = 'relative flex items-center bg-gray-800 border border-gold-600 rounded-lg p-2';
+            try {
+                filePreview.innerHTML = '';
+                selectedFiles.forEach((file, index) => {
+                    const fileContainer = document.createElement('div');
+                    fileContainer.className = 'relative flex items-center bg-gray-800 border border-gold-600 rounded-lg p-2';
 
-                const fileName = document.createElement('span');
-                fileName.className = 'text-gray-200 truncate max-w-[150px]';
-                fileName.textContent = file.name;
+                    const fileName = document.createElement('span');
+                    fileName.className = 'text-gray-200 truncate max-w-[150px]';
+                    fileName.textContent = file.name;
 
-                const deleteButton = document.createElement('button');
-                deleteButton.type = 'button';
-                deleteButton.className = 'ml-2 text-red-500 hover:text-red-400';
-                deleteButton.innerHTML = '&times;';
-                deleteButton.addEventListener('click', () => {
-                    selectedFiles.splice(index, 1);
-                    updateFilePreview();
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.className = 'ml-2 text-red-500 hover:text-red-400';
+                    deleteButton.innerHTML = '×';
+                    deleteButton.addEventListener('click', () => {
+                        selectedFiles.splice(index, 1);
+                        updateFilePreview();
+                    });
+
+                    fileContainer.appendChild(fileName);
+                    fileContainer.appendChild(deleteButton);
+                    filePreview.appendChild(fileContainer);
                 });
-
-                fileContainer.appendChild(fileName);
-                fileContainer.appendChild(deleteButton);
-                filePreview.appendChild(fileContainer);
-            });
+            } catch (error) {
+                console.error("Error updating file preview:", error);
+            }
         }
 
+        // Simplified loader sequence
+        console.log("Starting loader sequence");
         setTimeout(() => {
-            console.log("Hiding loader and showing main content");
-            const loader = document.getElementById('loader');
-            const mainHeader = document.getElementById('main-header');
-            const inicioSection = document.getElementById('inicio');
-
-            if (!loader || !mainHeader || !inicioSection) {
-                console.error("Required elements not found:", { loader, mainHeader, inicioSection });
-                document.querySelectorAll('#loader, #main-header, #inicio').forEach(el => {
-                    if (el.id === 'loader') el.style.display = 'none';
-                    else el.style.display = 'block';
+            try {
+                console.log("Hiding loader");
+                gsap.to(loader, {
+                    opacity: 0,
+                    duration: 1,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        loader.style.display = 'none';
+                        mainHeader.style.display = 'block';
+                        inicioSection.style.display = 'block';
+                        inicioSection.classList.add('active');
+                        console.log("Loader hidden, showing main content");
+                        initializeContent();
+                    }
                 });
-                return;
+            } catch (error) {
+                console.error("Error hiding loader:", error);
+                forceShowContent();
             }
+        }, 3000);
 
-            loader.style.opacity = '0';
-            loader.style.transition = 'opacity 1s';
-            setTimeout(() => {
-                console.log("Loader hidden, showing main content");
+        // Fallback to force content display
+        setTimeout(() => {
+            if (loader.style.display !== 'none') {
+                console.warn("Fallback: Forcing content display");
+                forceShowContent();
+            }
+        }, 6000);
+
+        function forceShowContent() {
+            try {
                 loader.style.display = 'none';
                 mainHeader.style.display = 'block';
                 inicioSection.style.display = 'block';
                 inicioSection.classList.add('active');
+                console.log("Forced content display");
+                initializeContent();
+            } catch (error) {
+                console.error("Error in forceShowContent:", error);
+            }
+        }
 
+        function initializeContent() {
+            try {
+                // Hero animation
                 const slides = document.querySelectorAll('#hero-animation .slide');
                 if (slides.length === 0) {
-                    console.error("No slides found for hero animation");
+                    console.warn("No slides found for hero animation");
                 } else {
-                    console.log(`Found ${slides.length} slides for hero animation`);
+                    console.log(`Found ${slides.length} slides`);
                     let currentSlide = 0;
                     const showSlide = (index) => {
-                        console.log(`Showing slide ${index}`);
-                        gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
-                        currentSlide = index % slides.length;
-                        gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                        try {
+                            gsap.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+                            currentSlide = index % slides.length;
+                            gsap.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                        } catch (error) {
+                            console.error("Error in slide animation:", error);
+                        }
                     };
                     showSlide(0);
                     setInterval(() => showSlide(currentSlide + 1), 6000);
                 }
 
+                // Initial animations
                 gsap.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
                 gsap.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
                 gsap.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
 
+                // Lawyer card hover effects
                 const lawyerCards = document.querySelectorAll('.lawyer-card');
                 lawyerCards.forEach(card => {
                     card.addEventListener('mouseenter', () => {
@@ -204,34 +249,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
+                // Service card hover effects
                 const serviceCards = document.querySelectorAll('.service-card');
                 serviceCards.forEach(card => {
                     card.addEventListener('mouseenter', () => {
-                        gsap.to(card.querySelector('.service-title'), {
-                            scale: 1.05,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                        gsap.to(card, {
-                            scale: 1.05,
-                            boxShadow: "0 0 15px rgba(255, 215, 0, 0.3)",
-                            duration: 0.3
-                        });
+                        gsap.to(card.querySelector('.service-title'), { scale: 1.05, duration: 0.3, ease: "power2.out" });
+                        gsap.to(card, { scale: 1.05, boxShadow: "0 0 15px rgba(255, 215, 0, 0.3)", duration: 0.3 });
                     });
                     card.addEventListener('mouseleave', () => {
-                        gsap.to(card.querySelector('.service-title'), {
-                            scale: 1,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                        gsap.to(card, {
-                            scale: 1,
-                            boxShadow: "0 0 0 rgba(255, 215, 0, 0)",
-                            duration: 0.3
-                        });
+                        gsap.to(card.querySelector('.service-title'), { scale: 1, duration: 0.3, ease: "power2.out" });
+                        gsap.to(card, { scale: 1, boxShadow: "0 0 0 rgba(255, 215, 0, 0)", duration: 0.3 });
                     });
                 });
 
+                // Navigation links
                 document.querySelectorAll('nav a[data-section], .case-button').forEach(link => {
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
@@ -240,14 +271,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
+                // Form submission
                 const caseForm = document.getElementById('case-form');
                 caseForm.addEventListener('submit', async (e) => {
                     e.preventDefault();
-                    const formData = new FormData(caseForm);
-                    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzt820yrgQzv6YeKOGrLuoQW1xK_erc3ijJLyXu_C4ncbTB9bI-bFITh59hADKpg_p_/exec';
-                    const maxFileSize = 10 * 1024 * 1024; // 10MB
-
                     try {
+                        const formData = new FormData(caseForm);
+                        const webAppUrl = 'https://script.google.com/macros/s/AKfycbzt820yrgQzv6YeKOGrLuoQW1xK_erc3ijJLyXu_C4ncbTB9bI-bFITh59hADKpg_p_/exec';
+                        const maxFileSize = 10 * 1024 * 1024; // 10MB
+
                         // Validate file sizes
                         for (const file of selectedFiles) {
                             if (file.size > maxFileSize) {
@@ -272,7 +304,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     reader.onload = () => resolve({
                                         name: file.name,
                                         mimeType: file.type,
-                                        data: reader.result.split(',')[1] // Base64 data
+                                        data: reader.result.split(',')[1]
                                     });
                                     reader.onerror = reject;
                                     reader.readAsDataURL(file);
@@ -283,17 +315,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         // Submit to Web App
                         console.log('Submitting form to:', webAppUrl);
-                        console.log('Form data:', textData);
                         const response = await fetch(webAppUrl, {
                             method: 'POST',
                             mode: 'no-cors',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
+                            headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(textData)
                         });
 
-                        console.log('Form submitted, assuming success (check server logs)');
+                        console.log('Form submitted, assuming success');
                         alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
                         caseForm.reset();
                         selectedFiles = [];
@@ -303,27 +332,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
                     }
                 });
-            }, 1000);
-        }, 3000);
-
+            } catch (error) {
+                console.error("Error initializing content:", error);
+            }
+        }
+    } catch (error) {
+        console.error("Critical error in DOMContentLoaded:", error);
+        // Emergency fallback
         setTimeout(() => {
             const loader = document.getElementById('loader');
-            if (loader && loader.style.display !== 'none') {
-                console.log("Fallback: Forcing loader hide");
+            const mainHeader = document.getElementById('main-header');
+            const inicioSection = document.getElementById('inicio');
+            if (loader && mainHeader && inicioSection) {
                 loader.style.display = 'none';
-                document.getElementById('main-header').style.display = 'block';
-                document.getElementById('inicio').style.display = 'block';
-                document.getElementById('inicio').classList.add('active');
-                showSection('inicio');
+                mainHeader.style.display = 'block';
+                inicioSection.style.display = 'block';
+                inicioSection.classList.add('active');
+                console.log("Emergency content display");
             }
-        }, 5000);
-    } catch (error) {
-        console.error("Critical error in loader sequence:", error);
-        const loader = document.getElementById('loader');
-        if (loader) loader.style.display = 'none';
-        document.getElementById('main-header').style.display = 'block';
-        document.getElementById('inicio').style.display = 'block';
-        document.getElementById('inicio').classList.add('active');
-        showSection('inicio');
+        }, 1000);
     }
 });
