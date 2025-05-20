@@ -17,29 +17,310 @@
     <div id="loader" class="fixed inset-0 bg-black flex items-center justify-center z-50">
         <img src="images/logo.png" alt="Morales-Galindo y Asociados" class="w-64 animate-pulse" id="loader-logo">
     </div>
-    <header id="main-header" class="fixed top-0 left-0 w-full bg-gradient-to-r from-gray-900 to-black shadow-xl border-b border-gold-600 z-50" style="display: none;">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <img id="logo-button" data-section="inicio" src="images/logo.png" alt="Logo" class="h-16 cursor-pointer transition-transform duration-300 hover:scale-105">
-            <nav class="hidden md:flex space-x-6">
-                <a href="#" data-section="inicio" class="text-gold-400 hover:text-gold-300 font-semibold transition-colors duration-300">Inicio</a>
-                <a href="#" data-section="about" class="text-gold-400 hover:text-gold-300 font-semibold transition-colors duration-300">Acerca de</a>
-                <a href="#" data-section="services" class="text-gold-400 hover:text-gold-300 font-semibold transition-colors duration-300">Servicios</a>
-                <a href="#" data-section="contact" class="text-gold-400 hover:text-gold-300 font-semibold transition-colors duration-300">Contacto</a>
-                <a href="#" data-section="map" class="text-gold-400 hover:text-gold-300 font-semibold transition-colors duration-300">Ubicaciones</a>
-            </nav>
-            <button id="hamburger-button" class="md:hidden text-gold-400 focus:outline-none">
-                <i class="fas fa-bars text-2xl"></i>
-            </button>
+    <header id="main-header" class="fixed top-0 left-0 w-full bg-black bg-opacity-90 shadow-lg z-50" style="display: none;">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <img id="logo-button" data-section="inicio" src="images/logo.png" alt="Logo" class="h-12 cursor-pointer">
+        <nav class="space-x-6">
+            <a href="#" data-section="inicio" class="text-gold-400 hover:text-gold-300 font-semibold">Inicio</a>
+            <a href="#" data-section="about" class="text-gold-400 hover:text-gold-300 font-semibold">Acerca de</a>
+            <a href="#" data-section="services" class="text-gold-400 hover:text-gold-300 font-semibold">Servicios</a>
+            <a href="#" data-section="contact" class="text-gold-400 hover:text-gold-300 font-semibold">Contacto</a>
+            <a href="#" data-section="map" class="text-gold-400 hover:text-gold-300 font-semibold">Ubicaciones</a>
+        </nav>
+    </div>
+</header>
+
+    <main>
+        
+<section id="inicio" class="section relative h-screen flex flex-col items-center justify-center text-center bg-black" style="display: block;">
+    <div id="hero-animation" class="absolute inset-0 z-0">
+    <div class="slide slide-0 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/onr.jpeg');" loading="lazy"></div>
+    <div class="slide slide-1 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/two.jpeg');" loading="lazy"></div>
+    <div class="slide slide-2 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/three.jpeg');" loading="lazy"></div>
+    <div class="slide slide-3 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/ofE1.jpg');" loading="lazy"></div>
+    <div class="slide slide-4 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/five.jpeg');" loading="lazy"></div>
+    <div class="slide slide-5 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/ofE3.jpg');" loading="lazy"></div>
+    <div class="slide slide-6 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/seven.jpeg');" loading="lazy"></div>
+    <div class="slide slide-7 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/eight.jpeg');" loading="lazy"></div>
+    <div class="slide slide-8 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/ofo2.jpg');" loading="lazy"></div>
+    <div class="slide slide-9 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/ten.jpeg');" loading="lazy"></div>
+    <div class="slide slide-10 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/eleven.jpeg');" loading="lazy"></div>
+    <div class="slide slide-11 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/twelve.jpeg');" loading="lazy"></div>
+    <div class="slide slide-12 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/CJM3.jpg');" loading="lazy"></div>
+    <div class="slide slide-13 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/CJM.jpg');" loading="lazy"></div>
+    <div class="slide slide-14 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/CJT.jpg');" loading="lazy"></div>
+</div>
+    <div class="absolute inset-0 bg-black opacity-50 z-1"></div>
+    <!-- Firm Name -->
+    <h1 class="relative z-20 text-5xl md:text-7xl font-extrabold text-gold-400 mb-8 tracking-tight">Morales Galindo & Asociados Abogados</h1>
+    <!-- Header Square -->
+    <div class="relative z-20 max-w-4xl mx-auto px-4 mb-8 opacity-100">
+        <div class="bg-black bg-opacity-80 p-8 rounded-lg border-2 border-gold-600 shadow-2xl hover:shadow-[0_0_20px_rgba(255,215,0,0.6)] transition-all duration-300 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gold-400 mb-4">Asesoría Legal de Excelencia</h2>
+            <p class="text-xl md:text-2xl text-gray-200">Brindamos soluciones legales especializadas en materia civil, familiar, laboral y amparo, con un compromiso inquebrantable con la justicia y la ética.</p>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-900 bg-opacity-95 w-full absolute top-full left-0 flex flex-col items-center space-y-4 py-6 transition-all duration-300">
-            <a href="#" data-section="inicio" class="text-gold-400 hover:text-gold-300 font-semibold text-lg">Inicio</a>
-            <a href="#" data-section="about" class="text-gold-400 hover:text-gold-300 font-semibold text-lg">Acerca de</a>
-            <a href="#" data-section="services" class="text-gold-400 hover:text-gold-300 font-semibold text-lg">Servicios</a>
-            <a href="#" data-section="contact" class="text-gold-400 hover:text-gold-300 font-semibold text-lg">Contacto</a>
-            <a href="#" data-section="map" class="text-gold-400 hover:text-gold-300 font-semibold text-lg">Ubicaciones</a>
+    </div>
+    <!-- Main Content with Squares -->
+    <div class="relative z-20 max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-6 mb-16">
+        <!-- Inspirational Square -->
+        <div class="bg-black bg-opacity-70 p-6 rounded-lg border border-gold-600 shadow-xl hover:shadow-[0_0_15px_rgba(255,215,0,0.5)] transition-all duration-300 max-w-sm text-center">
+            <h3 class="text-2xl font-bold text-gold-400 mb-4">Justicia con Pasión</h3>
+            <p class="text-lg text-gray-200">En Morales-Galindo y Asociados, luchamos por la justicia con honestidad, seriedad y pasión. Nuestros clientes confían en nosotros porque transformamos problemas en soluciones.</p>
         </div>
-    </header>
-    <!-- Rest of your original HTML remains unchanged -->
+        <!-- Location Square -->
+        <div class="bg-black bg-opacity-70 p-6 rounded-lg border border-gold-600 shadow-xl hover:shadow-[0_0_15px_rgba(255,215,0,0.5)] transition-all duration-300 max-w-sm text-center">
+            <h3 class="text-2xl font-bold text-gold-400 mb-4">Cerca de Ti</h3>
+            <p class="text-lg text-gray-200">Estamos ubicados en Ciudad de México, Puebla - Esperanza y Puebla - Reforma, listos para ofrecerte asesoría legal de élite donde estés.</p>
+        </div>
+    </div>
+    <!-- Call to Action -->
+    <div class="relative z-20 mt-8">
+        <a data-section="contact" class="case-button bg-gold-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-gold-300 transition transform hover:scale-105 animate-pulseButton cursor-pointer inline-block">Cuéntanos tu Caso</a>
+    </div>
+    <!-- Slideshow Caption -->
+    <div class="absolute bottom-4 right-4 z-20 max-w-md text-right caption">
+        <p class="text-sm md:text-base text-gray-200 italic">“A los problemas le damos solución, nuestra ética nos lo exige.”</p>
+        <p class="text-sm text-gold-400 mt-1">— Morales-Galindo y Asociados</p>
+    </div>
+</section>
+
+
+ 
+        
+    <section id="about" class="section py-16 bg-gray-900" style="display: none;">
+        <div class="container mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-8 text-gold-400">Acerca de Nosotros</h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">Morales Galindo & Asociados Abogados es más que una firma legal; es un bastión de justicia en Puebla. Guiados por nuestros valores y la pasión por el derecho, nuestros abogados luchan incansablemente por los derechos de nuestros clientes. Con oficinas en Esperanza Puebla, Revolución Puebla y Ciudad de México ofrecemos soluciones legales con humanidad y excelencia, porque la justicia no es solo un ideal, es nuestra vocación.</p>
+            <div class="flex flex-wrap justify-center gap-8">
+                <div class="w-full md:w-1/3 bg-gray-800 p-6 rounded-lg shadow-xl border border-gold-600 lawyer-card">
+                    <div class="relative group">
+                        <img src="images/Art.jpg" alt="Abogado Morales" class="w-64 h-64 mx-auto rounded-full mb-4 border-8 border-gold-400 shadow-lg transition-transform duration-300 group-hover:scale-110">
+                        <div class="absolute inset-0 rounded-full shadow-[0_0_20px_rgba(255,215,0,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gold-400">Arturo Morales Rojas</h3>
+                    <p>Licenciatura en Derecho - Universidad del Valle de México (UVM).</p>
+                </div>
+                <div class="w-full md:w-1/3 bg-gray-800 p-6 rounded-lg shadow-xl border border-gold-600 lawyer-card">
+                    <div class="relative group">
+                        <img src="images/Gal.JPG" alt="Abogado Galindo" class="w-64 h-64 mx-auto rounded-full mb-4 border-8 border-gold-400 shadow-lg transition-transform duration-300 group-hover:scale-110">
+                        <div class="absolute inset-0 rounded-full shadow-[0_0_20px_rgba(255,215,0,0.5)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-gold-400">Luis Ángel Galindo Méndez</h3>
+                    <p>Licenciatura en Derecho - UGMEX Campus Tehuacán.</p>
+                </div>
+            </div>
+            <a data-section="contact" class="case-button bg-gold-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-gold-300 transition transform hover:scale-105 animate-pulseButton cursor-pointer mt-8 inline-block">Cuéntanos tu Caso</a>
+        </div>
+    </section>
+
+
+<section id="services" class="section py-16 bg-black" style="display: none;">
+    <div class="container mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-8 text-gold-400">Nuestros Servicios</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-gold-600 service-card transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                <h3 class="text-3xl font-bold mb-4 text-gold-400 relative service-title">Derecho Civil<span class="absolute bottom-0 left-0 w-0 h-1 bg-gold-300 transition-all duration-300 group-hover:w-full"></span></h3>
+                <ul class="text-left text-gray-200 list-none space-y-2">
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Elaboración de Contratos (arrendamiento, compraventa, etc)</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Otorgamiento de Escritura Pública</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Reivindicatorio</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Usucapión</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Hipoteca</li>
+                </ul>
+            </div>
+            <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-gold-600 service-card transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                <h3 class="text-3xl font-bold mb-4 text-gold-400 relative service-title">Derecho Familiar<span class="absolute bottom-0 left-0 w-0 h-1 bg-gold-300 transition-all duration-300 group-hover:w-full"></span></h3>
+                <ul class="text-left text-gray-200 list-none space-y-2">
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Divorcio</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Pensión Alimenticia</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Guarda y Custodia</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Régimen de Visita y Convivencia</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Ejecución y/o Modificación de Convenio</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Reconocimiento de Paternidad</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Pérdida de Patria Potestad</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Sucesión Testamentaria e Intestamentaria</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Autorización Judicial Para que un Menor Salga del País</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Consignación de Alimentos</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Rectificación y Aclaración de Actas</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Certificación y Unificación de CURP</li>
+                </ul>
+            </div>
+            <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-gold-600 service-card transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                <h3 class="text-3xl font-bold mb-4 text-gold-400 relative service-title">Derecho Mercantil<span class="absolute bottom-0 left-0 w-0 h-1 bg-gold-300 transition-all duration-300 group-hover:w-full"></span></h3>
+                <ul class="text-left text-gray-200 list-none space-y-2">
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Cobro de pagarés</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Demandas y contestación de demanda contra bancos</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Sociedades (A.C., S.A., C.V., etc)</li>
+                </ul>
+            </div>
+            <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-gold-600 service-card transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                <h3 class="text-3xl font-bold mb-4 text-gold-400 relative service-title">Derecho Laboral<span class="absolute bottom-0 left-0 w-0 h-1 bg-gold-300 transition-all duration-300 group-hover:w-full"></span></h3>
+                <ul class="text-left text-gray-200 list-none space-y-2">
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Defensa Legal al Patrón</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Despido Injustificado</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Designación de Beneficiarios</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Contratos Laborales Individuales y Colectivos</li>
+                </ul>
+            </div>
+            <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-gold-600 service-card transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                <h3 class="text-3xl font-bold mb-4 text-gold-400 relative service-title">Derecho Penal<span class="absolute bottom-0 left-0 w-0 h-1 bg-gold-300 transition-all duration-300 group-hover:w-full"></span></h3>
+                <ul class="text-left text-gray-200 list-none space-y-2">
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Presentación de denuncias o querellas por cualquier delito ante el Ministerio Público</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Representación legal ante el Ministerio Público, fiscalía y Juzgados Estatales y Federales</li>
+                </ul>
+            </div>
+            <div class="bg-gray-900 p-6 rounded-lg shadow-xl border border-gold-600 service-card transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+                <h3 class="text-3xl font-bold mb-4 text-gold-400 relative service-title">Amparo<span class="absolute bottom-0 left-0 w-0 h-1 bg-gold-300 transition-all duration-300 group-hover:w-full"></span></h3>
+                <ul class="text-left text-gray-200 list-none space-y-2">
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Directo e Indirecto</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Contra leyes</li>
+                    <li class="service-item"><span class="text-gold-400 mr-2">➤</span>Representación Tercero Interesado</li>
+                </ul>
+            </div>
+        </div>
+        <a data-section="contact" class="case-button bg-gold-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-gold-300 transition transform hover:scale-105 animate-pulseButton cursor-pointer mt-8 inline-block">Cuéntanos tu Caso</a>
+    </div>
+</section>
+        
+
+    <section id="contact" class="section py-16 bg-black" style="display: none;">
+    <div class="container mx-auto text-center">
+        <h2 class="text-4xl font-bold mb-8 text-gold-400">Cuéntanos tu Caso</h2>
+        <p class="mb-6 max-w-2xl mx-auto">Describe tu caso y adjunta documentos para una consulta personalizada. Ofrecemos asesoría presencial y vía remota en Puebla, Tecamachalco, Chignahuapan, Ajalpan, y Esperanza.</p>
+        <p class="mb-6"><a href="http://wa.me/5633572693" target="_blank" class="text-gold-300 hover:text-gold-200">WhatsApp: +52 563 357 2693</a></p>
+        
+        <form id="case-form" class="max-w-2xl mx-auto space-y-6" enctype="multipart/form-data">
+            <div>
+                <label for="name" class="block text-lg font-semibold text-gold-400 mb-2">Nombre</label>
+                <input type="text" id="name" name="name" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
+            </div>
+            <div>
+                <label for="phone" class="block text-lg font-semibold text-gold-400 mb-2">Teléfono de Contacto</label>
+                <input type="tel" id="phone" name="phone" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400" pattern="[0-9]{10}" title="Por favor, ingrese un número de teléfono válido de 10 dígitos">
+            </div>
+            <div>
+                <label for="contact-time" class="block text-lg font-semibold text-gold-400 mb-2">Horario en que lo podemos contactar</label>
+                <input type="text" id="contact-time" name="contact-time" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400" placeholder="Ejemplo: 9:00 AM - 5:00 PM">
+            </div>
+            <div>
+                <label for="materia" class="block text-lg font-semibold text-gold-400 mb-2">Materia</label>
+                <select id="materia" name="materia" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
+                    <option value="" disabled selected>Seleccione una materia</option>
+                    <option value="Derecho Civil">Derecho Civil</option>
+                    <option value="Derecho Familiar">Derecho Familiar</option>
+                    <option value="Derecho Mercantil">Derecho Mercantil</option>
+                    <option value="Derecho Laboral">Derecho Laboral</option>
+                    <option value="Derecho Penal">Derecho Penal</option>
+                    <option value="Amparo">Amparo</option>
+                </select>
+            </div>
+            <div>
+                <label for="juicio" class="block text-lg font-semibold text-gold-400 mb-2">Juicio</label>
+                <select id="juicio" name="juicio" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400" disabled>
+                    <option value="" disabled selected>Primero seleccione una materia</option>
+                </select>
+            </div>
+            <div>
+                <label for="description" class="block text-lg font-semibold text-gold-400 mb-2">Cuéntanos tu Caso</label>
+                <textarea id="description" name="description" required rows="5" class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400"></textarea>
+            </div>
+            <div>
+                <label for="files" class="block text-lg font-semibold text-gold-400 mb-2">Adjunta tus Archivos (PDF, DOC, DOCX, JPG, PNG)</label>
+                <input type="file" id="files" name="files" multiple accept=".pdf,.doc,.docx,.jpg,.png" class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
+            </div>
+            <button type="submit" class="form-submit-button bg-yellow-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-yellow-300 transition transform hover:scale-105 animate-pulseButton">Enviar Caso</button>
+        </form>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8">
+            <div class="bg-gray-800 p-4 rounded-lg border border-gold-600">
+                <h3 class="text-xl font-semibold text-gold-400">Puebla</h3>
+                <p>Boulevard Esteban de Antuñano 2702, Piso 5, Col. Reforma, C.P. 72160</p>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-lg border border-gold-600">
+                <h3 class="text-xl font-semibold text-gold-400">Tecamachalco & Chignahuapan</h3>
+                <p>Oficinas para asesoría presencial y remota</p>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-lg border border-gold-600">
+                <h3 class="text-xl font-semibold text-gold-400">Ajalpan & Esperanza</h3>
+                <p>Servicios legales con atención personalizada</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section id="map" class="section py-16 bg-gray-900" style="display: none;">
+        <div class="container mx-auto text-center">
+            <h2 class="text-5xl font-extrabold mb-12 text-gold-400 tracking-tight animate-pulse">¡Explora Nuestras Oficinas!</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-24">
+                <div class="location-card bg-gray-800 p-6 rounded-lg shadow-xl border border-gold-600 transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]">
+                    <a href="https://maps.app.goo.gl/eQRAvjeo2PY3piD98?g_st=iwb" target="_blank">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-map-marker-alt text-gold-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gold-400">Puebla - Puebla</h3>
+                    </div>
+                    <p class="text-gray-200">Blvrd Esteban de Antuñano 2702, Piso 5, Reforma, 72160 Puebla, Pue. México</p>
+                    </a>
+                </div>
+                <div class="location-card bg-gray-800 p-6 rounded-lg shadow-xl border border-gold-600 transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]">
+                    <a href="https://maps.app.goo.gl/kY1VSmovXecAV6j19?g_st=iwb" target="_blank">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-map-marker-alt text-gold-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gold-400">Esperanza - Puebla</h3>
+                    </div>
+                    <p class="text-gray-200">Avenida Independencia 11, Piso 2, Esperanza, C.P 75560, Puebla, México</p>
+                    </a>
+                </div>
+                <div class="location-card bg-gray-800 p-6 rounded-lg shadow-xl border border-gold-600 transition-transform duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(255,215,0,0.5)]">
+                   <a href="https://maps.google.com/?q=Calz.+Gral.+Mariano+Escobedo+510,+Anzures,+11590+Ciudad+de+Mexico" target="_blank">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-map-marker-alt text-gold-400 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold text-gold-400">Ciudad de México</h3>
+                    </div>
+                    <p class="text-gray-200">Calz. Gral. Mariano Escobedo n°510 Penthouse, Col. Anzures, C.P. 11590, Alcaldia Miguel Hidalgo, Ciudad de Mexico</p>
+                   </a>
+                </div>
+            </div>
+            <div id="map-container" class="h-[400px] w-full border-2 border-gold-600 rounded-lg"></div>
+        </div>
+    </section>
+</main>
+    
+       <footer id="footer" class="bg-black text-gold-400 py-8 border-t border-gold-600">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Contact Info & Copyright -->
+            <div>
+                <h3 class="text-xl font-semibold text-gold-300 mb-4">Contáctanos</h3>
+                <p class="flex items-center mb-2">
+                    <i class="fa-solid fa-phone text-gold-300 mr-2"></i>
+                    <a href="tel:+525633572693" class="hover:text-gold-200">+52 563 357 2693</a>
+                </p>
+                <p class="flex items-center mb-2">
+                    <i class="fa-solid fa-envelope text-gold-300 mr-2"></i>
+                    <a href="mailto:juridico.moralesyasociados33@gmail.com" class="hover:text-gold-200">juridico.moralesyasociados33@gmail.com</a>
+                </p>
+                <p class="mt-4 text-sm">© 2025 Morales-Galindo y Asociados. Todos los derechos reservados.</p>
+            </div>
+            <!-- Social Media -->
+            <div>
+                <h3 class="text-xl font-semibold text-gold-300 mb-4">Síguenos</h3>
+                <p class="flex items-center mb-2">
+                    <i class="fa-brands fa-facebook text-gold-300 mr-2"></i>
+                    <a href="https://www.facebook.com/profile.php?id=61553232607738&mibextid=LQQJ4d" target="_blank" class="hover:text-gold-200">Facebook</a>
+                </p>
+            </div>
+            <!-- Offices -->
+            <div>
+                <h3 class="text-xl font-semibold text-gold-300 mb-4">Nuestras Oficinas</h3>
+                <p class="flex items-center mb-2">
+                    <i class="fa-solid fa-location-dot text-gold-300 mr-2"></i>
+                    Puebla - Reforma, Puebla - Esperanza, Ciudad de México
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
