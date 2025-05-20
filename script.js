@@ -1,5 +1,3 @@
-/* Existing script.js content with added hamburger menu functionality */
-
 function initMap() {
     console.log("Initializing Google Map");
     const mapContainer = document.getElementById("map-container");
@@ -133,7 +131,6 @@ function showSection(sectionId) {
         initMap();
     }
 
-    // Close mobile menu if open
     const mobileMenu = document.getElementById('mobile-menu');
     const hamburgerButton = document.getElementById('hamburger-button');
     if (mobileMenu && mobileMenu.classList.contains('open')) {
@@ -252,107 +249,105 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainHeader = document.getElementById('main-header');
     const inicioSection = document.getElementById('inicio');
 
-    if (!loader || !mainHeader || !inicioSection) {
-        console.error("Missing critical elements:", { loader, mainHeader, inicioSection });
-        if (loader) loader.style.display = 'none';
-        if (mainHeader) mainHeader.style.display = 'block';
-        if (inicioSection) {
+    try {
+        if (!loader || !mainHeader || !inicioSection) {
+            throw new Error("Missing critical elements: " + JSON.stringify({ loader: !!loader, mainHeader: !!mainHeader, inicioSection: !!inicioSection }));
+        }
+
+        const hideLoader = () => {
+            console.log("Hiding loader and showing main content");
+            loader.style.display = 'none';
+            mainHeader.style.display = 'block';
+            mainHeader.style.opacity = '1';
             inicioSection.style.display = 'block';
+            inicioSection.style.opacity = '1';
             inicioSection.classList.add('active');
+
             const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
-            contentElements.forEach(el => el.style.opacity = '1');
-        }
-        showSection('inicio');
-        initializeSlideshow();
-        return;
-    }
-
-    const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
-        to: (el, opts) => {
-            console.warn("GSAP not loaded, using CSS fallback");
-            el.style.transition = 'opacity 0.5s';
-            el.style.opacity = opts.opacity;
-            if (opts.onComplete) setTimeout(opts.onComplete, 500);
-        },
-        from: (el, opts) => {
-            console.warn("GSAP not loaded, using CSS fallback");
-            el.style.transition = `all ${opts.duration || 0.5}s ${opts.ease || 'ease'}`;
-            el.style.opacity = 0;
-            el.style.transform = `translateY(${opts.y || 0}px)`;
-            setTimeout(() => {
-                el.style.opacity = 1;
+            contentElements.forEach(el => {
+                el.style.opacity = '1';
                 el.style.transform = 'translateY(0)';
-            }, 100);
-        },
-        set: (el, opts) => {
-            el.style.opacity = opts.opacity !== undefined ? opts.opacity : el.style.opacity;
-            el.style.transform = opts.scale !== undefined ? `scale(${opts.scale})` : el.style.transform;
-        }
-    };
+            });
 
-    const hideLoader = () => {
-        console.log("Hiding loader and showing main content");
-        safeGSAP.to(loader, {
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            onComplete: () => {
-                loader.style.display = 'none';
-                mainHeader.style.display = 'block';
-                inicioSection.style.display = 'block';
-                inicioSection.classList.add('active');
+            const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
+                from: (el, opts) => {
+                    el.style.transition = `all ${opts.duration || 0.5}s ${opts.ease || 'ease'}`;
+                    el.style.opacity = 0;
+                    el.style.transform = `translateY(${opts.y || 0}px)`;
+                    setTimeout(() => {
+                        el.style.opacity = 1;
+                        el.style.transform = 'translateY(0)';
+                    }, 100);
+                }
+            };
 
-                safeGSAP.set("#inicio, #inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .caption, #inicio .case-button", { opacity: 1 });
-
+            try {
                 safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
                 safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
                 safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
                 safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
                 safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
-
-                setTimeout(initializeSlideshow, 500);
-
-                const footerIcons = document.querySelectorAll('#footer i');
-                footerIcons.forEach((icon, index) => {
-                    safeGSAP.from(icon, {
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        delay: 0.5 + index * 0.2
-                    });
-                });
-
-                inicioSection.style.display = 'none';
-                setTimeout(() => {
-                    inicioSection.style.display = 'block';
-                }, 10);
+            } catch (animError) {
+                console.error("Animation error:", animError);
             }
-        });
-    };
 
-    setTimeout(hideLoader, 2000);
+            initializeSlideshow();
 
-    setTimeout(() => {
-        if (loader.style.display !== 'none') {
-            console.log("Fallback: Forcing loader hide");
-            loader.style.display = 'none';
+            const footerIcons = document.querySelectorAll('#footer i');
+            footerIcons.forEach((icon, index) => {
+                safeGSAP.from(icon, {
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    delay: 0.5 + index * 0.2
+                });
+            });
+        };
+
+        setTimeout(hideLoader, 2000);
+    } catch (error) {
+        console.error("Loader error:", error);
+        if (loader) loader.style.display = 'none';
+        if (mainHeader) {
             mainHeader.style.display = 'block';
-            inicioSection.style.display = 'block';
-            inicioSection.classList.add('active');
-            safeGSAP.set("#inicio, #inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .caption, #inicio .case-button", { opacity: 1 });
-            showSection('inicio');
-            setTimeout(initializeSlideshow, 500);
-            inicioSection.style.display = 'none';
-            setTimeout(() => {
-                inicioSection.style.display = 'block';
-            }, 10);
+            mainHeader.style.opacity = '1';
         }
-    }, 4000);
+        if (inicioSection) {
+            inicioSection.style.display = 'block';
+            inicioSection.style.opacity = '1';
+            inicioSection.classList.add('active');
+            const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
+            contentElements.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            });
+        }
+        initializeSlideshow();
+    }
+});
 
-    // Hamburger menu toggle
-    const hamburgerButton = document.getElementById('hamburger-button');
-    if (hamburgerButton) {
-        hamburgerButton.addEventListener('click', toggleMobileMenu);
+window.addEventListener('load', () => {
+    const loader = document.getElementById('loader');
+    const mainHeader = document.getElementById('main-header');
+    const inicioSection = document.getElementById('inicio');
+    if (loader && loader.style.display !== 'none') {
+        console.log("Window load: Forcing loader hide");
+        loader.style.display = 'none';
+        if (mainHeader) {
+            mainHeader.style.display = 'block';
+            mainHeader.style.opacity = '1';
+        }
+        if (inicioSection) {
+            inicioSection.style.display = 'block';
+            inicioSection.style.opacity = '1';
+            inicioSection.classList.add('active');
+            const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
+            contentElements.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            });
+        }
+        initializeSlideshow();
     }
 });
 
@@ -433,7 +428,7 @@ const juicioOptions = {
         'Pérdida de Patria Potestad',
         'Sucesión Testamentaria e Intestamentaria',
         'Autorización Judicial Para que un Menor Salga del País (Obtención de Visa y Pasaporte)',
-        'Consignacion de Alimentos',
+        'Consignacion eavesdropping de Alimentos',
         'Rectificación y Aclaración de Actas de Nacimiento, Defunción, Matrimonio',
         'Certificación y Unificación de CURP'
     ],
@@ -549,14 +544,20 @@ window.addEventListener('error', (event) => {
         loader.style.display = 'none';
         const mainHeader = document.getElementById('main-header');
         const inicioSection = document.getElementById('inicio');
-        if (mainHeader) mainHeader.style.display = 'block';
+        if (mainHeader) {
+            mainHeader.style.display = 'block';
+            mainHeader.style.opacity = '1';
+        }
         if (inicioSection) {
             inicioSection.style.display = 'block';
+            inicioSection.style.opacity = '1';
             inicioSection.classList.add('active');
             const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
-            contentElements.forEach(el => el.style.opacity = '1');
+            contentElements.forEach(el => {
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            });
         }
-        showSection('inicio');
         initializeSlideshow();
     }
 });
