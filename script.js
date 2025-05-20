@@ -101,6 +101,7 @@ function showSection(sectionId) {
         safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
         safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
         safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+        initializeSlideshow();
     } else if (sectionId === 'about') {
         safeGSAP.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
         safeGSAP.from("#about p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
@@ -133,6 +134,71 @@ function showSection(sectionId) {
     }
 }
 
+// Initialize hero slideshow
+function initializeSlideshow() {
+    const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
+        to: (el, opts) => {
+            console.warn("GSAP not loaded, using CSS fallback");
+            el.style.transition = 'opacity 0.5s, transform 0.5s';
+            el.style.opacity = opts.opacity;
+            el.style.transform = `scale(${opts.scale || 1})`;
+        },
+        set: (el, opts) => {
+            el.style.opacity = opts.opacity !== undefined ? opts.opacity : el.style.opacity;
+            el.style.transform = opts.scale !== undefined ? `scale(${opts.scale})` : el.style.transform;
+        }
+    };
+
+    try {
+        const slides = document.querySelectorAll('#hero-animation .slide');
+        if (slides.length === 0) {
+            console.warn("No slides found for hero animation");
+            return;
+        }
+
+        console.log(`Found ${slides.length} slides for hero animation`);
+
+        // Verify slide images are loaded
+        slides.forEach((slide, index) => {
+            const bgImage = slide.style.backgroundImage;
+            if (!bgImage || bgImage === 'none') {
+                console.warn(`Slide ${index} has no background image`);
+                slide.style.backgroundColor = '#1F2937'; // Fallback color
+            }
+        });
+
+        // Reset all slides
+        slides.forEach(slide => safeGSAP.set(slide, { opacity: 0, scale: 1.1 }));
+
+        // Show first slide
+        if (slides[0]) {
+            safeGSAP.set(slides[0], { opacity: 1, scale: 1 });
+        }
+
+        let currentSlide = 0;
+        const showSlide = (index) => {
+            console.log(`Showing slide ${index}`);
+            if (slides[currentSlide]) {
+                safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+            }
+            currentSlide = index % slides.length;
+            if (slides[currentSlide]) {
+                safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+            }
+        };
+
+        setInterval(() => showSlide(currentSlide + 1), 6000);
+    } catch (error) {
+        console.error("Error in slideshow:", error);
+        // Fallback: Show first slide statically
+        const firstSlide = document.querySelector('#hero-animation .slide');
+        if (firstSlide) {
+            firstSlide.style.opacity = 1;
+            firstSlide.style.transform = 'scale(1)';
+        }
+    }
+}
+
 // Loader and initial setup
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, starting loader sequence");
@@ -148,8 +214,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (inicioSection) {
             inicioSection.style.display = 'block';
             inicioSection.classList.add('active');
+            // Force content visibility
+            const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
+            contentElements.forEach(el => el.style.opacity = '1');
         }
         showSection('inicio');
+        initializeSlideshow();
         return;
     }
 
@@ -170,7 +240,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 el.style.transform = 'translateY(0)';
             }, 100);
         },
-        set: (el, opts) => Object.assign(el.style, opts)
+        set: (el, opts) => {
+            el.style.opacity = opts.opacity !== undefined ? opts.opacity : el.style.opacity;
+            el.style.transform = opts.scale !== undefined ? `scale(${opts.scale})` : el.style.transform;
+        }
     };
 
     // Hide loader and show content
@@ -185,7 +258,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 mainHeader.style.display = 'block';
                 inicioSection.style.display = 'block';
                 inicioSection.classList.add('active');
-                showSection('inicio');
+
+                // Force content visibility
+                safeGSAP.set("#inicio, #inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .caption, #inicio .case-button", { opacity: 1 });
+
+                // Run animations
+                safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+                safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+                safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+                safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
+                safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+
+                // Initialize slideshow after content is visible
+                setTimeout(initializeSlideshow, 500);
 
                 // Animate footer icons
                 const footerIcons = document.querySelectorAll('#footer i');
@@ -198,26 +283,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                // Start hero slideshow
-                try {
-                    const slides = document.querySelectorAll('#hero-animation .slide');
-                    if (slides.length > 0) {
-                        console.log(`Found ${slides.length} slides for hero animation`);
-                        let currentSlide = 0;
-                        const showSlide = (index) => {
-                            console.log(`Showing slide ${index}`);
-                            safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
-                            currentSlide = index % slides.length;
-                            safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
-                        };
-                        showSlide(0);
-                        setInterval(() => showSlide(currentSlide + 1), 6000);
-                    } else {
-                        console.warn("No slides found for hero animation");
-                    }
-                } catch (slideError) {
-                    console.error("Error in slideshow:", slideError);
-                }
+                // Force re-render
+                inicioSection.style.display = 'none';
+                setTimeout(() => {
+                    inicioSection.style.display = 'block';
+                }, 10);
             }
         });
     };
@@ -233,7 +303,14 @@ document.addEventListener('DOMContentLoaded', () => {
             mainHeader.style.display = 'block';
             inicioSection.style.display = 'block';
             inicioSection.classList.add('active');
+            safeGSAP.set("#inicio, #inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .caption, #inicio .case-button", { opacity: 1 });
             showSection('inicio');
+            setTimeout(initializeSlideshow, 500);
+            // Force re-render
+            inicioSection.style.display = 'none';
+            setTimeout(() => {
+                inicioSection.style.display = 'block';
+            }, 10);
         }
     }, 4000);
 });
@@ -287,11 +364,11 @@ serviceCards.forEach(card => {
     });
 });
 
-// Navigation and Case Button Clicks
-document.querySelectorAll('nav a[data-section], .case-button').forEach(link => {
+// Navigation, Case Button, and Logo Clicks
+document.querySelectorAll('nav a[data-section], .case-button, #logo-button').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
-        const sectionId = link.getAttribute('data-section');
+        const sectionId = link.getAttribute('data-section') || 'inicio';
         showSection(sectionId);
     });
 });
@@ -440,7 +517,10 @@ window.addEventListener('error', (event) => {
         if (inicioSection) {
             inicioSection.style.display = 'block';
             inicioSection.classList.add('active');
+            const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
+            contentElements.forEach(el => el.style.opacity = '1');
         }
         showSection('inicio');
+        initializeSlideshow();
     }
 });
