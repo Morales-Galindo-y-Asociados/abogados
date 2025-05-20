@@ -170,18 +170,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 inicioSection.classList.add('active');
 
                 // Animate footer icons
+// Animate footer icons
 const footerIcons = document.querySelectorAll('#footer i');
 footerIcons.forEach((icon, index) => {
     safeGSAP.from(icon, {
         opacity: 0,
-        y: 10,
         duration: 0.8,
         ease: "power2.out",
-        delay: 0.5 + index * 0.2,
-        onStart: () => icon.classList.add('footer-icon')
+        delay: 0.5 + index * 0.2
     });
 });
-
                 // Start hero slideshow
                 const slides = document.querySelectorAll('#hero-animation .slide');
                 if (slides.length > 0) {
