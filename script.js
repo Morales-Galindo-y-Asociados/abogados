@@ -1,4 +1,5 @@
-// Initialize Google Map (deferred until map section is shown)
+/* Existing script.js content with added hamburger menu functionality */
+
 function initMap() {
     console.log("Initializing Google Map");
     const mapContainer = document.getElementById("map-container");
@@ -48,7 +49,6 @@ function initMap() {
     }
 }
 
-// Show section with animations
 function showSection(sectionId) {
     console.log(`Showing section: ${sectionId}`);
     const sections = document.querySelectorAll('.section');
@@ -132,9 +132,15 @@ function showSection(sectionId) {
         safeGSAP.from("#map-container", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.9 });
         initMap();
     }
+
+    // Close mobile menu if open
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerButton = document.getElementById('hamburger-button');
+    if (mobileMenu && mobileMenu.classList.contains('open')) {
+        toggleMobileMenu();
+    }
 }
 
-// Initialize hero slideshow
 function initializeSlideshow() {
     const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
         to: (el, opts) => {
@@ -158,19 +164,16 @@ function initializeSlideshow() {
 
         console.log(`Found ${slides.length} slides for hero animation`);
 
-        // Verify slide images are loaded
         slides.forEach((slide, index) => {
             const bgImage = slide.style.backgroundImage;
             if (!bgImage || bgImage === 'none') {
                 console.warn(`Slide ${index} has no background image`);
-                slide.style.backgroundColor = '#1F2937'; // Fallback color
+                slide.style.backgroundColor = '#1F2937';
             }
         });
 
-        // Reset all slides
         slides.forEach(slide => safeGSAP.set(slide, { opacity: 0, scale: 1.1 }));
 
-        // Show first slide
         if (slides[0]) {
             safeGSAP.set(slides[0], { opacity: 1, scale: 1 });
         }
@@ -190,7 +193,6 @@ function initializeSlideshow() {
         setInterval(() => showSlide(currentSlide + 1), 6000);
     } catch (error) {
         console.error("Error in slideshow:", error);
-        // Fallback: Show first slide statically
         const firstSlide = document.querySelector('#hero-animation .slide');
         if (firstSlide) {
             firstSlide.style.opacity = 1;
@@ -199,7 +201,50 @@ function initializeSlideshow() {
     }
 }
 
-// Loader and initial setup
+function toggleMobileMenu() {
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-button').querySelector('i');
+    const isOpen = mobileMenu.classList.contains('open');
+    const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
+        to: (el, opts) => {
+            el.style.transition = `all ${opts.duration || 0.3}s ${opts.ease || 'ease'}`;
+            el.style.opacity = opts.opacity;
+            el.style.transform = `translateY(${opts.y || 0}%)`;
+            if (opts.onComplete) setTimeout(opts.onComplete, opts.duration * 1000 || 300);
+        },
+        set: (el, opts) => Object.assign(el.style, opts)
+    };
+
+    if (isOpen) {
+        safeGSAP.to(mobileMenu, {
+            opacity: 0,
+            y: -100,
+            duration: 0.3,
+            ease: "power2.out",
+            onComplete: () => {
+                mobileMenu.classList.remove('open');
+                mobileMenu.classList.add('hidden');
+                hamburgerIcon.classList.remove('fa-times');
+                hamburgerIcon.classList.add('fa-bars');
+            }
+        });
+    } else {
+        mobileMenu.classList.remove('hidden');
+        mobileMenu.classList.add('open');
+        safeGSAP.to(mobileMenu, { opacity: 1, y: 0, duration: 0.3, ease: "power2.in" });
+        hamburgerIcon.classList.remove('fa-bars');
+        hamburgerIcon.classList.add('fa-times');
+        safeGSAP.from('#mobile-menu a', {
+            opacity: 0,
+            y: 20,
+            duration: 0.5,
+            stagger: 0.1,
+            ease: "power2.out",
+            delay: 0.2
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, starting loader sequence");
 
@@ -214,7 +259,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (inicioSection) {
             inicioSection.style.display = 'block';
             inicioSection.classList.add('active');
-            // Force content visibility
             const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
             contentElements.forEach(el => el.style.opacity = '1');
         }
@@ -246,7 +290,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Hide loader and show content
     const hideLoader = () => {
         console.log("Hiding loader and showing main content");
         safeGSAP.to(loader, {
@@ -259,20 +302,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 inicioSection.style.display = 'block';
                 inicioSection.classList.add('active');
 
-                // Force content visibility
                 safeGSAP.set("#inicio, #inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .caption, #inicio .case-button", { opacity: 1 });
 
-                // Run animations
                 safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
                 safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
                 safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
                 safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
                 safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
 
-                // Initialize slideshow after content is visible
                 setTimeout(initializeSlideshow, 500);
 
-                // Animate footer icons
                 const footerIcons = document.querySelectorAll('#footer i');
                 footerIcons.forEach((icon, index) => {
                     safeGSAP.from(icon, {
@@ -283,7 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                // Force re-render
                 inicioSection.style.display = 'none';
                 setTimeout(() => {
                     inicioSection.style.display = 'block';
@@ -292,10 +330,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    // Execute loader hide after 2 seconds
     setTimeout(hideLoader, 2000);
 
-    // Fallback: Force hide loader after 4 seconds
     setTimeout(() => {
         if (loader.style.display !== 'none') {
             console.log("Fallback: Forcing loader hide");
@@ -306,16 +342,20 @@ document.addEventListener('DOMContentLoaded', () => {
             safeGSAP.set("#inicio, #inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .caption, #inicio .case-button", { opacity: 1 });
             showSection('inicio');
             setTimeout(initializeSlideshow, 500);
-            // Force re-render
             inicioSection.style.display = 'none';
             setTimeout(() => {
                 inicioSection.style.display = 'block';
             }, 10);
         }
     }, 4000);
+
+    // Hamburger menu toggle
+    const hamburgerButton = document.getElementById('hamburger-button');
+    if (hamburgerButton) {
+        hamburgerButton.addEventListener('click', toggleMobileMenu);
+    }
 });
 
-// Lawyer and Service Card Animations
 const lawyerCards = document.querySelectorAll('.lawyer-card');
 lawyerCards.forEach(card => {
     card.addEventListener('mouseenter', () => {
@@ -364,8 +404,7 @@ serviceCards.forEach(card => {
     });
 });
 
-// Navigation, Case Button, and Logo Clicks
-document.querySelectorAll('nav a[data-section], .case-button, #logo-button').forEach(link => {
+document.querySelectorAll('nav a[data-section], .case-button, #logo-button, #mobile-menu a[data-section]').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const sectionId = link.getAttribute('data-section') || 'inicio';
@@ -373,7 +412,6 @@ document.querySelectorAll('nav a[data-section], .case-button, #logo-button').for
     });
 });
 
-// Dynamic Juicio Options based on Materia selection
 const materiaSelect = document.getElementById('materia');
 const juicioSelect = document.getElementById('juicio');
 
@@ -436,13 +474,12 @@ materiaSelect.addEventListener('change', () => {
     }
 });
 
-// Form Submission
 const caseForm = document.getElementById('case-form');
 caseForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(caseForm);
     const webAppUrl = 'https://script.google.com/macros/s/AKfycbzt820yrgQzv6YeKOGrLuoQW1xK_erc3ijJLyXu_C4ncbTB9bI-bFITh59hADKpg_p_/exec';
-    const maxFileSize = 10 * 1024 * 1024; // 10MB
+    const maxFileSize = 10 * 1024 * 1024;
 
     try {
         const files = formData.getAll('files');
@@ -498,7 +535,6 @@ caseForm.addEventListener('submit', async (e) => {
     }
 });
 
-// Global error handler
 window.addEventListener('error', (event) => {
     console.error("Global error caught:", {
         message: event.message,
