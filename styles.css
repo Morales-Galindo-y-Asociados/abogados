@@ -66,6 +66,8 @@ main {
 #inicio .bg-opacity-80, #inicio .bg-opacity-70 {
     backdrop-filter: blur(4px);
     transition: all 0.3s ease;
+    display: block !important;
+    opacity: 1 !important;
 }
 
 #inicio .bg-opacity-80:hover, #inicio .bg-opacity-70:hover {
@@ -74,12 +76,43 @@ main {
 
 #inicio .bottom-4 {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    position: absolute;
+    bottom: 1rem !important;
+    right: 1rem !important;
+    text-align: right !important;
 }
 
 /* Ensure content stays above slideshow */
 #inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .bottom-4 {
     position: relative;
-    z-index: 20;
+    z-index: 20 !important;
+}
+
+/* Button styles */
+#inicio .case-button {
+    background-color: #FFD700 !important;
+    color: #000000 !important;
+    padding: 1rem 2rem !important;
+    border-radius: 9999px !important;
+    font-weight: 600 !important;
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+    display: inline-block !important;
+}
+
+#inicio .case-button:hover {
+    background-color: #FBBF24 !important;
+    transform: scale(1.05) !important;
+}
+
+/* Pulse animation for button */
+@keyframes pulseButton {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.animate-pulseButton {
+    animation: pulseButton 2s infinite ease-in-out;
 }
 
 /* Responsive adjustments */
@@ -97,10 +130,10 @@ main {
         max-width: 100%;
     }
     #inicio .bottom-4 {
-        text-align: center;
-        right: 0;
-        left: 0;
-        padding: 0 1rem;
+        text-align: center !important;
+        right: 0 !important;
+        left: 0 !important;
+        padding: 0 1rem !important;
     }
     #inicio h1 {
         font-size: 2.5rem;
