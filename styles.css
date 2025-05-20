@@ -142,3 +142,22 @@ main {
         font-size: 2.5rem;
     }
 }
+
+/* Form submit button styles */
+.form-submit-button {
+    background-color: #FFD700 !important; /* Fallback gold color */
+    color: #000000 !important;
+    padding: 1rem 2rem !important;
+    border-radius: 9999px !important;
+    font-weight: 600 !important;
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+    display: inline-block !important;
+    margin-top: 1rem !important;
+    z-index: 10 !important;
+    opacity: 1 !important;
+}
+
+.form-submit-button:hover {
+    background-color: #FBBF24 !important;
+    transform: scale(1.05) !important;
+}
