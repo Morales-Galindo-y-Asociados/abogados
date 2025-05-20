@@ -17,20 +17,18 @@
     <div id="loader" class="fixed inset-0 bg-black flex items-center justify-center z-50">
         <img src="images/logo.png" alt="Morales-Galindo y Asociados" class="w-64 animate-pulse" id="loader-logo">
     </div>
-    <header class="bg-black text-gold-400 py-4 sticky top-0 z-40 shadow-lg border-b border-gold-600" id="main-header" style="display: none;">
-        <nav class="container mx-auto flex justify-between items-center">
-            <div class="logo">
-                <img src="images/logo.png" alt="Morales-Galindo y Asociados" class="w-32 transition-transform hover:scale-110">
-            </div>
-            <ul class="flex gap-8">
-                <li><a data-section="inicio" class="hover:text-gold-300 font-semibold cursor-pointer">Inicio</a></li>
-                <li><a data-section="about" class="hover:text-gold-300 font-semibold cursor-pointer">Acerca de</a></li>
-                <li><a data-section="services" class="hover:text-gold-300 font-semibold cursor-pointer">Servicios</a></li>
-                <li><a data-section="contact" class="hover:text-gold-300 font-semibold cursor-pointer">Contacto</a></li>
-                <li><a data-section="map" class="hover:text-gold-300 font-semibold cursor-pointer">Ubicaciones</a></li>
-            </ul>
+    <header id="main-header" class="fixed top-0 left-0 w-full bg-black bg-opacity-90 shadow-lg z-50" style="display: none;">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+        <img id="logo-button" data-section="inicio" src="images/logo.png" alt="Logo" class="h-12 cursor-pointer">
+        <nav class="space-x-6">
+            <a href="#" data-section="inicio" class="text-gold-400 hover:text-gold-300 font-semibold">Inicio</a>
+            <a href="#" data-section="about" class="text-gold-400 hover:text-gold-300 font-semibold">Acerca de</a>
+            <a href="#" data-section="services" class="text-gold-400 hover:text-gold-300 font-semibold">Servicios</a>
+            <a href="#" data-section="contact" class="text-gold-400 hover:text-gold-300 font-semibold">Contacto</a>
+            <a href="#" data-section="map" class="text-gold-400 hover:text-gold-300 font-semibold">Ubicaciones</a>
         </nav>
-    </header>
+    </div>
+</header>
 
     <main>
         
