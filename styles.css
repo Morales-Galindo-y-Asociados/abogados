@@ -74,16 +74,17 @@ main {
     transform: scale(1.02);
 }
 
-#inicio .bottom-4 {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    position: absolute;
+#inicio .caption {
+    position: absolute !important;
     bottom: 1rem !important;
     right: 1rem !important;
     text-align: right !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 20 !important;
 }
 
 /* Ensure content stays above slideshow */
-#inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .bottom-4 {
+#inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .caption {
     position: relative;
     z-index: 20 !important;
 }
@@ -97,6 +98,7 @@ main {
     font-weight: 600 !important;
     transition: background-color 0.3s ease, transform 0.3s ease !important;
     display: inline-block !important;
+    margin-top: 2rem !important;
 }
 
 #inicio .case-button:hover {
@@ -129,11 +131,12 @@ main {
     #inicio .max-w-sm, #inicio .max-w-4xl {
         max-width: 100%;
     }
-    #inicio .bottom-4 {
+    #inicio .caption {
         text-align: center !important;
         right: 0 !important;
         left: 0 !important;
         padding: 0 1rem !important;
+        bottom: 1.5rem !important;
     }
     #inicio h1 {
         font-size: 2.5rem;
