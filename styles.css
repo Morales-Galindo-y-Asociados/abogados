@@ -49,6 +49,7 @@ main {
     font-family: sans-serif;
     line-height: 1.4;
 }
+
 #footer p {
     display: flex;
     align-items: center;
@@ -57,9 +58,28 @@ main {
 }
 
 /* Animation for footer icons */
-/* Animation for footer icons */
 .footer-icon {
     opacity: 0;
+}
+
+/* Inicio Section Styles */
+#inicio .bg-opacity-80, #inicio .bg-opacity-70 {
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+#inicio .bg-opacity-80:hover, #inicio .bg-opacity-70:hover {
+    transform: scale(1.02);
+}
+
+#inicio .bottom-4 {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Ensure content stays above slideshow */
+#inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .bottom-4 {
+    position: relative;
+    z-index: 20;
 }
 
 /* Responsive adjustments */
@@ -70,28 +90,10 @@ main {
     #footer h3 {
         margin-top: 1rem;
     }
-}
-
-/* Inicio Section Styles */
-#inicio .bg-opacity-70 {
-    backdrop-filter: blur(4px);
-    transition: all 0.3s ease;
-}
-
-#inicio .bg-opacity-70:hover {
-    transform: scale(1.02);
-}
-
-#inicio .bottom-4 {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-/* Responsive adjustments for Inicio */
-@media (max-width: 768px) {
     #inicio .flex-col {
         flex-direction: column;
     }
-    #inicio .max-w-sm {
+    #inicio .max-w-sm, #inicio .max-w-4xl {
         max-width: 100%;
     }
     #inicio .bottom-4 {
@@ -99,5 +101,8 @@ main {
         right: 0;
         left: 0;
         padding: 0 1rem;
+    }
+    #inicio h1 {
+        font-size: 2.5rem;
     }
 }
