@@ -35,7 +35,8 @@ main {
     transition: transform 0.3s ease, color 0.3s ease;
     vertical-align: middle;
     position: relative;
-    top: -2px;
+    top: -3px;
+    font-size: 1.1rem;
 }
 
 #footer i:hover {
@@ -51,7 +52,8 @@ main {
 #footer p {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    line-height: 1.4;
 }
 
 /* Animation for footer icons */
