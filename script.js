@@ -63,9 +63,17 @@ function showSection(sectionId) {
         to: (el, opts) => {
             el.style.transition = 'opacity 0.5s';
             el.style.opacity = opts.opacity;
-            setTimeout(() => opts.onComplete(), 500);
+            if (opts.onComplete) setTimeout(opts.onComplete, 500);
         },
-        from: () => console.warn("GSAP not loaded, skipping animation"),
+        from: (el, opts) => {
+            el.style.transition = `all ${opts.duration || 0.5}s ${opts.ease || 'ease'}`;
+            el.style.opacity = 0;
+            el.style.transform = `translateY(${opts.y || 0}px)`;
+            setTimeout(() => {
+                el.style.opacity = 1;
+                el.style.transform = 'translateY(0)';
+            }, 100);
+        },
         set: (el, opts) => Object.assign(el.style, opts)
     };
 
@@ -87,15 +95,13 @@ function showSection(sectionId) {
     targetSection.classList.add('active');
     safeGSAP.to(targetSection, { opacity: 1, duration: 0.5, ease: "power2.in" });
 
-if (sectionId === 'inicio') {
-    safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-    safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-    safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-    safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
-    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
-}
-    
-    else if (sectionId === 'about') {
+    if (sectionId === 'inicio') {
+        safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+        safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+        safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+        safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
+        safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+    } else if (sectionId === 'about') {
         safeGSAP.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
         safeGSAP.from("#about p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
         safeGSAP.from(".lawyer-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
@@ -128,8 +134,6 @@ if (sectionId === 'inicio') {
 }
 
 // Loader and initial setup
-
-
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, starting loader sequence");
 
@@ -137,7 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const mainHeader = document.getElementById('main-header');
     const inicioSection = document.getElementById('inicio');
 
-    // Check if critical elements exist
     if (!loader || !mainHeader || !inicioSection) {
         console.error("Missing critical elements:", { loader, mainHeader, inicioSection });
         if (loader) loader.style.display = 'none';
@@ -150,17 +153,16 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    // Fallback if GSAP is unavailable
     const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
         to: (el, opts) => {
             console.warn("GSAP not loaded, using CSS fallback");
             el.style.transition = 'opacity 0.5s';
             el.style.opacity = opts.opacity;
-            setTimeout(() => opts.onComplete && opts.onComplete(), 500);
+            if (opts.onComplete) setTimeout(opts.onComplete, 500);
         },
         from: (el, opts) => {
             console.warn("GSAP not loaded, using CSS fallback");
-            el.style.transition = `all ${opts.duration}s ${opts.ease}`;
+            el.style.transition = `all ${opts.duration || 0.5}s ${opts.ease || 'ease'}`;
             el.style.opacity = 0;
             el.style.transform = `translateY(${opts.y || 0}px)`;
             setTimeout(() => {
@@ -171,32 +173,33 @@ document.addEventListener('DOMContentLoaded', () => {
         set: (el, opts) => Object.assign(el.style, opts)
     };
 
-    try {
-        // Hide loader after 2 seconds
-        setTimeout(() => {
-            console.log("Hiding loader and showing main content");
-            safeGSAP.to(loader, {
-                opacity: 0,
-                duration: 0.5,
-                ease: "power2.out",
-                onComplete: () => {
-                    loader.style.display = 'none';
-                    mainHeader.style.display = 'block';
-                    inicioSection.style.display = 'block';
-                    inicioSection.classList.add('active');
+    // Hide loader and show content
+    const hideLoader = () => {
+        console.log("Hiding loader and showing main content");
+        safeGSAP.to(loader, {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.out",
+            onComplete: () => {
+                loader.style.display = 'none';
+                mainHeader.style.display = 'block';
+                inicioSection.style.display = 'block';
+                inicioSection.classList.add('active');
+                showSection('inicio');
 
-                    // Animate footer icons
-                    const footerIcons = document.querySelectorAll('#footer i');
-                    footerIcons.forEach((icon, index) => {
-                        safeGSAP.from(icon, {
-                            opacity: 0,
-                            duration: 0.8,
-                            ease: "power2.out",
-                            delay: 0.5 + index * 0.2
-                        });
+                // Animate footer icons
+                const footerIcons = document.querySelectorAll('#footer i');
+                footerIcons.forEach((icon, index) => {
+                    safeGSAP.from(icon, {
+                        opacity: 0,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        delay: 0.5 + index * 0.2
                     });
+                });
 
-                    // Start hero slideshow
+                // Start hero slideshow
+                try {
                     const slides = document.querySelectorAll('#hero-animation .slide');
                     if (slides.length > 0) {
                         console.log(`Found ${slides.length} slides for hero animation`);
@@ -206,45 +209,34 @@ document.addEventListener('DOMContentLoaded', () => {
                             safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
                             currentSlide = index % slides.length;
                             safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
-                            safeGSAP.set("#inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .caption, #inicio h1", { zIndex: 20, opacity: 1 });
                         };
                         showSlide(0);
                         setInterval(() => showSlide(currentSlide + 1), 6000);
                     } else {
                         console.warn("No slides found for hero animation");
                     }
-
-                    // Animate "Inicio" section
-                    safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-                    safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-                    safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-                    safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
-                    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+                } catch (slideError) {
+                    console.error("Error in slideshow:", slideError);
                 }
-            });
-        }, 2000);
-
-        // Hard fallback: Force hide loader after 4 seconds
-        setTimeout(() => {
-            if (loader.style.display !== 'none') {
-                console.log("Fallback: Forcing loader hide");
-                loader.style.display = 'none';
-                mainHeader.style.display = 'block';
-                inicioSection.style.display = 'block';
-                inicioSection.classList.add('active');
-                showSection('inicio');
             }
-        }, 4000);
-    } catch (error) {
-        console.error("Error in loader sequence:", error);
-        loader.style.display = 'none';
-        mainHeader.style.display = 'block';
-        inicioSection.style.display = 'block';
-        inicioSection.classList.add('active');
-        showSection('inicio');
-    }
-});
+        });
+    };
 
+    // Execute loader hide after 2 seconds
+    setTimeout(hideLoader, 2000);
+
+    // Fallback: Force hide loader after 4 seconds
+    setTimeout(() => {
+        if (loader.style.display !== 'none') {
+            console.log("Fallback: Forcing loader hide");
+            loader.style.display = 'none';
+            mainHeader.style.display = 'block';
+            inicioSection.style.display = 'block';
+            inicioSection.classList.add('active');
+            showSection('inicio');
+        }
+    }, 4000);
+});
 
 // Lawyer and Service Card Animations
 const lawyerCards = document.querySelectorAll('.lawyer-card');
@@ -303,10 +295,6 @@ document.querySelectorAll('nav a[data-section], .case-button').forEach(link => {
         showSection(sectionId);
     });
 });
-
-// Form Submission
-const caseForm = document.getElementById('case-form');
-
 
 // Dynamic Juicio Options based on Materia selection
 const materiaSelect = document.getElementById('materia');
@@ -371,8 +359,6 @@ materiaSelect.addEventListener('change', () => {
     }
 });
 
-
-
 // Form Submission
 const caseForm = document.getElementById('case-form');
 caseForm.addEventListener('submit', async (e) => {
@@ -435,9 +421,7 @@ caseForm.addEventListener('submit', async (e) => {
     }
 });
 
-
-
-// Global error handler to catch unhandled errors
+// Global error handler
 window.addEventListener('error', (event) => {
     console.error("Global error caught:", {
         message: event.message,
