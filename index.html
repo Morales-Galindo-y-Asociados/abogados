@@ -36,7 +36,7 @@
         
 
 
-<section id="inicio" class="section relative h-screen flex items-center justify-center text-center bg-black" style="display: block;">
+<section id="inicio" class="section relative h-screen flex flex-col items-center justify-center text-center bg-black" style="display: block;">
     <div id="hero-animation" class="absolute inset-0 z-0">
         <div class="slide slide-0 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/of1.jpg');"></div>
         <div class="slide slide-1 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/ofo1.jpg');"></div>
@@ -44,14 +44,18 @@
         <div class="slide slide-3 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/of1.jpg');"></div>
         <div class="slide slide-4 absolute inset-0 bg-cover bg-center opacity-0" style="background-image: url('images/ofo1.jpg');"></div>
     </div>
-    <div class="absolute inset-0 bg-black opacity-60 z-5"></div>
-    <!-- Slideshow Caption -->
-    <div class="absolute bottom-4 right-4 z-10 max-w-md text-right">
-        <h2 class="text-2xl md:text-3xl font-bold text-gold-400 mb-2">Morales-Galindo y Asociados</h2>
-        <p class="text-sm md:text-base text-gray-200 italic">Inspirados por Themis, la diosa griega de la ley y el orden, ofrecemos soluciones legales personalizadas en Puebla, Tecamachalco, Chignahuapan, Ajalpan y Esperanza. Nuestra misión: “A los problemas le damos solución, nuestra ética nos lo exige.”</p>
+    <div class="absolute inset-0 bg-black opacity-50 z-1"></div>
+    <!-- Firm Name -->
+    <h1 class="relative z-20 text-5xl md:text-7xl font-extrabold text-gold-400 mb-8 tracking-tight">Morales Galindo & Asociados Abogados</h1>
+    <!-- Header Square -->
+    <div class="relative z-20 max-w-4xl mx-auto px-4 mb-8">
+        <div class="bg-black bg-opacity-80 p-8 rounded-lg border-2 border-gold-600 shadow-2xl hover:shadow-[0_0_20px_rgba(255,215,0,0.6)] transition-all duration-300 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-gold-400 mb-4">Asesoría Legal de Excelencia</h2>
+            <p class="text-xl md:text-2xl text-gray-200">Brindamos soluciones legales especializadas en materia civil, familiar, laboral y amparo, con un compromiso inquebrantable con la justicia y la ética.</p>
+        </div>
     </div>
     <!-- Main Content with Squares -->
-    <div class="relative z-10 max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-6">
+    <div class="relative z-20 max-w-5xl mx-auto px-4 flex flex-col md:flex-row items-center justify-center gap-6">
         <!-- Inspirational Square -->
         <div class="bg-black bg-opacity-70 p-6 rounded-lg border border-gold-600 shadow-xl hover:shadow-[0_0_15px_rgba(255,215,0,0.5)] transition-all duration-300 max-w-sm text-center">
             <h3 class="text-2xl font-bold text-gold-400 mb-4">Justicia con Pasión</h3>
@@ -64,11 +68,16 @@
         </div>
     </div>
     <!-- Call to Action -->
-    <div class="relative z-10 mt-8">
+    <div class="relative z-20 mt-8">
         <a data-section="contact" class="case-button bg-gold-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-gold-300 transition transform hover:scale-105 animate-pulseButton cursor-pointer">Cuéntanos tu Caso</a>
     </div>
+    <!-- Slideshow Caption -->
+    <div class="absolute bottom-4 right-4 z-20 max-w-md text-right">
+        <p class="text-sm md:text-base text-gray-200 italic">“A los problemas le damos solución, nuestra ética nos lo exige.”</p>
+        <p class="text-sm text-gold-400 mt-1">— Morales-Galindo y Asociados</p>
+    </div>
 </section>
-        
+ 
         
     <section id="about" class="section py-16 bg-gray-900" style="display: none;">
         <div class="container mx-auto text-center">
