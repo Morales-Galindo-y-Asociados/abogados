@@ -87,11 +87,14 @@ function showSection(sectionId) {
     targetSection.classList.add('active');
     safeGSAP.to(targetSection, { opacity: 1, duration: 0.5, ease: "power2.in" });
 
-    if (sectionId === 'inicio') {
-        safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-        safeGSAP.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-        safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
-    } else if (sectionId === 'about') {
+if (sectionId === 'inicio') {
+    safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.5 });
+    safeGSAP.from("#inicio .bottom-4 h2", { opacity: 0, x: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+    safeGSAP.from("#inicio .bottom-4 p", { opacity: 0, x: 30, duration: 1.5, ease: "power3.out", delay: 1.2 });
+    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+}
+    
+    else if (sectionId === 'about') {
         safeGSAP.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
         safeGSAP.from("#about p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
         safeGSAP.from(".lawyer-card", { opacity: 0, y: 50, duration: 1, stagger: 0.2, ease: "power2.out", delay: 0.7 });
@@ -198,9 +201,11 @@ footerIcons.forEach((icon, index) => {
                 }
 
                 // Animate "Inicio" section
-                safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-                safeGSAP.from("#inicio p", { opacity: 0, y: 30, duration: 1.5, ease: "power3.out", delay: 1 });
-                safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
+               // Animate "Inicio" section
+safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.5 });
+safeGSAP.from("#inicio .bottom-4 h2", { opacity: 0, x: 30, duration: 1.5, ease: "power3.out", delay: 1 });
+safeGSAP.from("#inicio .bottom-4 p", { opacity: 0, x: 30, duration: 1.5, ease: "power3.out", delay: 1.2 });
+safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.5 });
             }
         });
     }, 2000);
