@@ -91,7 +91,7 @@ if (sectionId === 'inicio') {
     safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
     safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
     safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-    safeGSAP.from("#inicio .bottom-4 p", { opacity: 0, x: 30, duration: 1.5, ease: "power3.out", delay: 1.1 });
+    safeGSAP.from("#inicio .bottom-4 p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
     safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
 }
     
@@ -184,7 +184,7 @@ footerIcons.forEach((icon, index) => {
         delay: 0.5 + index * 0.2
     });
 });
-                // Start hero slideshow
+                
                 // Start hero slideshow
 const slides = document.querySelectorAll('#hero-animation .slide');
 if (slides.length > 0) {
@@ -196,7 +196,7 @@ if (slides.length > 0) {
         currentSlide = index % slides.length;
         safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
         // Ensure content stays visible
-        safeGSAP.set("#inicio .bg-opacity-70, #inicio .case-button, #inicio .bottom-4, #inicio h1", { zIndex: 20, opacity: 1 });
+        safeGSAP.set("#inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .bottom-4, #inicio h1", { zIndex: 20, opacity: 1 });
     };
     showSlide(0);
     setInterval(() => showSlide(currentSlide + 1), 6000);
@@ -204,13 +204,13 @@ if (slides.length > 0) {
     console.warn("No slides found for hero animation");
 }
 
-              // Animate "Inicio" section
+// Animate "Inicio" section
 safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
 safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
 safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-safeGSAP.from("#inicio .bottom-4 p", { opacity: 0, x: 30, duration: 1.5, ease: "power3.out", delay: 1.1 });
+safeGSAP.from("#inicio .bottom-4 p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
 safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
-
+ 
             }
         });
     }, 2000);
