@@ -287,6 +287,75 @@ document.querySelectorAll('nav a[data-section], .case-button').forEach(link => {
 
 // Form Submission
 const caseForm = document.getElementById('case-form');
+
+
+// Dynamic Juicio Options based on Materia selection
+const materiaSelect = document.getElementById('materia');
+const juicioSelect = document.getElementById('juicio');
+
+const juicioOptions = {
+    'Derecho Civil': [
+        'Elaboración de Contratos (arrendamiento, compraventa, etc)',
+        'Otorgamiento de Escritura Pública',
+        'Reivindicatorio',
+        'Usucapión',
+        'Hipoteca'
+    ],
+    'Derecho Familiar': [
+        'Divorcio',
+        'Pensión Alimenticia',
+        'Guarda y Custodia',
+        'Régimen de Visita y Convivencia',
+        'Ejecución y/o Modificación de Convenio',
+        'Reconocimiento de Paternidad',
+        'Pérdida de Patria Potestad',
+        'Sucesión Testamentaria e Intestamentaria',
+        'Autorización Judicial Para que un Menor Salga del País (Obtención de Visa y Pasaporte)',
+        'Consignacion de Alimentos',
+        'Rectificación y Aclaración de Actas de Nacimiento, Defunción, Matrimonio',
+        'Certificación y Unificación de CURP'
+    ],
+    'Derecho Mercantil': [
+        'Cobro de pagarés',
+        'Demandas y contestación de demanda contra bancos',
+        'Sociedades (A.C., S.A., C.V., etc)'
+    ],
+    'Derecho Laboral': [
+        'Defensa Legal al Patrón',
+        'Despido Injustificado',
+        'Designación de Beneficiarios',
+        'Contratos Laborales Individuales y Colectivos'
+    ],
+    'Derecho Penal': [
+        'Presentación de denuncias o querellas por cualquier delito ante el Ministerio Público',
+        'Representación legal ante el Ministerio Público, fiscalia y Juzgados Estatales y Federales'
+    ],
+    'Amparo': [
+        'Directo e Indirecto',
+        'Contra leyes',
+        'Representación Tercero Interesado'
+    ]
+};
+
+materiaSelect.addEventListener('change', () => {
+    const selectedMateria = materiaSelect.value;
+    juicioSelect.innerHTML = '<option value="" disabled selected>Seleccione un juicio</option>';
+    juicioSelect.disabled = !selectedMateria;
+
+    if (selectedMateria && juicioOptions[selectedMateria]) {
+        juicioOptions[selectedMateria].forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.textContent = option;
+            juicioSelect.appendChild(opt);
+        });
+    }
+});
+
+
+
+// Form Submission
+const caseForm = document.getElementById('case-form');
 caseForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(caseForm);
@@ -303,8 +372,9 @@ caseForm.addEventListener('submit', async (e) => {
 
         const textData = {
             name: formData.get('name'),
-            birthplace: formData.get('birthplace'),
-            caseType: formData.get('case-type'),
+            phone: formData.get('phone'),
+            contactTime: formData.get('contact-time'),
+            caseType: `${formData.get('materia')} - ${formData.get('juicio')}`,
             description: formData.get('description'),
             files: []
         };
@@ -338,11 +408,15 @@ caseForm.addEventListener('submit', async (e) => {
         console.log('Form submitted');
         alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
         caseForm.reset();
+        juicioSelect.innerHTML = '<option value="" disabled selected>Primero seleccione una materia</option>';
+        juicioSelect.disabled = true;
     } catch (error) {
         console.error('Error submitting form:', error);
         alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
     }
 });
+
+
 
 // Global error handler to catch unhandled errors
 window.addEventListener('error', (event) => {
