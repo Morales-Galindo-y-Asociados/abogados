@@ -439,14 +439,24 @@ caseForm.addEventListener('submit', async (e) => {
 
 // Global error handler to catch unhandled errors
 window.addEventListener('error', (event) => {
-    console.error("Global error caught:", event.message, event.filename, event.lineno);
+    console.error("Global error caught:", {
+        message: event.message,
+        filename: event.filename,
+        lineno: event.lineno,
+        colno: event.colno,
+        error: event.error
+    });
     const loader = document.getElementById('loader');
     if (loader && loader.style.display !== 'none') {
         console.log("Error detected, forcing loader hide");
         loader.style.display = 'none';
-        document.getElementById('main-header').style.display = 'block';
-        document.getElementById('inicio').style.display = 'block';
-        document.getElementById('inicio').classList.add('active');
+        const mainHeader = document.getElementById('main-header');
+        const inicioSection = document.getElementById('inicio');
+        if (mainHeader) mainHeader.style.display = 'block';
+        if (inicioSection) {
+            inicioSection.style.display = 'block';
+            inicioSection.classList.add('active');
+        }
         showSection('inicio');
     }
 });
