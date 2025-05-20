@@ -128,6 +128,8 @@ if (sectionId === 'inicio') {
 }
 
 // Loader and initial setup
+
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, starting loader sequence");
 
@@ -154,78 +156,95 @@ document.addEventListener('DOMContentLoaded', () => {
             console.warn("GSAP not loaded, using CSS fallback");
             el.style.transition = 'opacity 0.5s';
             el.style.opacity = opts.opacity;
-            setTimeout(() => opts.onComplete(), 500);
+            setTimeout(() => opts.onComplete && opts.onComplete(), 500);
         },
-        from: () => console.warn("GSAP not loaded, skipping animation"),
+        from: (el, opts) => {
+            console.warn("GSAP not loaded, using CSS fallback");
+            el.style.transition = `all ${opts.duration}s ${opts.ease}`;
+            el.style.opacity = 0;
+            el.style.transform = `translateY(${opts.y || 0}px)`;
+            setTimeout(() => {
+                el.style.opacity = 1;
+                el.style.transform = 'translateY(0)';
+            }, 100);
+        },
         set: (el, opts) => Object.assign(el.style, opts)
     };
 
-    // Hide loader after 2 seconds
-    setTimeout(() => {
-        console.log("Hiding loader and showing main content");
-        safeGSAP.to(loader, {
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            onComplete: () => {
+    try {
+        // Hide loader after 2 seconds
+        setTimeout(() => {
+            console.log("Hiding loader and showing main content");
+            safeGSAP.to(loader, {
+                opacity: 0,
+                duration: 0.5,
+                ease: "power2.out",
+                onComplete: () => {
+                    loader.style.display = 'none';
+                    mainHeader.style.display = 'block';
+                    inicioSection.style.display = 'block';
+                    inicioSection.classList.add('active');
+
+                    // Animate footer icons
+                    const footerIcons = document.querySelectorAll('#footer i');
+                    footerIcons.forEach((icon, index) => {
+                        safeGSAP.from(icon, {
+                            opacity: 0,
+                            duration: 0.8,
+                            ease: "power2.out",
+                            delay: 0.5 + index * 0.2
+                        });
+                    });
+
+                    // Start hero slideshow
+                    const slides = document.querySelectorAll('#hero-animation .slide');
+                    if (slides.length > 0) {
+                        console.log(`Found ${slides.length} slides for hero animation`);
+                        let currentSlide = 0;
+                        const showSlide = (index) => {
+                            console.log(`Showing slide ${index}`);
+                            safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+                            currentSlide = index % slides.length;
+                            safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                            safeGSAP.set("#inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .caption, #inicio h1", { zIndex: 20, opacity: 1 });
+                        };
+                        showSlide(0);
+                        setInterval(() => showSlide(currentSlide + 1), 6000);
+                    } else {
+                        console.warn("No slides found for hero animation");
+                    }
+
+                    // Animate "Inicio" section
+                    safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+                    safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+                    safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+                    safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
+                    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+                }
+            });
+        }, 2000);
+
+        // Hard fallback: Force hide loader after 4 seconds
+        setTimeout(() => {
+            if (loader.style.display !== 'none') {
+                console.log("Fallback: Forcing loader hide");
                 loader.style.display = 'none';
                 mainHeader.style.display = 'block';
                 inicioSection.style.display = 'block';
                 inicioSection.classList.add('active');
-
-                // Animate footer icons
-// Animate footer icons
-const footerIcons = document.querySelectorAll('#footer i');
-footerIcons.forEach((icon, index) => {
-    safeGSAP.from(icon, {
-        opacity: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        delay: 0.5 + index * 0.2
-    });
-});
-                
-  // Start hero slideshow
-const slides = document.querySelectorAll('#hero-animation .slide');
-if (slides.length > 0) {
-    console.log(`Found ${slides.length} slides for hero animation`);
-    let currentSlide = 0;
-    const showSlide = (index) => {
-        console.log(`Showing slide ${index}`);
-        safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
-        currentSlide = index % slides.length;
-        safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
-        // Ensure content stays visible
-        safeGSAP.set("#inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .caption, #inicio h1", { zIndex: 20, opacity: 1 });
-    };
-    showSlide(0);
-    setInterval(() => showSlide(currentSlide + 1), 6000);
-} else {
-    console.warn("No slides found for hero animation");
-}
-
-// Animate "Inicio" section
-safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
-safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+                showSection('inicio');
             }
-        });
-    }, 2000);
-
-    // Hard fallback: Force hide loader after 4 seconds
-    setTimeout(() => {
-        if (loader && loader.style.display !== 'none') {
-            console.log("Fallback: Forcing loader hide");
-            loader.style.display = 'none';
-            mainHeader.style.display = 'block';
-            inicioSection.style.display = 'block';
-            inicioSection.classList.add('active');
-            showSection('inicio');
-        }
-    }, 4000);
+        }, 4000);
+    } catch (error) {
+        console.error("Error in loader sequence:", error);
+        loader.style.display = 'none';
+        mainHeader.style.display = 'block';
+        inicioSection.style.display = 'block';
+        inicioSection.classList.add('active');
+        showSection('inicio');
+    }
 });
+
 
 // Lawyer and Service Card Animations
 const lawyerCards = document.querySelectorAll('.lawyer-card');
