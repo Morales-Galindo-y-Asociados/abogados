@@ -172,35 +172,51 @@
             <h2 class="text-4xl font-bold mb-8 text-gold-400">Cuéntanos tu Caso</h2>
             <p class="mb-6 max-w-2xl mx-auto">Describe tu caso y adjunta documentos para una consulta personalizada. Ofrecemos asesoría presencial y vía remota en Puebla, Tecamachalco, Chignahuapan, Ajalpan, y Esperanza.</p>
             <p class="mb-6"><a href="http://wa.me/5633572693" target="_blank" class="text-gold-300 hover:text-gold-200">WhatsApp: +52 563 357 2693</a></p>
-            <form id="case-form" class="max-w-2xl mx-auto space-y-6" enctype="multipart/form-data">
-                <div>
-                    <label for="name" class="block text-lg font-semibold text-gold-400 mb-2">Nombre</label>
-                    <input type="text" id="name" name="name" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
-                </div>
-                <div>
-                    <label for="birthplace" class="block text-lg font-semibold text-gold-400 mb-2">Lugar de Nacimiento</label>
-                    <input type="text" id="birthplace" name="birthplace" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
-                </div>
-                <div>
-                    <label for="case-type" class="block text-lg font-semibold text-gold-400 mb-2">Tipo de Trámite o Problema</label>
-                    <select id="case-type" name="case-type" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
-                        <option value="Derecho Civil">Derecho Civil</option>
-                        <option value="Derecho Familiar">Derecho Familiar</option>
-                        <option value="Derecho Laboral">Derecho Laboral</option>
-                        <option value="Amparo y Actas">Amparo y Actas</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="description" class="block text-lg font-semibold text-gold-400 mb-2">Descripción a Detalle del Problema</label>
-                    <textarea id="description" name="description" required rows="5" class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400"></textarea>
-                </div>
-                <div>
-                    <label for="files" class="block text-lg font-semibold text-gold-400 mb-2">Adjunta tus Archivos (PDF, DOC, JPG, PNG)</label>
-                    <input type="file" id="files" name="files" multiple accept=".pdf,.doc,.docx,.jpg,.png" class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
-                </div>
-                <button type="submit" class="bg-gold-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-gold-300 transition transform hover:scale-105 animate-pulseButton">Enviar Caso</button>
-            </form>
+            
+            
+           <form id="case-form" class="max-w-2xl mx-auto space-y-6" enctype="multipart/form-data">
+    <div>
+        <label for="name" class="block text-lg font-semibold text-gold-400 mb-2">Nombre</label>
+        <input type="text" id="name" name="name" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
+    </div>
+    <div>
+        <label for="phone" class="block text-lg font-semibold text-gold-400 mb-2">Teléfono de Contacto</label>
+        <input type="tel" id="phone" name="phone" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400" pattern="[0-9]{10}" title="Por favor, ingrese un número de teléfono válido de 10 dígitos">
+    </div>
+    <div>
+        <label for="contact-time" class="block text-lg font-semibold text-gold-400 mb-2">Horario en que lo podemos contactar</label>
+        <input type="text" id="contact-time" name="contact-time" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400" placeholder="Ejemplo: 9:00 AM - 5:00 PM">
+    </div>
+    <div>
+        <label for="materia" class="block text-lg font-semibold text-gold-400 mb-2">Materia</label>
+        <select id="materia" name="materia" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
+            <option value="" disabled selected>Seleccione una materia</option>
+            <option value="Derecho Civil">Derecho Civil</option>
+            <option value="Derecho Familiar">Derecho Familiar</option>
+            <option value="Derecho Mercantil">Derecho Mercantil</option>
+            <option value="Derecho Laboral">Derecho Laboral</option>
+            <option value="Derecho Penal">Derecho Penal</option>
+            <option value="Amparo">Amparo</option>
+        </select>
+    </div>
+    <div>
+        <label for="juicio" class="block text-lg font-semibold text-gold-400 mb-2">Juicio</label>
+        <select id="juicio" name="juicio" required class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400" disabled>
+            <option value="" disabled selected>Primero seleccione una materia</option>
+        </select>
+    </div>
+    <div>
+        <label for="description" class="block text-lg font-semibold text-gold-400 mb-2">Cuéntanos tu Caso</label>
+        <textarea id="description" name="description" required rows="5" class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400"></textarea>
+    </div>
+    <div>
+        <label for="files" class="block text-lg font-semibold text-gold-400 mb-2">Adjunta tus Archivos (PDF, DOC, DOCX, JPG, PNG)</label>
+        <input type="file" id="files" name="files" multiple accept=".pdf,.doc,.docx,.jpg,.png" class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
+    </div>
+    <button type="submit" class="bg-gold-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-gold-300 transition transform hover:scale-105 animate-pulseButton">Enviar Caso</button>
+</form>
+
+            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8">
                 <div class="bg-gray-800 p-4 rounded-lg border border-gold-600">
                     <h3 class="text-xl font-semibold text-gold-400">Puebla</h3>
