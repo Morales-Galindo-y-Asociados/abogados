@@ -476,6 +476,49 @@ try {
 // Form Submission
 try {
     const caseForm = document.getElementById('case-form');
+    const fileInput = document.getElementById('files');
+    const fileList = document.getElementById('file-list');
+    let selectedFiles = []; // Array to track selected files
+
+    // Handle file selection
+    fileInput.addEventListener('change', () => {
+        console.log('Files selected:', fileInput.files);
+        // Add new files to selectedFiles, avoiding duplicates
+        const newFiles = Array.from(fileInput.files).filter(file => 
+            !selectedFiles.some(existingFile => 
+                existingFile.name === file.name && existingFile.size === file.size
+            )
+        );
+        selectedFiles = [...selectedFiles, ...newFiles];
+        updateFileList();
+        // Clear the input to allow re-selecting the same file
+        fileInput.value = '';
+    });
+
+    // Update the displayed file list
+    const updateFileList = () => {
+        fileList.innerHTML = '';
+        selectedFiles.forEach((file, index) => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'flex items-center justify-between bg-gray-700 p-2 rounded-lg';
+            fileItem.innerHTML = `
+                <span class="text-gray-200 truncate max-w-[70%]">${file.name}</span>
+                <button type="button" class="delete-file bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500" data-index="${index}">Eliminar</button>
+            `;
+            fileList.appendChild(fileItem);
+        });
+
+        // Add delete button listeners
+        document.querySelectorAll('.delete-file').forEach(button => {
+            button.addEventListener('click', () => {
+                const index = parseInt(button.getAttribute('data-index'));
+                console.log(`Deleting file at index ${index}: ${selectedFiles[index].name}`);
+                selectedFiles.splice(index, 1);
+                updateFileList();
+            });
+        });
+    };
+
     caseForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(caseForm);
@@ -483,8 +526,8 @@ try {
         const maxFileSize = 10 * 1024 * 1024; // 10MB
 
         try {
-            const files = formData.getAll('files');
-            for (const file of files) {
+            // Validate files
+            for (const file of selectedFiles) {
                 if (file.size > maxFileSize) {
                     throw new Error(`El archivo ${file.name} excede el tamaño máximo de 10MB.`);
                 }
@@ -499,21 +542,19 @@ try {
                 files: []
             };
 
-            if (files.length > 0 && files[0].size > 0) {
-                const filePromises = files
-                    .filter(file => file.size > 0)
-                    .map(file => {
-                        return new Promise((resolve, reject) => {
-                            const reader = new FileReader();
-                            reader.onload = () => resolve({
-                                name: file.name,
-                                mimeType: file.type,
-                                data: reader.result.split(',')[1]
-                            });
-                            reader.onerror = reject;
-                            reader.readAsDataURL(file);
+            if (selectedFiles.length > 0) {
+                const filePromises = selectedFiles.map(file => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({
+                            name: file.name,
+                            mimeType: file.type,
+                            data: reader.result.split(',')[1]
                         });
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
                     });
+                });
                 textData.files = await Promise.all(filePromises);
             }
 
@@ -528,6 +569,9 @@ try {
             console.log('Form submitted');
             alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
             caseForm.reset();
+            selectedFiles = []; // Clear selected files
+            updateFileList(); // Clear file list display
+            const juicioSelect = document.getElementById('juicio');
             juicioSelect.innerHTML = '<option value="" disabled selected>Primero seleccione una materia</option>';
             juicioSelect.disabled = true;
         } catch (error) {
