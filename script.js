@@ -95,13 +95,14 @@ function showSection(sectionId) {
     targetSection.classList.add('active');
     safeGSAP.to(targetSection, { opacity: 1, duration: 0.5, ease: "power2.in" });
 
-    if (sectionId === 'inicio') {
-        safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-        safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-        safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-        safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
-        safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
-        initializeSlideshow();
+ if (sectionId === 'inicio') {
+    safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+    safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+    safeGSAP.from("#inicio h3", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.1 });
+    safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.3 });
+    initializeSlideshow();
+}
     } else if (sectionId === 'about') {
         safeGSAP.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
         safeGSAP.from("#about p", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.5 });
@@ -278,50 +279,52 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Hide loader and show content
+   
     const hideLoader = () => {
-        console.log("Hiding loader and showing main content");
-        safeGSAP.to(loader, {
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.out",
-            onComplete: () => {
-                loader.style.display = 'none';
-                mainHeader.style.display = 'block';
-                inicioSection.style.display = 'block';
-                inicioSection.classList.add('active');
+    console.log("Hiding loader and showing main content");
+    safeGSAP.to(loader, {
+        opacity: 0,
+        duration: 0.5,
+        ease: "power2.out",
+        onComplete: () => {
+            loader.style.display = 'none';
+            mainHeader.style.display = 'block';
+            inicioSection.style.display = 'block';
+            inicioSection.classList.add('active');
 
-                // Force content visibility
-                safeGSAP.set("#inicio, #inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .caption, #inicio .case-button", { opacity: 1 });
+            // Force content visibility
+            safeGSAP.set("#inicio, #inicio h2, #inicio p, #inicio h3, #inicio .caption, #inicio .case-button", { opacity: 1 });
 
-                // Run animations
-                safeGSAP.from("#inicio h1", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-                safeGSAP.from("#inicio .bg-opacity-80", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-                safeGSAP.from("#inicio .bg-opacity-70", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-                safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.1 });
-                safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+            // Run animations
+            safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+            safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+            safeGSAP.from("#inicio h3", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+            safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.1 });
+            safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.3 });
 
-                // Initialize slideshow after content is visible
-                setTimeout(initializeSlideshow, 500);
+            // Initialize slideshow after content is visible
+            setTimeout(initializeSlideshow, 500);
 
-                // Animate footer icons
-                const footerIcons = document.querySelectorAll('#footer i');
-                footerIcons.forEach((icon, index) => {
-                    safeGSAP.from(icon, {
-                        opacity: 0,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        delay: 0.5 + index * 0.2
-                    });
+            // Animate footer icons
+            const footerIcons = document.querySelectorAll('#footer i');
+            footerIcons.forEach((icon, index) => {
+                safeGSAP.from(icon, {
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power2.out",
+                    delay: 0.5 + index * 0.2
                 });
+            });
 
-                // Force re-render
-                inicioSection.style.display = 'none';
-                setTimeout(() => {
-                    inicioSection.style.display = 'block';
-                }, 10);
-            }
-        });
-    };
+            // Force re-render
+            inicioSection.style.display = 'none';
+            setTimeout(() => {
+                inicioSection.style.display = 'block';
+            }, 10);
+        }
+    });
+};
+             
 
     // Execute loader hide after 2 seconds
     setTimeout(hideLoader, 2000);
