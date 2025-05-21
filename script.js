@@ -95,6 +95,14 @@ function showSection(sectionId) {
     targetSection.classList.add('active');
     safeGSAP.to(targetSection, { opacity: 1, duration: 0.5, ease: "power2.in" });
 
+    // Update active nav link
+    document.querySelectorAll('nav a[data-section]').forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-section') === sectionId) {
+            link.classList.add('active');
+        }
+    });
+
     if (sectionId === 'inicio') {
         safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
         safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
@@ -165,6 +173,13 @@ function initializeSlideshow() {
             if (!bgImage || bgImage === 'none') {
                 console.warn(`Slide ${index} has no background image`);
                 slide.style.backgroundColor = '#1F2937'; // Fallback color
+            } else {
+                // Test image load
+                const img = new Image();
+                const url = bgImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
+                img.src = url;
+                img.onerror = () => console.error(`Failed to load image for slide ${index}: ${url}`);
+                img.onload = () => console.log(`Image loaded for slide ${index}: ${url}`);
             }
         });
 
@@ -225,7 +240,7 @@ function initializeSlideshow() {
         if (firstSlide) {
             firstSlide.style.opacity = 1;
             firstSlide.style.transform = 'scale(1)';
-            document.querySelector('#hero-gallery .gallery-dot').classList.add('opacity-100');
+            document.querySelector('#hero-gallery .gallery-dot')?.classList.add('opacity-100');
         }
     }
 }
@@ -233,6 +248,16 @@ function initializeSlideshow() {
 // Initial setup
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, initializing content");
+
+    // Set up navigation listeners first
+    document.querySelectorAll('nav a[data-section], .case-button, #logo-button').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Clicked link:', link.getAttribute('data-section') || 'inicio');
+            const sectionId = link.getAttribute('data-section') || 'inicio';
+            showSection(sectionId);
+        });
+    });
 
     const mainHeader = document.getElementById('main-header');
     const inicioSection = document.getElementById('inicio');
@@ -280,212 +305,227 @@ document.addEventListener('DOMContentLoaded', () => {
     inicioSection.classList.add('active');
 
     // Run animations
-    safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-    safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-    safeGSAP.from("#inicio h3", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.1 });
-    safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.3 });
+    try {
+        safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+        safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+        safeGSAP.from("#inicio h3", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+        safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.1 });
+        safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.3 });
+    } catch (error) {
+        console.error("Error in initial animations:", error);
+    }
 
     // Initialize slideshow
-    setTimeout(initializeSlideshow, 500);
+    try {
+        setTimeout(initializeSlideshow, 500);
+    } catch (error) {
+        console.error("Error initializing slideshow:", error);
+    }
 
     // Animate footer icons
-    const footerIcons = document.querySelectorAll('#footer i');
-    footerIcons.forEach((icon, index) => {
-        safeGSAP.from(icon, {
-            opacity: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            delay: 0.5 + index * 0.2
+    try {
+        const footerIcons = document.querySelectorAll('#footer i');
+        footerIcons.forEach((icon, index) => {
+            safeGSAP.from(icon, {
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                delay: 0.5 + index * 0.2
+            });
         });
-    });
-
-    // Navigation, Case Button, and Logo Clicks
-    document.querySelectorAll('nav a[data-section], .case-button, #logo-button').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const sectionId = link.getAttribute('data-section') || 'inicio';
-            showSection(sectionId);
-        });
-    });
+    } catch (error) {
+        console.error("Error animating footer icons:", error);
+    }
 });
 
 // Lawyer and Service Card Animations
-const lawyerCards = document.querySelectorAll('.lawyer-card');
-lawyerCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
-            to: (el, opts) => {
-                el.style.transition = 'all 0.3s';
-                Object.assign(el.style, opts);
-            }
-        };
-        safeGSAP.to(card.querySelector('img'), { scale: 1.1, duration: 0.3 });
-        safeGSAP.to(card.querySelector('.shadow'), { opacity: 1, duration: 0.3 });
+try {
+    const lawyerCards = document.querySelectorAll('.lawyer-card');
+    lawyerCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
+                to: (el, opts) => {
+                    el.style.transition = 'all 0.3s';
+                    Object.assign(el.style, opts);
+                }
+            };
+            safeGSAP.to(card.querySelector('img'), { scale: 1.1, duration: 0.3 });
+            safeGSAP.to(card.querySelector('.shadow'), { opacity: 1, duration: 0.3 });
+        });
+        card.addEventListener('mouseleave', () => {
+            const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
+                to: (el, opts) => {
+                    el.style.transition = 'all 0.3s';
+                    Object.assign(el.style, opts);
+                }
+            };
+            safeGSAP.to(card.querySelector('img'), { scale: 1, duration: 0.3 });
+            safeGSAP.to(card.querySelector('.shadow'), { opacity: 0, duration: 0.3 });
+        });
     });
-    card.addEventListener('mouseleave', () => {
-        const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
-            to: (el, opts) => {
-                el.style.transition = 'all 0.3s';
-                Object.assign(el.style, opts);
-            }
-        };
-        safeGSAP.to(card.querySelector('img'), { scale: 1, duration: 0.3 });
-        safeGSAP.to(card.querySelector('.shadow'), { opacity: 0, duration: 0.3 });
-    });
-});
 
-const serviceCards = document.querySelectorAll('.service-card');
-serviceCards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-        const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
-            to: (el, opts) => {
-                el.style.transition = 'all 0.3s';
-                Object.assign(el.style, opts);
-            }
-        };
-        safeGSAP.to(card.querySelector('.service-title'), { scale: 1.05, duration: 0.3, ease: "power2.out" });
-        safeGSAP.to(card, { scale: 1.05, boxShadow: "0 0 15px rgba(255, 215, 0, 0.3)", duration: 0.3 });
+    const serviceCards = document.querySelectorAll('.service-card');
+    serviceCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
+                to: (el, opts) => {
+                    el.style.transition = 'all 0.3s';
+                    Object.assign(el.style, opts);
+                }
+            };
+            safeGSAP.to(card.querySelector('.service-title'), { scale: 1.05, duration: 0.3, ease: "power2.out" });
+            safeGSAP.to(card, { scale: 1.05, boxShadow: "0 0 15px rgba(255, 215, 0, 0.3)", duration: 0.3 });
+        });
+        card.addEventListener('mouseleave', () => {
+            const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
+                to: (el, opts) => {
+                    el.style.transition = 'all 0.3s';
+                    Object.assign(el.style, opts);
+                }
+            };
+            safeGSAP.to(card.querySelector('.service-title'), { scale: 1, duration: 0.3, ease: "power2.out" });
+            safeGSAP.to(card, { scale: 1, boxShadow: "0 0 0 rgba(255, 215, 0, 0)", duration: 0.3 });
+        });
     });
-    card.addEventListener('mouseleave', () => {
-        const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
-            to: (el, opts) => {
-                el.style.transition = 'all 0.3s';
-                Object.assign(el.style, opts);
-            }
-        };
-        safeGSAP.to(card.querySelector('.service-title'), { scale: 1, duration: 0.3, ease: "power2.out" });
-        safeGSAP.to(card, { scale: 1, boxShadow: "0 0 0 rgba(255, 215, 0, 0)", duration: 0.3 });
-    });
-});
+} catch (error) {
+    console.error("Error setting up card animations:", error);
+}
 
 // Dynamic Juicio Options based on Materia selection
-const materiaSelect = document.getElementById('materia');
-const juicioSelect = document.getElementById('juicio');
+try {
+    const materiaSelect = document.getElementById('materia');
+    const juicioSelect = document.getElementById('juicio');
 
-const juicioOptions = {
-    'Derecho Civil': [
-        'Elaboración de Contratos (arrendamiento, compraventa, etc)',
-        'Otorgamiento de Escritura Pública',
-        'Reivindicatorio',
-        'Usucapión',
-        'Hipoteca'
-    ],
-    'Derecho Familiar': [
-        'Divorcio',
-        'Pensión Alimenticia',
-        'Guarda y Custodia',
-        'Régimen de Visita y Convivencia',
-        'Ejecución y/o Modificación de Convenio',
-        'Reconocimiento de Paternidad',
-        'Pérdida de Patria Potestad',
-        'Sucesión Testamentaria e Intestamentaria',
-        'Autorización Judicial Para que un Menor Salga del País (Obtención de Visa y Pasaporte)',
-        'Consignacion de Alimentos',
-        'Rectificación y Aclaración de Actas de Nacimiento, Defunción, Matrimonio',
-        'Certificación y Unificación de CURP'
-    ],
-    'Derecho Mercantil': [
-        'Cobro de pagarés',
-        'Demandas y contestación de demanda contra bancos',
-        'Sociedades (A.C., S.A., C.V., etc)'
-    ],
-    'Derecho Laboral': [
-        'Defensa Legal al Patrón',
-        'Despido Injustificado',
-        'Designación de Beneficiarios',
-        'Contratos Laborales Individuales y Colectivos'
-    ],
-    'Derecho Penal': [
-        'Presentación de denuncias o querellas por cualquier delito ante el Ministerio Público',
-        'Representación legal ante el Ministerio Público, fiscalia y Juzgados Estatales y Federales'
-    ],
-    'Amparo': [
-        'Directo e Indirecto',
-        'Contra leyes',
-        'Representación Tercero Interesado'
-    ],
-    'Otro Asunto': [
-        'Otro'
-    ]
-};
+    const juicioOptions = {
+        'Derecho Civil': [
+            'Elaboración de Contratos (arrendamiento, compraventa, etc)',
+            'Otorgamiento de Escritura Pública',
+            'Reivindicatorio',
+            'Usucapión',
+            'Hipoteca'
+        ],
+        'Derecho Familiar': [
+            'Divorcio',
+            'Pensión Alimenticia',
+            'Guarda y Custodia',
+            'Régimen de Visita y Convivencia',
+            'Ejecución y/o Modificación de Convenio',
+            'Reconocimiento de Paternidad',
+            'Pérdida de Patria Potestad',
+            'Sucesión Testamentaria e Intestamentaria',
+            'Autorización Judicial Para que un Menor Salga del País (Obtención de Visa y Pasaporte)',
+            'Consignacion de Alimentos',
+            'Rectificación y Aclaración de Actas de Nacimiento, Defunción, Matrimonio',
+            'Certificación y Unificación de CURP'
+        ],
+        'Derecho Mercantil': [
+            'Cobro de pagarés',
+            'Demandas y contestación de demanda contra bancos',
+            'Sociedades (A.C., S.A., C.V., etc)'
+        ],
+        'Derecho Laboral': [
+            'Defensa Legal al Patrón',
+            'Despido Injustificado',
+            'Designación de Beneficiarios',
+            'Contratos Laborales Individuales y Colectivos'
+        ],
+        'Derecho Penal': [
+            'Presentación de denuncias o querellas por cualquier delito ante el Ministerio Público',
+            'Representación legal ante el Ministerio Público, fiscalia y Juzgados Estatales y Federales'
+        ],
+        'Amparo': [
+            'Directo e Indirecto',
+            'Contra leyes',
+            'Representación Tercero Interesado'
+        ],
+        'Otro Asunto': [
+            'Otro'
+        ]
+    };
 
-materiaSelect.addEventListener('change', () => {
-    const selectedMateria = materiaSelect.value;
-    juicioSelect.innerHTML = '<option value="" disabled selected>Seleccione un juicio</option>';
-    juicioSelect.disabled = !selectedMateria;
+    materiaSelect.addEventListener('change', () => {
+        const selectedMateria = materiaSelect.value;
+        juicioSelect.innerHTML = '<option value="" disabled selected>Seleccione un juicio</option>';
+        juicioSelect.disabled = !selectedMateria;
 
-    if (selectedMateria && juicioOptions[selectedMateria]) {
-        juicioOptions[selectedMateria].forEach(option => {
-            const opt = document.createElement('option');
-            opt.value = option;
-            opt.textContent = option;
-            juicioSelect.appendChild(opt);
-        });
-    }
-});
+        if (selectedMateria && juicioOptions[selectedMateria]) {
+            juicioOptions[selectedMateria].forEach(option => {
+                const opt = document.createElement('option');
+                opt.value = option;
+                opt.textContent = option;
+                juicioSelect.appendChild(opt);
+            });
+        }
+    });
+} catch (error) {
+    console.error("Error setting up form options:", error);
+}
 
 // Form Submission
-const caseForm = document.getElementById('case-form');
-caseForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const formData = new FormData(caseForm);
-    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzDJNI7OeeHJUDML4A9rQSWfP-ISkeadPNh7ci4e0mGXedZHxD_mc-_3p7ofaKDVTGV-Q/exec';
-    const maxFileSize = 10 * 1024 * 1024; // 10MB
+try {
+    const caseForm = document.getElementById('case-form');
+    caseForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(caseForm);
+        const webAppUrl = 'https://script.google.com/macros/s/AKfycbzDJNI7OeeHJUDML4A9rQSWfP-ISkeadPNh7ci4e0mGXedZHxD_mc-_3p7ofaKDVTGV-Q/exec';
+        const maxFileSize = 10 * 1024 * 1024; // 10MB
 
-    try {
-        const files = formData.getAll('files');
-        for (const file of files) {
-            if (file.size > maxFileSize) {
-                throw new Error(`El archivo ${file.name} excede el tamaño máximo de 10MB.`);
+        try {
+            const files = formData.getAll('files');
+            for (const file of files) {
+                if (file.size > maxFileSize) {
+                    throw new Error(`El archivo ${file.name} excede el tamaño máximo de 10MB.`);
+                }
             }
-        }
 
-        const textData = {
-            name: formData.get('name'),
-            phone: formData.get('phone'),
-            contactTime: formData.get('contact-time'),
-            caseType: `${formData.get('materia')} - ${formData.get('juicio')}`,
-            description: formData.get('description'),
-            files: []
-        };
+            const textData = {
+                name: formData.get('name'),
+                phone: formData.get('phone'),
+                contactTime: formData.get('contact-time'),
+                caseType: `${formData.get('materia')} - ${formData.get('juicio')}`,
+                description: formData.get('description'),
+                files: []
+            };
 
-        if (files.length > 0 && files[0].size > 0) {
-            const filePromises = files
-                .filter(file => file.size > 0)
-                .map(file => {
-                    return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve({
-                            name: file.name,
-                            mimeType: file.type,
-                            data: reader.result.split(',')[1]
+            if (files.length > 0 && files[0].size > 0) {
+                const filePromises = files
+                    .filter(file => file.size > 0)
+                    .map(file => {
+                        return new Promise((resolve, reject) => {
+                            const reader = new FileReader();
+                            reader.onload = () => resolve({
+                                name: file.name,
+                                mimeType: file.type,
+                                data: reader.result.split(',')[1]
+                            });
+                            reader.onerror = reject;
+                            reader.readAsDataURL(file);
                         });
-                        reader.onerror = reject;
-                        reader.readAsDataURL(file);
                     });
-                });
-            textData.files = await Promise.all(filePromises);
+                textData.files = await Promise.all(filePromises);
+            }
+
+            console.log('Submitting form to:', webAppUrl);
+            const response = await fetch(webAppUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(textData)
+            });
+
+            console.log('Form submitted');
+            alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
+            caseForm.reset();
+            juicioSelect.innerHTML = '<option value="" disabled selected>Primero seleccione una materia</option>';
+            juicioSelect.disabled = true;
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
         }
-
-        console.log('Submitting form to:', webAppUrl);
-        const response = await fetch(webAppUrl, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(textData)
-        });
-
-        console.log('Form submitted');
-        alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
-        caseForm.reset();
-        juicioSelect.innerHTML = '<option value="" disabled selected>Primero seleccione una materia</option>';
-        juicioSelect.disabled = true;
-    } catch (error) {
-        console.error('Error submitting form:', error);
-        alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
-    }
-});
+    });
+} catch (error) {
+    console.error("Error setting up form submission:", error);
+}
 
 // Global error handler
 window.addEventListener('error', (event) => {
