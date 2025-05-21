@@ -171,3 +171,28 @@ nav a.active {
         font-size: 2.5rem;
     }
 }
+
+/* File list styles */
+#file-list .flex {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+#file-list .flex:hover {
+    background-color: #4B5563 !important;
+    transform: scale(1.02) !important;
+}
+
+.delete-file {
+    background-color: #DC2626 !important;
+    color: #FFFFFF !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+}
+
+.delete-file:hover {
+    background-color: #B91C1C !important;
+    transform: scale(1.05) !important;
+}
