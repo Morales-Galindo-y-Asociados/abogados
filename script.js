@@ -139,7 +139,7 @@ function initializeSlideshow() {
     const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
         to: (el, opts) => {
             console.warn("GSAP not loaded, using CSS fallback");
-            el.style.transition = 'opacity 0.5s, transform 0.5s';
+            el.style.transition = 'opacity 1s, transform 1s';
             el.style.opacity = opts.opacity;
             el.style.transform = `scale(${opts.scale || 1})`;
         },
@@ -150,13 +150,14 @@ function initializeSlideshow() {
     };
 
     try {
-        const slides = document.querySelectorAll('#hero-animation .slide');
-        if (slides.length === 0) {
-            console.warn("No slides found for hero animation");
+        const slides = document.querySelectorAll('#hero-gallery .gallery-slide');
+        const dots = document.querySelectorAll('#hero-gallery .gallery-dot');
+        if (slides.length === 0 || dots.length === 0) {
+            console.warn("No slides or dots found for gallery");
             return;
         }
 
-        console.log(`Found ${slides.length} slides for hero animation`);
+        console.log(`Found ${slides.length} slides and ${dots.length} dots for gallery`);
 
         // Verify slide images are loaded
         slides.forEach((slide, index) => {
@@ -167,34 +168,64 @@ function initializeSlideshow() {
             }
         });
 
-        // Reset all slides
+        // Reset all slides and dots
         slides.forEach(slide => safeGSAP.set(slide, { opacity: 0, scale: 1.1 }));
+        dots.forEach(dot => dot.classList.remove('opacity-100'));
 
-        // Show first slide
+        // Show first slide and activate first dot
         if (slides[0]) {
             safeGSAP.set(slides[0], { opacity: 1, scale: 1 });
+            dots[0].classList.add('opacity-100');
         }
 
         let currentSlide = 0;
+        let autoSlideInterval = null;
+
         const showSlide = (index) => {
             console.log(`Showing slide ${index}`);
             if (slides[currentSlide]) {
-                safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 2, ease: "power2.out" });
+                safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1, ease: "power2.out" });
+                dots[currentSlide].classList.remove('opacity-100');
             }
             currentSlide = index % slides.length;
             if (slides[currentSlide]) {
-                safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 2, ease: "power2.out" });
+                safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1, ease: "power2.out" });
+                dots[currentSlide].classList.add('opacity-100');
             }
         };
 
-        setInterval(() => showSlide(currentSlide + 1), 6000);
+        // Auto-rotation
+        const startAutoSlide = () => {
+            autoSlideInterval = setInterval(() => showSlide(currentSlide + 1), 6000);
+        };
+
+        // Stop auto-rotation
+        const stopAutoSlide = () => {
+            if (autoSlideInterval) {
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = null;
+            }
+        };
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                stopAutoSlide();
+                showSlide(index);
+                setTimeout(startAutoSlide, 10000); // Resume auto-slide after 10s
+            });
+        });
+
+        // Start auto-rotation
+        startAutoSlide();
     } catch (error) {
-        console.error("Error in slideshow:", error);
+        console.error("Error in gallery:", error);
         // Fallback: Show first slide statically
-        const firstSlide = document.querySelector('#hero-animation .slide');
+        const firstSlide = document.querySelector('#hero-gallery .gallery-slide');
         if (firstSlide) {
             firstSlide.style.opacity = 1;
             firstSlide.style.transform = 'scale(1)';
+            document.querySelector('#hero-gallery .gallery-dot').classList.add('opacity-100');
         }
     }
 }
