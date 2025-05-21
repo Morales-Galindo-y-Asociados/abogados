@@ -142,6 +142,8 @@ function showSection(sectionId) {
     }
 }
 
+// ... (Previous code unchanged until initializeSlideshow)
+
 // Initialize hero slideshow
 function initializeSlideshow() {
     const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
@@ -160,12 +162,13 @@ function initializeSlideshow() {
     try {
         const slides = document.querySelectorAll('#hero-gallery .gallery-slide');
         const dots = document.querySelectorAll('#hero-gallery .gallery-dot');
+        const thumbs = document.querySelectorAll('#hero-gallery .gallery-thumb');
         if (slides.length === 0 || dots.length === 0) {
             console.warn("No slides or dots found for gallery");
             return;
         }
 
-        console.log(`Found ${slides.length} slides and ${dots.length} dots for gallery`);
+        console.log(`Found ${slides.length} slides, ${dots.length} dots, and ${thumbs.length} thumbnails for gallery`);
 
         // Verify slide images are loaded
         slides.forEach((slide, index) => {
@@ -174,7 +177,6 @@ function initializeSlideshow() {
                 console.warn(`Slide ${index} has no background image`);
                 slide.style.backgroundColor = '#1F2937'; // Fallback color
             } else {
-                // Test image load
                 const img = new Image();
                 const url = bgImage.replace(/url\(['"]?(.*?)['"]?\)/, '$1');
                 img.src = url;
@@ -183,14 +185,16 @@ function initializeSlideshow() {
             }
         });
 
-        // Reset all slides and dots
+        // Reset all slides, dots, and thumbs
         slides.forEach(slide => safeGSAP.set(slide, { opacity: 0, scale: 1.1 }));
         dots.forEach(dot => dot.classList.remove('opacity-100'));
+        thumbs.forEach(thumb => thumb.classList.remove('active'));
 
-        // Show first slide and activate first dot
+        // Show first slide, dot, and thumb
         if (slides[0]) {
             safeGSAP.set(slides[0], { opacity: 1, scale: 1 });
             dots[0].classList.add('opacity-100');
+            thumbs[0].classList.add('active');
         }
 
         let currentSlide = 0;
@@ -201,11 +205,13 @@ function initializeSlideshow() {
             if (slides[currentSlide]) {
                 safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1, ease: "power2.out" });
                 dots[currentSlide].classList.remove('opacity-100');
+                thumbs[currentSlide].classList.remove('active');
             }
             currentSlide = index % slides.length;
             if (slides[currentSlide]) {
                 safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1, ease: "power2.out" });
                 dots[currentSlide].classList.add('opacity-100');
+                thumbs[currentSlide].classList.add('active');
             }
         };
 
@@ -227,7 +233,16 @@ function initializeSlideshow() {
             dot.addEventListener('click', () => {
                 stopAutoSlide();
                 showSlide(index);
-                setTimeout(startAutoSlide, 10000); // Resume auto-slide after 10s
+                setTimeout(startAutoSlide, 10000); // Resume after 10s
+            });
+        });
+
+        // Thumbnail navigation
+        thumbs.forEach((thumb, index) => {
+            thumb.addEventListener('click', () => {
+                stopAutoSlide();
+                showSlide(index);
+                setTimeout(startAutoSlide, 10000); // Resume after 10s
             });
         });
 
@@ -237,13 +252,19 @@ function initializeSlideshow() {
         console.error("Error in gallery:", error);
         // Fallback: Show first slide statically
         const firstSlide = document.querySelector('#hero-gallery .gallery-slide');
+        const firstDot = document.querySelector('#hero-gallery .gallery-dot');
+        const firstThumb = document.querySelector('#hero-gallery .gallery-thumb');
         if (firstSlide) {
             firstSlide.style.opacity = 1;
             firstSlide.style.transform = 'scale(1)';
-            document.querySelector('#hero-gallery .gallery-dot')?.classList.add('opacity-100');
         }
+        if (firstDot) firstDot.classList.add('opacity-100');
+        if (firstThumb) firstThumb.classList.add('active');
     }
 }
+
+// ... (Rest of the script.js unchanged)
+
 
 // Initial setup
 document.addEventListener('DOMContentLoaded', () => {
