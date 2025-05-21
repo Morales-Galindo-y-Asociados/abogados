@@ -372,5 +372,5 @@ function onFormSubmit(e) {
 
 
     #inicio {
-    padding-top: 80px; /* This adds space at the top to clear the header */
+    padding-top: 120px; /* This adds space at the top to clear the header */
 }
