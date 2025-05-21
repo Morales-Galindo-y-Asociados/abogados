@@ -63,34 +63,25 @@ main {
 }
 
 /* Inicio Section Styles */
-#inicio .bg-opacity-80, #inicio .bg-opacity-70 {
-    backdrop-filter: blur(4px);
-    transition: all 0.3s ease;
-    display: block !important;
-    opacity: 1 !important;
+#inicio {
+    padding-top: 120px; /* Space for fixed header */
 }
 
-#inicio .bg-opacity-80:hover, #inicio .bg-opacity-70:hover {
-    transform: scale(1.02);
-}
-
-#inicio .caption {
-    position: absolute !important;
-    bottom: 1rem !important;
-    right: 1rem !important;
-    text-align: right !important;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-    z-index: 20 !important;
-}
-
-/* Ensure content stays above slideshow */
-#inicio h1, #inicio .bg-opacity-80, #inicio .bg-opacity-70, #inicio .case-button, #inicio .caption {
+#hero-gallery {
     position: relative;
-    z-index: 20 !important;
+    z-index: 10;
+}
+
+.gallery-slide {
+    z-index: 5;
+}
+
+.gallery-dot {
+    z-index: 15;
 }
 
 /* Button styles */
-#inicio .case-button {
+.case-button {
     background-color: #FFD700 !important;
     color: #000000 !important;
     padding: 1rem 2rem !important;
@@ -101,7 +92,7 @@ main {
     margin-top: 2rem !important;
 }
 
-#inicio .case-button:hover {
+.case-button:hover {
     background-color: #FBBF24 !important;
     transform: scale(1.05) !important;
 }
@@ -115,6 +106,24 @@ main {
 
 .animate-pulseButton {
     animation: pulseButton 2s infinite ease-in-out;
+}
+
+/* Form submit button styles */
+.form-submit-button {
+    background-color: #FFD700 !important;
+    color: #000000 !important;
+    padding: 1rem 2rem !important;
+    border-radius: 9999px !important;
+    font-weight: 600 !important;
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+    display: inline-block !important;
+    margin-top: 1rem !important;
+    z-index: 10 !important;
+}
+
+.form-submit-button:hover {
+    background-color: #FBBF24 !important;
+    transform: scale(1.05) !important;
 }
 
 /* Responsive adjustments */
@@ -131,246 +140,7 @@ main {
     #inicio .max-w-sm, #inicio .max-w-4xl {
         max-width: 100%;
     }
-    #inicio .caption {
-        text-align: center !important;
-        right: 0 !important;
-        left: 0 !important;
-        padding: 0 1rem !important;
-        bottom: 1.5rem !important;
-    }
-    #inicio h1 {
+    #inicio h2 {
         font-size: 2.5rem;
     }
-}
-
-/* Form submit button styles */
-.form-submit-button {
-    background-color: #FFD700 !important; /* Fallback gold color */
-    color: #000000 !important;
-    padding: 1rem 2rem !important;
-    border-radius: 9999px !important;
-    font-weight: 600 !important;
-    transition: background-color 0.3s ease, transform 0.3s ease !important;
-    display: inline-block !important;
-    margin-top: 1rem !important;
-    z-index: 10 !important;
-    opacity: 1 !important;
-}
-
-.form-submit-button:hover {
-    background-color: #FBBF24 !important;
-    transform: scale(1.05) !important;
-}
-
-
-Apps Script called "Auto Create Client Folder (S)
-
-// Google Sheet ID where form responses will be stored
-var SHEET_ID = '1Ia2ZOafllw-_F7nZwbMmiGZNDVr8nN0NQoAj-WZtHr4';
-var FOLDER_ID = '1K4ed1gC8yq3O1DG5mol8wA3xPn_JeMzz';
-
-function doPost(e) {
-  try {
-    Logger.log('Received POST request: ' + JSON.stringify(e));
-    if (!e || !e.postData || !e.postData.contents) {
-      throw new Error('Invalid request: No postData or contents');
-    }
-    var data = JSON.parse(e.postData.contents);
-    Logger.log('Parsed data: ' + JSON.stringify(data));
-    
-    var name = data.name ? data.name.replace(/[<>:"/\\|?*]/g, '') : 'Unknown_' + Date.now();
-    var phone = data.phone || '';
-    var contactTime = data.contactTime || '';
-    var caseType = data.caseType || '';
-    var description = data.description || '';
-    var files = data.files || [];
-
-    Logger.log(`Processing website submission for: ${name}`);
-
-    // Create client folder
-    Logger.log('Accessing parent folder: ' + FOLDER_ID);
-    var parentFolder = DriveApp.getFolderById(FOLDER_ID);
-    var folderName = name + '_' + new Date().toISOString().split('T')[0];
-    Logger.log(`Creating folder: ${folderName}`);
-    var clientFolder = parentFolder.createFolder(folderName);
-    Logger.log(`Created folder: ${clientFolder.getName()} (ID: ${clientFolder.getId()})`);
-
-    // Save files to client folder
-    if (files.length > 0) {
-      Logger.log(`Processing ${files.length} files`);
-      files.forEach(function(file, index) {
-        try {
-          Logger.log(`Processing file ${index + 1}: ${file.name}`);
-          var blob = Utilities.newBlob(
-            Utilities.base64Decode(file.data),
-            file.mimeType,
-            file.name
-          );
-          clientFolder.createFile(blob);
-          Logger.log(`Saved file: ${file.name}`);
-        } catch (fileError) {
-          Logger.log(`Error saving file ${file.name}: ${fileError.stack}`);
-        }
-      });
-    } else {
-      Logger.log('No files to process');
-    }
-
-    // Save text data to Google Sheet
-    Logger.log('Accessing spreadsheet: ' + SHEET_ID);
-    var spreadsheet = SpreadsheetApp.openById(SHEET_ID);
-    Logger.log('Available sheets: ' + spreadsheet.getSheets().map(s => s.getName()).join(', '));
-    Logger.log('Accessing sheet: Form_Responses1');
-    var sheet = spreadsheet.getSheetByName('Form_Responses1');
-    if (!sheet) {
-      Logger.log('Form_Responses1 not found, trying fallback: Hoja 1');
-      sheet = spreadsheet.getSheetByName('Hoja 1');
-      if (!sheet) {
-        throw new Error('Sheet "Form_Responses1" or "Hoja 1" not found in spreadsheet ' + SHEET_ID + '. Available sheets: ' + spreadsheet.getSheets().map(s => s.getName()).join(', '));
-      }
-      Logger.log('Fallback sheet "Hoja 1" found');
-    } else {
-      Logger.log('Sheet "Form_Responses1" found');
-    }
-
-    // Set up headers if they don't exist
-    Logger.log('Checking headers');
-    var expectedHeaders = ['Marca temporal', 'Dirección de correo electrónico', 'Nombre', 'Teléfono de Contacto', 'Horario de Contacto', 'Tipo de Trámite o Problema', 'Descripción', 'Folder URL'];
-    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    Logger.log('Current headers: ' + headers.join(', '));
-    if (headers.join(',') !== expectedHeaders.join(',')) {
-      Logger.log('Setting headers');
-      sheet.getRange(1, 1, 1, expectedHeaders.length).setValues([expectedHeaders]);
-      Logger.log('Headers set: ' + expectedHeaders.join(', '));
-    }
-
-    // Append data: Timestamp (A), Email (B, empty), Name (C), Phone (D), Contact Time (E), Case Type (F), Description (G), Folder URL (H)
-    Logger.log('Appending data to sheet: ' + JSON.stringify([
-      new Date(),
-      '',
-      name,
-      phone,
-      contactTime,
-      caseType,
-      description,
-      clientFolder.getUrl()
-    ]));
-    sheet.appendRow([
-      new Date(), // A: Marca temporal
-      '', // B: Dirección de correo electrónico (empty for website submissions)
-      name, // C: Nombre
-      phone, // D: Teléfono de Contacto
-      contactTime, // E: Horario de Contacto
-      caseType, // F: Tipo de Trámite o Problema
-      description, // G: Descripción
-      clientFolder.getUrl() // H: Folder URL
-    ]);
-    Logger.log(`Appended data to ${sheet.getName()} for: ${name}`);
-
-    // Return success response
-    Logger.log('Returning success response');
-    return ContentService.createTextOutput(
-      JSON.stringify({ status: 'success', folderId: clientFolder.getId() })
-    ).setMimeType(ContentService.MimeType.JSON);
-  } catch (error) {
-    Logger.log(`Error in doPost: ${error.stack}`);
-    return ContentService.createTextOutput(
-      JSON.stringify({ status: 'error', message: error.toString() })
-    ).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function doGet(e) {
-  try {
-    Logger.log('Received GET or OPTIONS request: ' + JSON.stringify(e));
-    return ContentService.createTextOutput(
-      JSON.stringify({ status: 'success', message: 'GET request received' })
-    ).setMimeType(ContentService.MimeType.JSON);
-  } catch (error) {
-    Logger.log(`Error in doGet: ${error.stack}`);
-    return ContentService.createTextOutput(
-      JSON.stringify({ status: 'error', message: error.toString() })
-    ).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-function onFormSubmit(e) {
-  try {
-    Logger.log('Received form submission');
-    var formResponse = e.response;
-    var itemResponses = formResponse.getItemResponses();
-    var name = itemResponses[0].getResponse(); // Nombre
-    var phone = itemResponses[1].getResponse(); // Teléfono de Contacto
-    var contactTime = itemResponses[2].getResponse(); // Horario de Contacto
-    var caseType = itemResponses[3].getResponse(); // Tipo de Trámite o Problema
-    var description = itemResponses[4].getResponse(); // Descripción
-
-    Logger.log(`Processing form submission for: ${name}`);
-
-    var sanitizedName = name.replace(/[<>:"/\\|?*]/g, '');
-    Logger.log('Accessing parent folder: ' + FOLDER_ID);
-    var parentFolder = DriveApp.getFolderById(FOLDER_ID);
-    var folderName = sanitizedName + '_' + new Date().toISOString().split('T')[0];
-    Logger.log(`Creating folder: ${folderName}`);
-    var clientFolder = parentFolder.createFolder(folderName);
-    Logger.log(`Created folder: ${clientFolder.getName()} (ID: ${clientFolder.getId()})`);
-
-    // Save text data to Google Sheet
-    Logger.log('Accessing spreadsheet: ' + SHEET_ID);
-    var spreadsheet = SpreadsheetApp.openById(SHEET_ID);
-    Logger.log('Available sheets: ' + spreadsheet.getSheets().map(s => s.getName()).join(', '));
-    Logger.log('Accessing sheet: Form_Responses1');
-    var sheet = spreadsheet.getSheetByName('Form_Responses1');
-    if (!sheet) {
-      Logger.log('Form_Responses1 not found, trying fallback: Hoja 1');
-      sheet = spreadsheet.getSheetByName('Hoja 1');
-      if (!sheet) {
-        throw new Error('Sheet "Form_Responses1" or "Hoja 1" not found in spreadsheet ' + SHEET_ID + '. Available sheets: ' + spreadsheet.getSheets().map(s => s.getName()).join(', '));
-      }
-      Logger.log('Fallback sheet "Hoja 1" found');
-    } else {
-      Logger.log('Sheet "Form_Responses1" found');
-    }
-
-    // Set up headers if they don't exist
-    Logger.log('Checking headers');
-    var expectedHeaders = ['Marca temporal', 'Dirección de correo electrónico', 'Nombre', 'Teléfono de Contacto', 'Horario de Contacto', 'Tipo de Trámite o Problema', 'Descripción', 'Folder URL'];
-    var headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-    Logger.log('Current headers: ' + headers.join(', '));
-    if (headers.join(',') !== expectedHeaders.join(',')) {
-      Logger.log('Setting headers');
-      sheet.getRange(1, 1, 1, expectedHeaders.length).setValues([expectedHeaders]);
-      Logger.log('Headers set: ' + expectedHeaders.join(', '));
-    }
-
-    // Append data: Form already fills A (Timestamp) and B (Email), append to C-H
-    Logger.log('Appending data to sheet: ' + JSON.stringify([
-      new Date(),
-      '',
-      name,
-      phone,
-      contactTime,
-      caseType,
-      description,
-      clientFolder.getUrl()
-    ]));
-    sheet.appendRow([
-      new Date(), // A: Marca temporal
-      '', // B: Dirección de correo electrónico (form fills this, leave empty here)
-      name, // C: Nombre
-      phone, // D: Teléfono de Contacto
-      contactTime, // E: Horario de Contacto
-      caseType, // F: Tipo de Trámite o Problema
-      description, // G: Descripción
-      clientFolder.getUrl() // H: Folder URL
-    ]);
-    Logger.log(`Appended data to ${sheet.getName()} for: ${name}`);
-  } catch (error) {
-    Logger.log(`Error in onFormSubmit: ${error.stack}`);
-  }
-}
-
-
-    #inicio {
-    padding-top: 120px; /* This adds space at the top to clear the header */
 }
