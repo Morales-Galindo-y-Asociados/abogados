@@ -82,42 +82,29 @@ nav a.active {
     z-index: 5;
     background-size: cover !important;
     background-position: center !important;
+    transition: opacity 1s ease-in-out !important; /* Smoother fade */
 }
 
 .gallery-dot {
     z-index: 15;
-    width: 1rem !important; /* Larger for visibility */
+    width: 1rem !important;
     height: 1rem !important;
     background-color: #FFD700 !important;
-    opacity: 0.75 !important; /* More visible by default */
-    transition: opacity 0.3s ease, box-shadow 0.3s ease !important;
+    opacity: 0.75 !important;
+    transition: opacity 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease !important;
+    cursor: pointer !important;
 }
 
 .gallery-dot:hover {
     opacity: 1 !important;
     box-shadow: 0 0 8px rgba(255, 215, 0, 0.8) !important;
+    transform: scale(1.2) !important; /* Scale on hover */
 }
 
 .gallery-dot.opacity-100 {
     opacity: 1 !important;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 1) !important; /* Glow for active dot */
-}
-
-/* Thumbnail styles */
-.gallery-thumb {
-    z-index: 12; /* Below dots but above slides */
-    transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease !important;
-}
-
-.gallery-thumb:hover {
-    border-color: #FBBF24 !important;
-    transform: scale(1.1) !important;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.5) !important;
-}
-
-.gallery-thumb.active {
-    border-color: #FFD700 !important;
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.8) !important;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 1) !important;
+    transform: scale(1.1) !important; /* Slightly larger when active */
 }
 
 /* Button styles */
@@ -134,7 +121,7 @@ nav a.active {
 
 .case-button:hover {
     background-color: #FBBF24 !important;
-    transform: scale(1.05) !importantsecondary: 0.3s ease;
+    transform: scale(1.05) !important;
 }
 
 /* Pulse animation for button */
@@ -182,9 +169,5 @@ nav a.active {
     }
     #inicio h2 {
         font-size: 2.5rem;
-    }
-    .gallery-thumb {
-        width: 3rem !important;
-        height: 3rem !important;
     }
 }
