@@ -418,6 +418,9 @@ const juicioOptions = {
         'Directo e Indirecto',
         'Contra leyes',
         'Representación Tercero Interesado'
+    ],
+    'Otro Asunto': [
+        'Otro'
     ]
 };
 
