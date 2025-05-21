@@ -142,8 +142,6 @@ function showSection(sectionId) {
     }
 }
 
-// ... (Previous code unchanged until initializeSlideshow)
-
 // Initialize hero slideshow
 function initializeSlideshow() {
     const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
@@ -162,13 +160,12 @@ function initializeSlideshow() {
     try {
         const slides = document.querySelectorAll('#hero-gallery .gallery-slide');
         const dots = document.querySelectorAll('#hero-gallery .gallery-dot');
-        const thumbs = document.querySelectorAll('#hero-gallery .gallery-thumb');
         if (slides.length === 0 || dots.length === 0) {
             console.warn("No slides or dots found for gallery");
             return;
         }
 
-        console.log(`Found ${slides.length} slides, ${dots.length} dots, and ${thumbs.length} thumbnails for gallery`);
+        console.log(`Found ${slides.length} slides and ${dots.length} dots for gallery`);
 
         // Verify slide images are loaded
         slides.forEach((slide, index) => {
@@ -185,16 +182,14 @@ function initializeSlideshow() {
             }
         });
 
-        // Reset all slides, dots, and thumbs
+        // Reset all slides and dots
         slides.forEach(slide => safeGSAP.set(slide, { opacity: 0, scale: 1.1 }));
         dots.forEach(dot => dot.classList.remove('opacity-100'));
-        thumbs.forEach(thumb => thumb.classList.remove('active'));
 
-        // Show first slide, dot, and thumb
-        if (slides[0]) {
+        // Show first slide and dot
+        if (slides[0] && dots[0]) {
             safeGSAP.set(slides[0], { opacity: 1, scale: 1 });
             dots[0].classList.add('opacity-100');
-            thumbs[0].classList.add('active');
         }
 
         let currentSlide = 0;
@@ -202,22 +197,31 @@ function initializeSlideshow() {
 
         const showSlide = (index) => {
             console.log(`Showing slide ${index}`);
-            if (slides[currentSlide]) {
+            // Ensure index is within bounds
+            index = ((index % slides.length) + slides.length) % slides.length;
+
+            // Fade out current slide and dot
+            if (slides[currentSlide] && dots[currentSlide]) {
                 safeGSAP.to(slides[currentSlide], { opacity: 0, scale: 1.1, duration: 1, ease: "power2.out" });
                 dots[currentSlide].classList.remove('opacity-100');
-                thumbs[currentSlide].classList.remove('active');
             }
-            currentSlide = index % slides.length;
-            if (slides[currentSlide]) {
+
+            // Update current slide index
+            currentSlide = index;
+
+            // Fade in new slide and dot
+            if (slides[currentSlide] && dots[currentSlide]) {
                 safeGSAP.to(slides[currentSlide], { opacity: 1, scale: 1, duration: 1, ease: "power2.out" });
                 dots[currentSlide].classList.add('opacity-100');
-                thumbs[currentSlide].classList.add('active');
             }
         };
 
         // Auto-rotation
         const startAutoSlide = () => {
-            autoSlideInterval = setInterval(() => showSlide(currentSlide + 1), 6000);
+            if (autoSlideInterval) clearInterval(autoSlideInterval);
+            autoSlideInterval = setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 6000);
         };
 
         // Stop auto-rotation
@@ -231,15 +235,7 @@ function initializeSlideshow() {
         // Dot navigation
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => {
-                stopAutoSlide();
-                showSlide(index);
-                setTimeout(startAutoSlide, 10000); // Resume after 10s
-            });
-        });
-
-        // Thumbnail navigation
-        thumbs.forEach((thumb, index) => {
-            thumb.addEventListener('click', () => {
+                console.log(`Dot ${index} clicked`);
                 stopAutoSlide();
                 showSlide(index);
                 setTimeout(startAutoSlide, 10000); // Resume after 10s
@@ -253,18 +249,13 @@ function initializeSlideshow() {
         // Fallback: Show first slide statically
         const firstSlide = document.querySelector('#hero-gallery .gallery-slide');
         const firstDot = document.querySelector('#hero-gallery .gallery-dot');
-        const firstThumb = document.querySelector('#hero-gallery .gallery-thumb');
         if (firstSlide) {
             firstSlide.style.opacity = 1;
             firstSlide.style.transform = 'scale(1)';
         }
         if (firstDot) firstDot.classList.add('opacity-100');
-        if (firstThumb) firstThumb.classList.add('active');
     }
 }
-
-// ... (Rest of the script.js unchanged)
-
 
 // Initial setup
 document.addEventListener('DOMContentLoaded', () => {
