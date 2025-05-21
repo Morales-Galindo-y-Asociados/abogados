@@ -233,21 +233,19 @@ function initializeSlideshow() {
 
 // Loader and initial setup
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("DOM fully loaded, starting loader sequence");
+    console.log("DOM fully loaded, initializing content");
 
-    const loader = document.getElementById('loader');
     const mainHeader = document.getElementById('main-header');
     const inicioSection = document.getElementById('inicio');
 
-    if (!loader || !mainHeader || !inicioSection) {
-        console.error("Missing critical elements:", { loader, mainHeader, inicioSection });
-        if (loader) loader.style.display = 'none';
+    if (!mainHeader || !inicioSection) {
+        console.error("Missing critical elements:", { mainHeader, inicioSection });
         if (mainHeader) mainHeader.style.display = 'block';
         if (inicioSection) {
             inicioSection.style.display = 'block';
             inicioSection.classList.add('active');
             // Force content visibility
-            const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
+            const contentElements = inicioSection.querySelectorAll('h2, p, h3, .caption, .case-button');
             contentElements.forEach(el => el.style.opacity = '1');
         }
         showSection('inicio');
@@ -278,52 +276,38 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Hide loader and show content
-   
-    const hideLoader = () => {
-    console.log("Hiding loader and showing main content");
-    safeGSAP.to(loader, {
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.out",
-        onComplete: () => {
-            loader.style.display = 'none';
-            mainHeader.style.display = 'block';
-            inicioSection.style.display = 'block';
-            inicioSection.classList.add('active');
+    // Show main content immediately
+    mainHeader.style.display = 'block';
+    inicioSection.style.display = 'block';
+    inicioSection.classList.add('active');
 
-            // Force content visibility
-            safeGSAP.set("#inicio, #inicio h2, #inicio p, #inicio h3, #inicio .caption, #inicio .case-button", { opacity: 1 });
+    // Run animations
+    safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+    safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+    safeGSAP.from("#inicio h3", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.1 });
+    safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.3 });
 
-            // Run animations
-            safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-            safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-            safeGSAP.from("#inicio h3", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-            safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.1 });
-            safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.3 });
+    // Initialize slideshow
+    setTimeout(initializeSlideshow, 500);
 
-            // Initialize slideshow after content is visible
-            setTimeout(initializeSlideshow, 500);
-
-            // Animate footer icons
-            const footerIcons = document.querySelectorAll('#footer i');
-            footerIcons.forEach((icon, index) => {
-                safeGSAP.from(icon, {
-                    opacity: 0,
-                    duration: 0.8,
-                    ease: "power2.out",
-                    delay: 0.5 + index * 0.2
-                });
-            });
-
-            // Force re-render
-            inicioSection.style.display = 'none';
-            setTimeout(() => {
-                inicioSection.style.display = 'block';
-            }, 10);
-        }
+    // Animate footer icons
+    const footerIcons = document.querySelectorAll('#footer i');
+    footerIcons.forEach((icon, index) => {
+        safeGSAP.from(icon, {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 0.5 + index * 0.2
+        });
     });
-};
+
+    // Force re-render
+    inicioSection.style.display = 'none';
+    setTimeout(() => {
+        inicioSection.style.display = 'block';
+    }, 10);
+});
              
 
     // Execute loader hide after 2 seconds
@@ -544,20 +528,15 @@ window.addEventListener('error', (event) => {
         colno: event.colno,
         error: event.error
     });
-    const loader = document.getElementById('loader');
-    if (loader && loader.style.display !== 'none') {
-        console.log("Error detected, forcing loader hide");
-        loader.style.display = 'none';
-        const mainHeader = document.getElementById('main-header');
-        const inicioSection = document.getElementById('inicio');
-        if (mainHeader) mainHeader.style.display = 'block';
-        if (inicioSection) {
-            inicioSection.style.display = 'block';
-            inicioSection.classList.add('active');
-            const contentElements = inicioSection.querySelectorAll('h1, .bg-opacity-80, .bg-opacity-70, .caption, .case-button');
-            contentElements.forEach(el => el.style.opacity = '1');
-        }
-        showSection('inicio');
-        initializeSlideshow();
+    const mainHeader = document.getElementById('main-header');
+    const inicioSection = document.getElementById('inicio');
+    if (mainHeader) mainHeader.style.display = 'block';
+    if (inicioSection) {
+        inicioSection.style.display = 'block';
+        inicioSection.classList.add('active');
+        const contentElements = inicioSection.querySelectorAll('h2, p, h3, .caption, .case-button');
+        contentElements.forEach(el => el.style.opacity = '1');
     }
+    showSection('inicio');
+    initializeSlideshow();
 });
