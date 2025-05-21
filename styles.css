@@ -369,3 +369,8 @@ function onFormSubmit(e) {
     Logger.log(`Error in onFormSubmit: ${error.stack}`);
   }
 }
+
+
+    #inicio {
+    padding-top: 80px; /* This adds space at the top to clear the header */
+}
