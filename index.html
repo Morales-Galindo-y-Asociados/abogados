@@ -348,8 +348,12 @@
                     <input type="file" id="files" name="files" multiple accept=".pdf,.doc,.docx,.jpg,.png" class="w-full bg-gray-800 text-gray-200 border border-gold-600 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-gold-400">
                     <div id="file-list" class="mt-2 space-y-2"></div>
                 </div>
-                <button type="submit" class="form-submit-button bg-yellow-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-yellow-300 transition transform hover:scale-105 animate-pulseButton">Enviar Caso</button>
-            </form>
+               <button type="submit" class="form-submit-button bg-yellow-400 text-black px-8 py-4 rounded-full font-semibold hover:bg-yellow-300 transition transform hover:scale-105 animate-pulseButton">Enviar Caso</button>
+<div id="loading-spinner" class="hidden mt-4 flex justify-center items-center">
+    <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gold-400"></div>
+    <span class="ml-2 text-gold-400">Procesando...</span>
+</div>
+</form>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-8">
                 <div class="bg-gray-800 p-4 rounded-lg border border-gold-600">
