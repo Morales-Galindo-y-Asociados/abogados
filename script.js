@@ -268,7 +268,27 @@ function initializeSlideshow() {
 document.addEventListener('DOMContentLoaded', () => {
     console.log("DOM fully loaded, initializing content");
 
-    // Set up navigation listeners first
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            });
+        });
+    } else {
+        console.warn("Mobile menu elements not found:", { mobileMenuButton, mobileMenu });
+    }
+
+    // Set up navigation listeners
     document.querySelectorAll('nav a[data-section], .case-button, #logo-button').forEach(link => {
         link.addEventListener('click', (e) => {
             e.preventDefault();
@@ -324,15 +344,15 @@ document.addEventListener('DOMContentLoaded', () => {
     inicioSection.classList.add('active');
 
     // Run animations
-   try {
-    safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-    safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-    safeGSAP.from(".value-card", { opacity: 0, y: 50, scale: 0.9, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
-    safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.5 });
-} catch (error) {
-    console.error("Error in initial animations:", error);
-}
+    try {
+        safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+        safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+        safeGSAP.from(".value-card", { opacity: 0, y: 50, scale: 0.9, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+        safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+        safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.5 });
+    } catch (error) {
+        console.error("Error in initial animations:", error);
+    }
 
     // Initialize slideshow
     try {
