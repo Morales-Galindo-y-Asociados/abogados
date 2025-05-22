@@ -523,29 +523,40 @@ try {
     });
 
     // Update the displayed file list
-    const updateFileList = () => {
-        fileList.innerHTML = '';
-        selectedFiles.forEach((file, index) => {
-            const fileItem = document.createElement('div');
-            fileItem.className = 'flex items-center justify-between bg-gray-700 p-2 rounded-lg';
-            fileItem.innerHTML = `
-                <span class="text-gray-200 truncate max-w-[70%]">${file.name}</span>
-                <button type="button" class="delete-file bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500" data-index="${index}">Eliminar</button>
-            `;
-            fileList.appendChild(fileItem);
-        });
+   const updateFileList = () => {
+    fileList.innerHTML = '';
+    selectedFiles.forEach((file, index) => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'flex items-center justify-between bg-gray-700 p-2 rounded-lg';
+        fileItem.innerHTML = `
+            <span class="text-gray-200 truncate max-w-[50%]">${file.name}</span>
+            <button type="button" class="preview-file bg-gold-400 text-black px-2 py-1 rounded hover:bg-gold-300 mr-2" data-index="${index}">Visualizar</button>
+            <button type="button" class="delete-file bg-red-600 text-white px-2 py-1 rounded hover:bg-red-500" data-index="${index}">Eliminar</button>
+        `;
+        fileList.appendChild(fileItem);
+    });
 
-        // Add delete button listeners
-        document.querySelectorAll('.delete-file').forEach(button => {
-            button.addEventListener('click', () => {
-                const index = parseInt(button.getAttribute('data-index'));
-                console.log(`Deleting file at index ${index}: ${selectedFiles[index].name}`);
-                selectedFiles.splice(index, 1);
-                updateFileList();
-            });
+    // Add delete button listeners
+    document.querySelectorAll('.delete-file').forEach(button => {
+        button.addEventListener('click', () => {
+            const index = parseInt(button.getAttribute('data-index'));
+            console.log(`Deleting file at index ${index}: ${selectedFiles[index].name}`);
+            selectedFiles.splice(index, 1);
+            updateFileList();
         });
-    };
+    });
 
+    // Add preview button listeners
+    document.querySelectorAll('.preview-file').forEach(button => {
+        button.addEventListener('click', () => {
+            const index = parseInt(button.getAttribute('data-index'));
+            console.log(`Previewing file at index ${index}: ${selectedFiles[index].name}`);
+            const file = selectedFiles[index];
+            const fileURL = URL.createObjectURL(file);
+            window.open(fileURL, '_blank');
+        });
+    });
+};
     caseForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(caseForm);
