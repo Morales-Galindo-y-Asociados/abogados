@@ -104,9 +104,13 @@ nav a.active {
     border-bottom: 2px solid #FBBF24;
 }
 
-/* Inicio Section Styles */
+/* Section Styles */
 #inicio {
     padding-top: 120px; /* Space for fixed header */
+}
+
+#about, #services, #contact, #map {
+    padding-top: 120px; /* Match inicio to push content below fixed header */
 }
 
 #hero-gallery {
@@ -261,6 +265,9 @@ nav a.active {
     }
     .value-card p {
         font-size: 0.875rem !important;
+    }
+    #about, #services, #contact, #map {
+        padding-top: 100px; /* Slightly less on mobile for better fit */
     }
 }
 
