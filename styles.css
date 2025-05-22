@@ -326,3 +326,78 @@ nav a.active {
     font-weight: 500 !important;
     color: #FFD700 !important; /* gold-400 */
 }
+
+/* WhatsApp Bubble Styles */
+#whatsapp-bubble {
+    z-index: 50 !important; /* Ensure it’s above header and other elements */
+}
+
+#whatsapp-bubble a {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 4rem !important; /* 64px */
+    height: 4rem !important;
+    background-color: #22C55E !important; /* green-500 */
+    border-radius: 50% !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 215, 0, 0.2) !important; /* Subtle gold glow */
+    transition: all 0.3s ease !important;
+}
+
+#whatsapp-bubble a:hover {
+    background-color: #16A34A !important; /* green-600 */
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 215, 0, 0.4) !important; /* Enhanced glow */
+}
+
+#whatsapp-bubble i {
+    font-size: 2rem !important; /* Slightly larger icon */
+    color: #FFFFFF !important;
+    transition: transform 0.3s ease !important;
+}
+
+#whatsapp-bubble a:hover i {
+    transform: scale(1.15) !important; /* Subtle icon zoom on hover */
+}
+
+#whatsapp-bubble span {
+    white-space: nowrap !important;
+    background-color: #1F2937 !important; /* gray-900 */
+    color: #FFD700 !important; /* gold-400 */
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    opacity: 0 !important;
+    transform: translateX(10px) !important;
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+    pointer-events: none !important; /* Prevent tooltip from blocking clicks */
+}
+
+#whatsapp-bubble a:hover span {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #whatsapp-bubble {
+        right: 1rem !important; /* Closer to edge on mobile */
+        top: 75% !important; /* Lower on mobile for thumb reach */
+        transform: translateY(0) !important;
+    }
+
+    #whatsapp-bubble a {
+        width: 3rem !important; /* 48px */
+        height: 3rem !important;
+    }
+
+    #whatsapp-bubble i {
+        font-size: 1.5rem !important;
+    }
+
+    #whatsapp-bubble span {
+        font-size: 0.75rem !important;
+        padding: 0.4rem 0.8rem !important;
+    }
+}
