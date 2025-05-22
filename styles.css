@@ -153,6 +153,53 @@ nav a.active {
     transform: scale(1.05) !important;
 }
 
+/* Value Card Styles for Inicio Section */
+.value-card {
+    background-color: #1F2937 !important; /* gray-900 */
+    border: 1px solid #B8860B !important; /* gold-600 */
+    border-radius: 0.5rem !important;
+    padding: 1.5rem !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.value-card:hover {
+    transform: scale(1.05) !important;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
+}
+
+/* Icon and Title Container */
+.value-card .flex {
+    align-items: center !important;
+    margin-bottom: 1rem !important;
+}
+
+.value-card i {
+    font-size: 2rem !important;
+    color: #FFD700 !important; /* gold-400 */
+    margin-right: 0.75rem !important;
+    transition: transform 0.3s ease, color 0.3s ease !important;
+}
+
+.value-card:hover i {
+    transform: scale(1.2) !important;
+    color: #FBBF24 !important; /* gold-300 */
+}
+
+/* Title and Text */
+.value-card h3 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #FFD700 !important; /* gold-400 */
+}
+
+.value-card p {
+    font-size: 1rem !important;
+    color: #D1D5DB !important; /* gray-200 */
+    line-height: 1.5 !important;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     #footer .grid {
@@ -169,6 +216,15 @@ nav a.active {
     }
     #inicio h2 {
         font-size: 2.5rem;
+    }
+    .value-card {
+        padding: 1rem !important;
+    }
+    .value-card h3 {
+        font-size: 1.25rem !important;
+    }
+    .value-card p {
+        font-size: 0.875rem !important;
     }
 }
 
