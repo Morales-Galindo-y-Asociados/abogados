@@ -557,66 +557,83 @@ try {
         });
     });
 };
-    caseForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(caseForm);
-        const webAppUrl = 'https://script.google.com/macros/s/AKfycbzDJNI7OeeHJUDML4A9rQSWfP-ISkeadPNh7ci4e0mGXedZHxD_mc-_3p7ofaKDVTGV-Q/exec';
-        const maxFileSize = 10 * 1024 * 1024; // 10MB
 
-        try {
-            // Validate files
-            for (const file of selectedFiles) {
-                if (file.size > maxFileSize) {
-                    throw new Error(`El archivo ${file.name} excede el tamaño máximo de 10MB.`);
-                }
+caseForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(caseForm);
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbzDJNI7OeeHJUDML4A9rQSWfP-ISkeadPNh7ci4e0mGXedZHxD_mc-_3p7ofaKDVTGV-Q/exec';
+    const maxFileSize = 10 * 1024 * 1024; // 10MB
+    const submitButton = caseForm.querySelector('.form-submit-button');
+    const loadingSpinner = document.getElementById('loading-spinner');
+
+    // Show spinner and disable button
+    submitButton.disabled = true;
+    submitButton.classList.add('opacity-50', 'cursor-not-allowed');
+    loadingSpinner.classList.remove('hidden');
+    loadingSpinner.classList.add('flex');
+
+    try {
+        // Validate files
+        for (const file of selectedFiles) {
+            if (file.size > maxFileSize) {
+                throw new Error(`El archivo ${file.name} excede el tamaño máximo de 10MB.`);
             }
-
-            const textData = {
-                name: formData.get('name'),
-                phone: formData.get('phone'),
-                contactTime: formData.get('contact-time'),
-                caseType: `${formData.get('materia')} - ${formData.get('juicio')}`,
-                description: formData.get('description'),
-                files: []
-            };
-
-            if (selectedFiles.length > 0) {
-                const filePromises = selectedFiles.map(file => {
-                    return new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve({
-                            name: file.name,
-                            mimeType: file.type,
-                            data: reader.result.split(',')[1]
-                        });
-                        reader.onerror = reject;
-                        reader.readAsDataURL(file);
-                    });
-                });
-                textData.files = await Promise.all(filePromises);
-            }
-
-            console.log('Submitting form to:', webAppUrl);
-            const response = await fetch(webAppUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(textData)
-            });
-
-            console.log('Form submitted');
-            alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
-            caseForm.reset();
-            selectedFiles = []; // Clear selected files
-            updateFileList(); // Clear file list display
-            const juicioSelect = document.getElementById('juicio');
-            juicioSelect.innerHTML = '<option value="" disabled selected>Primero seleccione una materia</option>';
-            juicioSelect.disabled = true;
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
         }
-    });
+
+        const textData = {
+            name: formData.get('name'),
+            phone: formData.get('phone'),
+            contactTime: formData.get('contact-time'),
+            caseType: `${formData.get('materia')} - ${formData.get('juicio')}`,
+            description: formData.get('description'),
+            files: []
+        };
+
+        if (selectedFiles.length > 0) {
+            const filePromises = selectedFiles.map(file => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve({
+                        name: file.name,
+                        mimeType: file.type,
+                        data: reader.result.split(',')[1]
+                    });
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            });
+            textData.files = await Promise.all(filePromises);
+        }
+
+        console.log('Submitting form to:', webAppUrl);
+        const response = await fetch(webAppUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(textData)
+        });
+
+        console.log('Form submitted');
+        alert('¡Gracias! Tu caso ha sido enviado. Pronto te contactaremos.');
+        caseForm.reset();
+        selectedFiles = []; // Clear selected files
+        updateFileList(); // Clear file list display
+        const juicioSelect = document.getElementById('juicio');
+        juicioSelect.innerHTML = '<option value="" disabled selected>Primero seleccione una materia</option>';
+        juicioSelect.disabled = true;
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        alert(`Hubo un error al enviar tu caso: ${error.message || 'No se pudo conectar con el servidor'}. Por favor, intenta de nuevo.`);
+    } finally {
+        // Hide spinner and re-enable button
+        submitButton.disabled = false;
+        submitButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        loadingSpinner.classList.add('hidden');
+        loadingSpinner.classList.remove('flex');
+    }
+});
+
+    
 } catch (error) {
     console.error("Error setting up form submission:", error);
 }
