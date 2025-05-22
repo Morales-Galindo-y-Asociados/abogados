@@ -35,13 +35,32 @@ main {
     transition: transform 0.3s ease, color 0.3s ease;
     vertical-align: middle;
     position: relative;
-    top: -2px;
-    font-size: 1rem;
+    top: -1px;
+    font-size: 1.25rem; /* Slightly larger for visibility */
+    color: #FFD700; /* gold-400 */
 }
 
 #footer i:hover {
     transform: scale(1.2);
     color: #FBBF24;
+}
+
+/* Ensure social media icons are visible */
+#footer .fab {
+    opacity: 1; /* Override any hidden opacity */
+    display: inline-block;
+    min-width: 24px; /* Prevent icon collapse */
+}
+
+/* Fix icon alignment on mobile */
+@media (max-width: 768px) {
+    #footer .fab {
+        font-size: 1.1rem; /* Slightly smaller on mobile */
+    }
+    #footer .flex {
+        justify-content: center; /* Center icons on mobile */
+        gap: 1rem; /* Consistent spacing */
+    }
 }
 
 /* Ensure footer text is readable */
