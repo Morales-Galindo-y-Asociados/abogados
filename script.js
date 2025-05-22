@@ -61,10 +61,14 @@ function showSection(sectionId) {
     }
 
     // Check if the target section is already active
-    if (targetSection.classList.contains('active')) {
-        console.log(`Section ${sectionId} is already active, no action needed`);
-        return;
+   if (targetSection.classList.contains('active')) {
+    console.log(`Section ${sectionId} is already active, no action needed`);
+    const activeLink = document.querySelector(`nav a[data-section="${sectionId}"]`);
+    if (activeLink) {
+        safeGSAP.to(activeLink, { scale: 1.1, duration: 0.2, yoyo: true, repeat: 1 });
     }
+    return;
+}
 
     const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
         to: (el, opts) => {
