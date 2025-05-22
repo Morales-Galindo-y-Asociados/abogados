@@ -310,3 +310,19 @@ nav a.active {
     background-color: #FBBF24 !important; /* gold-300 */
     transform: scale(1.05) !important;
 }
+
+#loading-spinner {
+    transition: opacity 0.3s ease !important;
+}
+
+#loading-spinner .animate-spin {
+    border-color: transparent !important;
+    border-top-color: #FFD700 !important; /* gold-400 */
+    border-bottom-color: #FFD700 !important;
+}
+
+#loading-spinner span {
+    font-size: 1rem !important;
+    font-weight: 500 !important;
+    color: #FFD700 !important; /* gold-400 */
+}
