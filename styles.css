@@ -62,6 +62,23 @@ main {
     opacity: 0;
 }
 
+/* Footer content spacing */
+#footer p {
+    font-size: 0.95rem; /* Slightly smaller for better fit */
+    margin-bottom: 0.5rem; /* Consistent spacing */
+}
+
+/* Responsive footer adjustments */
+@media (max-width: 768px) {
+    #footer p {
+        font-size: 0.875rem; /* Smaller on mobile */
+        margin-bottom: 0.4rem;
+    }
+    #footer .grid > div {
+        margin-bottom: 1rem; /* Extra space between sections on mobile */
+    }
+}
+
 /* Header and Navigation */
 nav a.active {
     color: #FBBF24;
