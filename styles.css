@@ -295,3 +295,18 @@ nav a.active {
     background-color: #B91C1C !important;
     transform: scale(1.05) !important;
 }
+
+.preview-file {
+    background-color: #FFD700 !important; /* gold-400 */
+    color: #000000 !important; /* black */
+    padding: 0.5rem 1rem !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.875rem !important;
+    font-weight: 500 !important;
+    transition: background-color 0.3s ease, transform 0.3s ease !important;
+}
+
+.preview-file:hover {
+    background-color: #FBBF24 !important; /* gold-300 */
+    transform: scale(1.05) !important;
+}
