@@ -49,6 +49,7 @@ function initMap() {
 }
 
 // Show section with animations
+// Show section with animations
 function showSection(sectionId) {
     console.log(`Showing section: ${sectionId}`);
     const sections = document.querySelectorAll('.section');
@@ -56,6 +57,12 @@ function showSection(sectionId) {
 
     if (!targetSection) {
         console.error(`Section ${sectionId} not found`);
+        return;
+    }
+
+    // Check if the target section is already active
+    if (targetSection.classList.contains('active')) {
+        console.log(`Section ${sectionId} is already active, no action needed`);
         return;
     }
 
@@ -141,7 +148,6 @@ function showSection(sectionId) {
         initMap();
     }
 }
-
 // Initialize hero slideshow
 function initializeSlideshow() {
     const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
