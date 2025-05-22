@@ -49,7 +49,6 @@ function initMap() {
 }
 
 // Show section with animations
-// Show section with animations
 function showSection(sectionId) {
     console.log(`Showing section: ${sectionId}`);
     const sections = document.querySelectorAll('.section');
@@ -61,7 +60,7 @@ function showSection(sectionId) {
     }
 
     // Check if the target section is already active
- if (targetSection.classList.contains('active')) {
+    if (targetSection.classList.contains('active')) {
         console.log(`Section ${sectionId} is already active, no action needed`);
         return;
     }
@@ -75,10 +74,10 @@ function showSection(sectionId) {
         from: (el, opts) => {
             el.style.transition = `all ${opts.duration || 0.5}s ${opts.ease || 'ease'}`;
             el.style.opacity = 0;
-            el.style.transform = `translateY(${opts.y || 0}px)`;
+            el.style.transform = `translateY(${opts.y || 0}px) scale(${opts.scale || 1})`;
             setTimeout(() => {
                 el.style.opacity = 1;
-                el.style.transform = 'translateY(0)';
+                el.style.transform = 'translateY(0) scale(1)';
             }, 100);
         },
         set: (el, opts) => Object.assign(el.style, opts)
@@ -110,12 +109,13 @@ function showSection(sectionId) {
         }
     });
 
+    // Section-specific animations
     if (sectionId === 'inicio') {
         safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
         safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-        safeGSAP.from("#inicio h3", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-        safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.1 });
-        safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.3 });
+        safeGSAP.from(".value-card", { opacity: 0, y: 50, scale: 0.9, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+        safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+        safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.5 });
         initializeSlideshow();
     } else if (sectionId === 'about') {
         safeGSAP.from("#about h2", { opacity: 0, y: 30, duration: 1, ease: "power2.out", delay: 0.3 });
@@ -148,6 +148,7 @@ function showSection(sectionId) {
         initMap();
     }
 }
+
 // Initialize hero slideshow
 function initializeSlideshow() {
     const safeGSAP = typeof gsap !== 'undefined' ? gsap : {
@@ -323,15 +324,15 @@ document.addEventListener('DOMContentLoaded', () => {
     inicioSection.classList.add('active');
 
     // Run animations
-    try {
-        safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
-        safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
-        safeGSAP.from("#inicio h3", { opacity: 0, y: 50, duration: 1.5, stagger: 0.2, ease: "power3.out", delay: 0.9 });
-        safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.1 });
-        safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.3 });
-    } catch (error) {
-        console.error("Error in initial animations:", error);
-    }
+   try {
+    safeGSAP.from("#inicio h2", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.5 });
+    safeGSAP.from("#inicio p", { opacity: 0, y: 50, duration: 1.5, ease: "power3.out", delay: 0.7 });
+    safeGSAP.from(".value-card", { opacity: 0, y: 50, scale: 0.9, duration: 1, stagger: 0.2, ease: "power3.out", delay: 0.9 });
+    safeGSAP.from("#inicio .case-button", { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 1.3 });
+    safeGSAP.from("#inicio .caption p", { opacity: 0, x: 50, duration: 1.5, ease: "power3.out", delay: 1.5 });
+} catch (error) {
+    console.error("Error in initial animations:", error);
+}
 
     // Initialize slideshow
     try {
