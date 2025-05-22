@@ -147,6 +147,23 @@ function showSection(sectionId) {
         safeGSAP.from("#map-container", { opacity: 0, y: 50, duration: 1, ease: "power2.out", delay: 0.9 });
         initMap();
     }
+
+    // Re-animate WhatsApp bubble on section change
+try {
+    const whatsappBubble = document.getElementById('whatsapp-bubble');
+    if (whatsappBubble) {
+        safeGSAP.to(whatsappBubble, {
+            y: -10,
+            duration: 0.5,
+            ease: "power2.out",
+            yoyo: true,
+            repeat: 1,
+            delay: 0.5
+        });
+    }
+} catch (error) {
+    console.error("Error re-animating WhatsApp bubble:", error);
+}
 }
 
 // Initialize hero slideshow
@@ -361,20 +378,36 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error("Error initializing slideshow:", error);
     }
 
-    // Animate footer icons
-    try {
-        const footerIcons = document.querySelectorAll('#footer i');
-        footerIcons.forEach((icon, index) => {
-            safeGSAP.from(icon, {
-                opacity: 0,
-                duration: 0.8,
-                ease: "power2.out",
-                delay: 0.5 + index * 0.2
-            });
+   // Animate footer icons
+try {
+    const footerIcons = document.querySelectorAll('#footer i');
+    footerIcons.forEach((icon, index) => {
+        safeGSAP.from(icon, {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 0.5 + index * 0.2
         });
-    } catch (error) {
-        console.error("Error animating footer icons:", error);
+    });
+} catch (error) {
+    console.error("Error animating footer icons:", error);
+}
+
+// Animate WhatsApp bubble
+try {
+    const whatsappBubble = document.getElementById('whatsapp-bubble');
+    if (whatsappBubble) {
+        safeGSAP.from(whatsappBubble, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            ease: "bounce.out",
+            delay: 1.5
+        });
     }
+} catch (error) {
+    console.error("Error animating WhatsApp bubble:", error);
+}
 });
 
 // Lawyer and Service Card Animations
