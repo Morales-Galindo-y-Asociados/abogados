@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://morales-galindo-y-asociados.github.io/abogados/sitemap.xml
